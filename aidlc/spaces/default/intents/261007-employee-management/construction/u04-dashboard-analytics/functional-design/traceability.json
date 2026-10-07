@@ -1,0 +1,26 @@
+{
+  "unit": "u04-dashboard-analytics",
+  "stage": "functional-design",
+  "upstreamRequirements": [
+    "REQ-DASH-01",
+    "REQ-DASH-02",
+    "REQ-DASH-03"
+  ],
+  "upstreamStories": [
+    "US-06",
+    "US-07"
+  ],
+  "artifacts": [
+    "functional-spec.md",
+    "entities.md",
+    "rules.md"
+  ],
+  "rules": [
+    "BR-DASH-01",
+    "BR-DASH-02",
+    "BR-DASH-03",
+    "BR-DASH-04",
+    "BR-DASH-05",
+    "BR-DASH-06"
+  ]
+}
