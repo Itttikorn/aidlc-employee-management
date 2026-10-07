@@ -188,7 +188,6 @@ function switchTab(targetTab) {
   state.currentTab = targetTab;
   toggleMobileSidebar(false);
 
-  // Reset button active styles
   const allNavBtns = [
     { btn: navDashboardBtn, sec: dashboardSection, addBtn: null },
     { btn: navEmployeesBtn, sec: employeesSection, addBtn: addEmployeeBtn },
@@ -202,9 +201,12 @@ function switchTab(targetTab) {
     
     if (isActive) {
       btn.className = 'w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold bg-indigo-600 text-white shadow-sm shadow-indigo-600/30 transition-colors text-left cursor-pointer';
+      btn.style.color = '#ffffff';
       sec.classList.remove('hidden');
     } else {
-      btn.className = 'w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold text-slate-400 hover:text-slate-100 hover:bg-slate-800/80 transition-colors text-left cursor-pointer';
+      btn.className = 'w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-colors text-left cursor-pointer hover:opacity-80';
+      btn.style.color = 'var(--text-secondary)';
+      btn.style.backgroundColor = 'transparent';
       sec.classList.add('hidden');
     }
 
@@ -214,7 +216,6 @@ function switchTab(targetTab) {
     }
   });
 
-  // Fetch / Refresh relevant data
   if (targetTab === 'dashboard') loadDashboardData();
   else if (targetTab === 'employees') loadEmployeesData();
   else if (targetTab === 'teams') loadTeamsData();
@@ -235,11 +236,11 @@ function showBanner(message, type = 'success') {
   statusBanner.classList.remove('hidden');
   
   if (type === 'success') {
-    statusBanner.className = 'p-4 rounded-xl text-sm font-medium transition-all shadow-sm bg-emerald-500/10 text-emerald-400 border border-emerald-500/30';
+    statusBanner.className = 'p-4 rounded-xl text-sm font-medium transition-all shadow-sm bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30';
   } else if (type === 'error') {
-    statusBanner.className = 'p-4 rounded-xl text-sm font-medium transition-all shadow-sm bg-red-500/10 text-red-400 border border-red-500/30';
+    statusBanner.className = 'p-4 rounded-xl text-sm font-medium transition-all shadow-sm bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30';
   } else {
-    statusBanner.className = 'p-4 rounded-xl text-sm font-medium transition-all shadow-sm bg-blue-500/10 text-blue-400 border border-blue-500/30';
+    statusBanner.className = 'p-4 rounded-xl text-sm font-medium transition-all shadow-sm bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/30';
   }
 
   statusBanner.textContent = message;
@@ -259,16 +260,16 @@ async function checkHealth() {
     if (systemStatusText) {
       if (data.status === 'healthy') {
         systemStatusText.textContent = 'Online';
-        systemStatusText.className = 'text-[11px] font-bold text-emerald-400';
+        systemStatusText.className = 'text-[11px] font-bold text-emerald-500';
       } else {
         systemStatusText.textContent = 'Degraded';
-        systemStatusText.className = 'text-[11px] font-bold text-amber-400';
+        systemStatusText.className = 'text-[11px] font-bold text-amber-500';
       }
     }
   } catch {
     if (systemStatusText) {
       systemStatusText.textContent = 'Offline';
-      systemStatusText.className = 'text-[11px] font-bold text-red-400';
+      systemStatusText.className = 'text-[11px] font-bold text-red-500';
     }
   }
 }
@@ -281,7 +282,7 @@ async function loadDashboardData() {
       state.dashboardStats = json.data;
       renderDashboard(json.data);
     }
-  } catch (err) {
+  } catch {
     showBanner('Failed to load dashboard metrics', 'error');
   }
 }
@@ -292,7 +293,7 @@ async function loadEmployeesData() {
     const json = await res.json();
     state.employees = json.data || [];
     renderEmployees();
-  } catch (err) {
+  } catch {
     showBanner('Failed to load employee directory', 'error');
   }
 }
@@ -304,7 +305,7 @@ async function loadTeamsData() {
     state.teams = json.data || [];
     renderTeams();
     populateTeamFilters();
-  } catch (err) {
+  } catch {
     showBanner('Failed to load teams', 'error');
   }
 }
@@ -317,7 +318,7 @@ async function loadTasksData() {
     const json = await res.json();
     state.tasks = json.data || [];
     renderTasks();
-  } catch (err) {
+  } catch {
     showBanner('Failed to load task board', 'error');
   }
 }
@@ -340,9 +341,9 @@ function renderDashboard(data) {
   if (barPending) barPending.style.width = `${taskDistribution.pending.percentage}%`;
   if (barCompleted) barCompleted.style.width = `${taskDistribution.completed.percentage}%`;
 
-  if (stageTodoText) stageTodoText.innerHTML = `${taskDistribution.todo.count} <span class="text-xs font-normal text-slate-400">(${taskDistribution.todo.percentage}%)</span>`;
-  if (stagePendingText) stagePendingText.innerHTML = `${taskDistribution.pending.count} <span class="text-xs font-normal text-slate-400">(${taskDistribution.pending.percentage}%)</span>`;
-  if (stageCompletedText) stageCompletedText.innerHTML = `${taskDistribution.completed.count} <span class="text-xs font-normal text-slate-400">(${taskDistribution.completed.percentage}%)</span>`;
+  if (stageTodoText) stageTodoText.innerHTML = `${taskDistribution.todo.count} <span class="text-xs font-normal" style="color: var(--text-muted);">(${taskDistribution.todo.percentage}%)</span>`;
+  if (stagePendingText) stagePendingText.innerHTML = `${taskDistribution.pending.count} <span class="text-xs font-normal" style="color: var(--text-muted);">(${taskDistribution.pending.percentage}%)</span>`;
+  if (stageCompletedText) stageCompletedText.innerHTML = `${taskDistribution.completed.count} <span class="text-xs font-normal" style="color: var(--text-muted);">(${taskDistribution.completed.percentage}%)</span>`;
 
   if (priorityUrgentCount) priorityUrgentCount.textContent = `${priorityDistribution.urgent} tasks`;
   if (priorityHighCount) priorityHighCount.textContent = `${priorityDistribution.high} tasks`;
@@ -351,22 +352,22 @@ function renderDashboard(data) {
 
   if (dashboardTeamWorkloadTable) {
     if (!teamWorkloads || teamWorkloads.length === 0) {
-      dashboardTeamWorkloadTable.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">No team activity recorded yet.</td></tr>`;
+      dashboardTeamWorkloadTable.innerHTML = `<tr><td colspan="6" class="py-6 text-center" style="color: var(--text-muted);">No team activity recorded yet.</td></tr>`;
       return;
     }
 
     dashboardTeamWorkloadTable.innerHTML = teamWorkloads.map(tw => `
-      <tr class="hover:bg-slate-800/40 transition-colors">
-        <td class="py-3 px-3 font-semibold text-slate-200">${escapeHtml(tw.teamName)}</td>
+      <tr class="transition-colors">
+        <td class="py-3 px-3 font-semibold" style="color: var(--text-primary);">${escapeHtml(tw.teamName)}</td>
         <td class="py-3 px-3"><span class="badge-solid">${escapeHtml(tw.department)}</span></td>
-        <td class="py-3 px-3 text-center font-bold">${tw.memberCount}</td>
-        <td class="py-3 px-3 text-center">${tw.totalTasks}</td>
-        <td class="py-3 px-3 text-center text-emerald-400 font-semibold">${tw.completedTasks}</td>
+        <td class="py-3 px-3 text-center font-bold" style="color: var(--text-primary);">${tw.memberCount}</td>
+        <td class="py-3 px-3 text-center" style="color: var(--text-primary);">${tw.totalTasks}</td>
+        <td class="py-3 px-3 text-center text-emerald-500 font-semibold">${tw.completedTasks}</td>
         <td class="py-3 px-3 text-right">
           <div class="flex items-center justify-end space-x-2">
-            <span class="font-bold">${tw.completionRate}%</span>
-            <div class="w-16 bg-slate-800 h-2 rounded-full overflow-hidden">
-              <div class="bg-indigo-500 h-full" style="width: ${tw.completionRate}%"></div>
+            <span class="font-bold" style="color: var(--text-primary);">${tw.completionRate}%</span>
+            <div class="w-16 h-2 rounded-full overflow-hidden" style="background-color: var(--bg-surface-subtle); border: 1px solid var(--border-color);">
+              <div class="bg-indigo-600 h-full" style="width: ${tw.completionRate}%"></div>
             </div>
           </div>
         </td>
@@ -407,8 +408,8 @@ function renderEmployeeCards(employees) {
     employeeCardGrid.innerHTML = `
       <div class="col-span-full card-solid p-12 text-center space-y-3">
         <span class="text-4xl">👥</span>
-        <h3 class="text-base font-bold">No Employees Found</h3>
-        <p class="text-xs text-slate-400">No profile matches your search and filter criteria.</p>
+        <h3 class="text-base font-bold" style="color: var(--text-primary);">No Employees Found</h3>
+        <p class="text-xs" style="color: var(--text-secondary);">No profile matches your search and filter criteria.</p>
       </div>
     `;
     return;
@@ -418,10 +419,10 @@ function renderEmployeeCards(employees) {
     const initials = emp.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
     const teamBadges = (emp.teams && emp.teams.length > 0)
       ? emp.teams.map(t => `<span class="badge-solid text-[10px]">${escapeHtml(t.name || t)}</span>`).join(' ')
-      : `<span class="text-[11px] text-slate-500 italic">No assigned teams</span>`;
+      : `<span class="text-[11px] italic" style="color: var(--text-muted);">No assigned teams</span>`;
 
     const avatarHtml = emp.avatarUrl
-      ? `<img src="${emp.avatarUrl}" class="w-12 h-12 rounded-full object-cover border border-slate-700" alt="${escapeHtml(emp.name)}">`
+      ? `<img src="${emp.avatarUrl}" class="w-12 h-12 rounded-full object-cover border" style="border-color: var(--border-color);" alt="${escapeHtml(emp.name)}">`
       : `<div class="w-12 h-12 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-md shadow-indigo-600/20">${initials}</div>`;
 
     return `
@@ -430,33 +431,33 @@ function renderEmployeeCards(employees) {
           <div class="flex items-center space-x-3">
             ${avatarHtml}
             <div>
-              <h3 class="font-bold text-sm text-slate-100">${escapeHtml(emp.name)}</h3>
-              <p class="text-xs text-slate-400">${escapeHtml(emp.position)}</p>
+              <h3 class="font-bold text-sm" style="color: var(--text-primary);">${escapeHtml(emp.name)}</h3>
+              <p class="text-xs" style="color: var(--text-secondary);">${escapeHtml(emp.position)}</p>
             </div>
           </div>
           <span class="age-badge">Age: ${emp.age}</span>
         </div>
 
-        <div class="space-y-1.5 text-xs text-slate-400">
+        <div class="space-y-1.5 text-xs" style="color: var(--text-secondary);">
           <div class="flex items-center space-x-2">
-            <span>🏢</span> <span class="font-semibold text-slate-200">${escapeHtml(emp.department)}</span>
+            <span>🏢</span> <span class="font-semibold" style="color: var(--text-primary);">${escapeHtml(emp.department)}</span>
           </div>
           <div class="flex items-center space-x-2">
-            <span>✉️</span> <a href="mailto:${escapeHtml(emp.email)}" class="hover:text-indigo-400 truncate">${escapeHtml(emp.email)}</a>
+            <span>✉️</span> <a href="mailto:${escapeHtml(emp.email)}" class="hover:underline truncate" style="color: var(--color-primary);">${escapeHtml(emp.email)}</a>
           </div>
           ${emp.phone ? `<div class="flex items-center space-x-2"><span>📞</span> <span>${escapeHtml(emp.phone)}</span></div>` : ''}
         </div>
 
         <div>
-          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Teams</p>
+          <p class="text-[10px] font-bold uppercase tracking-wider mb-1.5" style="color: var(--text-muted);">Teams</p>
           <div class="flex flex-wrap gap-1.5">${teamBadges}</div>
         </div>
 
-        <div class="pt-3 border-t border-slate-700/60 flex items-center justify-end space-x-2">
-          <button onclick="editEmployee('${emp.id}')" data-testid="edit-employee-btn" class="px-3 py-1 text-xs font-semibold rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700 cursor-pointer">
+        <div class="pt-3 border-t flex items-center justify-end space-x-2" style="border-color: var(--border-color);">
+          <button onclick="editEmployee('${emp.id}')" data-testid="edit-employee-btn" class="px-3 py-1.5 text-xs font-semibold rounded-lg border cursor-pointer" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color); color: var(--text-primary);">
             Edit
           </button>
-          <button onclick="deleteEmployee('${emp.id}')" data-testid="delete-employee-btn" class="px-3 py-1 text-xs font-semibold rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/30 cursor-pointer">
+          <button onclick="deleteEmployee('${emp.id}')" data-testid="delete-employee-btn" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/30 cursor-pointer">
             Delete
           </button>
         </div>
@@ -468,7 +469,7 @@ function renderEmployeeCards(employees) {
 function renderEmployeeTable(employees) {
   if (!employeeTableBody) return;
   if (employees.length === 0) {
-    employeeTableBody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400">No employees match criteria.</td></tr>`;
+    employeeTableBody.innerHTML = `<tr><td colspan="6" class="py-8 text-center" style="color: var(--text-muted);">No employees match criteria.</td></tr>`;
     return;
   }
 
@@ -476,28 +477,28 @@ function renderEmployeeTable(employees) {
     const initials = emp.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
     const teamBadges = (emp.teams && emp.teams.length > 0)
       ? emp.teams.map(t => `<span class="badge-solid text-[10px]">${escapeHtml(t.name || t)}</span>`).join(' ')
-      : `<span class="text-xs text-slate-500 italic">Unassigned</span>`;
+      : `<span class="text-xs italic" style="color: var(--text-muted);">Unassigned</span>`;
 
     return `
-      <tr class="hover:bg-slate-800/40 transition-colors">
+      <tr class="transition-colors">
         <td class="py-3 px-4">
           <div class="flex items-center space-x-3">
             <div class="w-8 h-8 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-xs">
               ${initials}
             </div>
             <div>
-              <p class="font-semibold text-slate-200">${escapeHtml(emp.name)}</p>
-              <p class="text-xs text-slate-400">${escapeHtml(emp.email)}</p>
+              <p class="font-semibold" style="color: var(--text-primary);">${escapeHtml(emp.name)}</p>
+              <p class="text-xs" style="color: var(--text-secondary);">${escapeHtml(emp.email)}</p>
             </div>
           </div>
         </td>
-        <td class="py-3 px-4 font-medium text-slate-300">${escapeHtml(emp.position)}</td>
+        <td class="py-3 px-4 font-medium" style="color: var(--text-primary);">${escapeHtml(emp.position)}</td>
         <td class="py-3 px-4"><span class="badge-solid">${escapeHtml(emp.department)}</span></td>
-        <td class="py-3 px-4 text-center font-bold text-slate-200">${emp.age}</td>
+        <td class="py-3 px-4 text-center font-bold" style="color: var(--text-primary);">${emp.age}</td>
         <td class="py-3 px-4">${teamBadges}</td>
         <td class="py-3 px-4 text-right space-x-2">
-          <button onclick="editEmployee('${emp.id}')" class="px-2.5 py-1 text-xs font-semibold rounded bg-slate-800 text-slate-300 hover:bg-slate-700">Edit</button>
-          <button onclick="deleteEmployee('${emp.id}')" class="px-2.5 py-1 text-xs font-semibold rounded bg-red-500/10 text-red-400 hover:bg-red-500/20">Delete</button>
+          <button onclick="editEmployee('${emp.id}')" class="px-2.5 py-1 text-xs font-semibold rounded border cursor-pointer" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color); color: var(--text-primary);">Edit</button>
+          <button onclick="deleteEmployee('${emp.id}')" class="px-2.5 py-1 text-xs font-semibold rounded bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/30 cursor-pointer">Delete</button>
         </td>
       </tr>
     `;
@@ -510,8 +511,8 @@ function renderTeams() {
     teamsGrid.innerHTML = `
       <div class="col-span-full card-solid p-12 text-center space-y-3">
         <span class="text-4xl">🏢</span>
-        <h3 class="text-base font-bold">No Teams Created Yet</h3>
-        <p class="text-xs text-slate-400">Click '+ Create Team' to organize cross-functional pods.</p>
+        <h3 class="text-base font-bold" style="color: var(--text-primary);">No Teams Created Yet</h3>
+        <p class="text-xs" style="color: var(--text-secondary);">Click '+ Create Team' to organize cross-functional pods.</p>
       </div>
     `;
     return;
@@ -526,27 +527,27 @@ function renderTeams() {
         <div>
           <div class="flex items-start justify-between">
             <div>
-              <h3 class="font-bold text-base text-slate-100">${escapeHtml(team.name)}</h3>
-              <p class="text-xs text-slate-400 mt-0.5">${escapeHtml(team.description || 'No description provided.')}</p>
+              <h3 class="font-bold text-base" style="color: var(--text-primary);">${escapeHtml(team.name)}</h3>
+              <p class="text-xs mt-0.5" style="color: var(--text-secondary);">${escapeHtml(team.description || 'No description provided.')}</p>
             </div>
             <span class="badge-solid">${escapeHtml(team.department)}</span>
           </div>
 
-          <div class="mt-4 p-3 bg-slate-800/50 rounded-lg border border-slate-700/60 flex items-center justify-between">
-            <div class="text-xs text-slate-300">
-              <span class="text-slate-400">Lead:</span> <strong class="text-indigo-400">★ ${escapeHtml(leadName)}</strong>
+          <div class="mt-4 p-3 rounded-lg border flex items-center justify-between" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+            <div class="text-xs" style="color: var(--text-secondary);">
+              <span>Lead:</span> <strong class="text-indigo-500">★ ${escapeHtml(leadName)}</strong>
             </div>
-            <div class="text-xs font-bold text-slate-200">
+            <div class="text-xs font-bold" style="color: var(--text-primary);">
               👥 ${memberCount} members
             </div>
           </div>
         </div>
 
-        <div class="pt-3 border-t border-slate-700/60 flex items-center justify-end space-x-2">
-          <button onclick="editTeam('${team.id}')" class="px-3 py-1 text-xs font-semibold rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700">
+        <div class="pt-3 border-t flex items-center justify-end space-x-2" style="border-color: var(--border-color);">
+          <button onclick="editTeam('${team.id}')" class="px-3 py-1.5 text-xs font-semibold rounded-lg border cursor-pointer" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color); color: var(--text-primary);">
             Edit Team
           </button>
-          <button onclick="deleteTeam('${team.id}')" class="px-3 py-1 text-xs font-semibold rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/30">
+          <button onclick="deleteTeam('${team.id}')" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/30 cursor-pointer">
             Delete
           </button>
         </div>
@@ -571,52 +572,52 @@ function renderTasks() {
 
 function renderTaskColumn(tasks, status) {
   if (tasks.length === 0) {
-    return `<div class="p-6 text-center text-xs text-slate-500 border border-dashed border-slate-800 rounded-xl">No tasks in this stage</div>`;
+    return `<div class="p-6 text-center text-xs border border-dashed rounded-xl" style="color: var(--text-muted); border-color: var(--border-color);">No tasks in this stage</div>`;
   }
 
   return tasks.map(task => {
     const priorityClasses = {
-      Urgent: 'bg-red-500/20 text-red-400 border-red-500/30',
-      High: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-      Medium: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
-      Low: 'bg-slate-700/40 text-slate-400 border-slate-600/40'
-    }[task.priority] || 'bg-slate-800 text-slate-400';
+      Urgent: 'bg-red-500/15 text-red-500 border-red-500/30',
+      High: 'bg-amber-500/15 text-amber-500 border-amber-500/30',
+      Medium: 'bg-blue-500/15 text-blue-500 border-blue-500/30',
+      Low: 'bg-slate-500/15 text-slate-500 border-slate-500/30'
+    }[task.priority] || 'bg-slate-500/15 text-slate-500 border-slate-500/30';
 
     const assigneeName = task.assignee ? task.assignee.name : (task.assigneeName || 'Unassigned');
     const teamName = task.teamName || 'Assigned Team';
 
     let transitionBtns = '';
     if (status === 'Todo') {
-      transitionBtns = `<button onclick="updateTaskStatus('${task.id}', 'Pending')" class="px-2.5 py-1 text-xs font-semibold rounded bg-indigo-600 hover:bg-indigo-700 text-white">Start > Pending</button>`;
+      transitionBtns = `<button onclick="updateTaskStatus('${task.id}', 'Pending')" class="px-2.5 py-1 text-xs font-semibold rounded bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer shadow-sm">Start > Pending</button>`;
     } else if (status === 'Pending') {
       transitionBtns = `
-        <button onclick="updateTaskStatus('${task.id}', 'Todo')" class="px-2 py-1 text-xs font-semibold rounded bg-slate-800 hover:bg-slate-700 text-slate-300">&lt; Todo</button>
-        <button onclick="updateTaskStatus('${task.id}', 'Completed')" class="px-2.5 py-1 text-xs font-semibold rounded bg-emerald-600 hover:bg-emerald-700 text-white">Complete &gt;</button>
+        <button onclick="updateTaskStatus('${task.id}', 'Todo')" class="px-2 py-1 text-xs font-semibold rounded border cursor-pointer" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color); color: var(--text-primary);">&lt; Todo</button>
+        <button onclick="updateTaskStatus('${task.id}', 'Completed')" class="px-2.5 py-1 text-xs font-semibold rounded bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer shadow-sm">Complete &gt;</button>
       `;
     } else if (status === 'Completed') {
-      transitionBtns = `<button onclick="updateTaskStatus('${task.id}', 'Pending')" class="px-2.5 py-1 text-xs font-semibold rounded bg-slate-800 hover:bg-slate-700 text-slate-300">&lt; Reopen</button>`;
+      transitionBtns = `<button onclick="updateTaskStatus('${task.id}', 'Pending')" class="px-2.5 py-1 text-xs font-semibold rounded border cursor-pointer" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color); color: var(--text-primary);">&lt; Reopen</button>`;
     }
 
     return `
       <div class="card-solid p-4 space-y-3" data-task-id="${task.id}">
         <div class="flex items-start justify-between">
           <span class="px-2 py-0.5 rounded text-[11px] font-bold border ${priorityClasses}">${task.priority}</span>
-          <span class="text-[11px] text-slate-400">${task.dueDate ? `📅 ${task.dueDate}` : ''}</span>
+          <span class="text-[11px]" style="color: var(--text-muted);">${task.dueDate ? `📅 ${task.dueDate}` : ''}</span>
         </div>
 
         <div>
-          <h4 class="font-bold text-sm text-slate-100">${escapeHtml(task.title)}</h4>
-          <p class="text-xs text-slate-400 mt-1">${escapeHtml(task.description || '')}</p>
+          <h4 class="font-bold text-sm" style="color: var(--text-primary);">${escapeHtml(task.title)}</h4>
+          <p class="text-xs mt-1" style="color: var(--text-secondary);">${escapeHtml(task.description || '')}</p>
         </div>
 
-        <div class="text-[11px] text-slate-400 flex items-center justify-between pt-2 border-t border-slate-700/60">
+        <div class="text-[11px] flex items-center justify-between pt-2 border-t" style="color: var(--text-secondary); border-color: var(--border-color);">
           <span>🏢 ${escapeHtml(teamName)}</span>
           <span>👤 ${escapeHtml(assigneeName)}</span>
         </div>
 
         <div class="flex items-center justify-end space-x-2 pt-1">
           ${transitionBtns}
-          <button onclick="deleteTask('${task.id}')" class="text-xs text-red-400 hover:text-red-300 p-1">🗑️</button>
+          <button onclick="deleteTask('${task.id}')" class="text-xs p-1 text-red-500 hover:text-red-600 cursor-pointer" title="Delete Task">🗑️</button>
         </div>
       </div>
     `;
@@ -674,7 +675,12 @@ if (viewGridBtn) {
   viewGridBtn.addEventListener('click', () => {
     state.viewMode = 'grid';
     viewGridBtn.className = 'px-2.5 py-1 rounded text-xs font-semibold bg-indigo-600 text-white cursor-pointer';
-    if (viewTableBtn) viewTableBtn.className = 'px-2.5 py-1 rounded text-xs font-semibold text-slate-400 hover:text-slate-100 cursor-pointer';
+    viewGridBtn.style.color = '#ffffff';
+    if (viewTableBtn) {
+      viewTableBtn.className = 'px-2.5 py-1 rounded text-xs font-semibold cursor-pointer';
+      viewTableBtn.style.color = 'var(--text-secondary)';
+      viewTableBtn.style.backgroundColor = 'transparent';
+    }
     renderEmployees();
   });
 }
@@ -683,7 +689,12 @@ if (viewTableBtn) {
   viewTableBtn.addEventListener('click', () => {
     state.viewMode = 'table';
     viewTableBtn.className = 'px-2.5 py-1 rounded text-xs font-semibold bg-indigo-600 text-white cursor-pointer';
-    if (viewGridBtn) viewGridBtn.className = 'px-2.5 py-1 rounded text-xs font-semibold text-slate-400 hover:text-slate-100 cursor-pointer';
+    viewTableBtn.style.color = '#ffffff';
+    if (viewGridBtn) {
+      viewGridBtn.className = 'px-2.5 py-1 rounded text-xs font-semibold cursor-pointer';
+      viewGridBtn.style.color = 'var(--text-secondary)';
+      viewGridBtn.style.backgroundColor = 'transparent';
+    }
     renderEmployees();
   });
 }
@@ -715,14 +726,13 @@ function openEmployeeModal(isEdit = false) {
   employeeModal.classList.remove('hidden');
   if (modalTitle) modalTitle.textContent = isEdit ? 'Edit Employee Profile' : 'Add New Employee';
   
-  // Render team checkboxes
   if (modalTeamCheckboxes) {
     modalTeamCheckboxes.innerHTML = state.teams.map(t => `
-      <label class="flex items-center space-x-2 text-xs text-slate-200 cursor-pointer">
-        <input type="checkbox" name="teams" value="${t.id}" class="rounded border-slate-700 text-indigo-600 focus:ring-indigo-500">
+      <label class="flex items-center space-x-2 text-xs cursor-pointer" style="color: var(--text-primary);">
+        <input type="checkbox" name="teams" value="${t.id}" class="rounded text-indigo-600 focus:ring-indigo-500">
         <span>${escapeHtml(t.name)}</span>
       </label>
-    `).join('') || '<p class="text-xs text-slate-500 italic">No teams created yet.</p>';
+    `).join('') || '<p class="text-xs italic" style="color: var(--text-muted);">No teams created yet.</p>';
   }
 }
 
