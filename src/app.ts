@@ -5,6 +5,7 @@ import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import path from 'node:path';
 import { employeeRouter } from './routes/employeeRoutes.js';
 import { teamRouter } from './routes/teamRoutes.js';
+import { taskRouter } from './routes/taskRoutes.js';
 
 export function createApp(): Express {
   const app = express();
@@ -45,9 +46,10 @@ export function createApp(): Express {
     });
   });
 
-  // Employee Directory & Team routes
+  // Employee Directory, Team, and Task routes
   app.use('/api/employees', employeeRouter);
   app.use('/api/teams', teamRouter);
+  app.use('/api/tasks', taskRouter);
 
   // Base API route
   app.get('/api', (_req: Request, res: Response) => {
