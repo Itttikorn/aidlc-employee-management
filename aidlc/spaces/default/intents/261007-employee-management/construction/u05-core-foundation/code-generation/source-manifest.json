@@ -1,0 +1,30 @@
+{
+  "stage": "code-generation",
+  "unit": "u05-core-foundation",
+  "version": 1,
+  "writes": [
+    { "path": "package.json" },
+    { "path": "tsconfig.json" },
+    { "path": "vitest.config.ts" },
+    { "path": "docker-compose.yml" },
+    { "path": ".env.example" },
+    { "path": "tailwind.config.js" },
+    { "path": "postcss.config.js" },
+    { "path": "migrations/001_create_schema.sql" },
+    { "path": "src/config/database.ts" },
+    { "path": "src/db/migrate.ts" },
+    { "path": "src/utils/errors.ts" },
+    { "path": "src/utils/logger.ts" },
+    { "path": "src/utils/transaction.ts" },
+    { "path": "src/middleware/errorHandler.ts" },
+    { "path": "src/app.ts" },
+    { "path": "src/server.ts" },
+    { "path": "src/styles/theme.css" },
+    { "path": "tests/config/database.test.ts" },
+    { "path": "tests/db/migrate.test.ts" },
+    { "path": "tests/utils/transaction.test.ts" },
+    { "path": "tests/utils/errors.test.ts" },
+    { "path": "tests/middleware/errorHandler.test.ts" },
+    { "path": "tests/api/health.test.ts" }
+  ]
+}

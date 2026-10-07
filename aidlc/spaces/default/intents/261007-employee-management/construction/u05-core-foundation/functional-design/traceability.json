@@ -1,0 +1,32 @@
+{
+  "stage": "functional-design",
+  "unit": "u05-core-foundation",
+  "upstream_ids": [
+    "AC5.1.1",
+    "AC5.2.1"
+  ],
+  "coverage": [
+    {
+      "id": "AC5.1.1",
+      "status": "OK",
+      "target": "BR5.1"
+    },
+    {
+      "id": "AC5.2.1",
+      "status": "OK",
+      "target": "BR5.2"
+    }
+  ],
+  "reverse": [
+    {
+      "id": "BR5.3",
+      "status": "N/A",
+      "target": "technical REST API error envelope policy"
+    },
+    {
+      "id": "BR5.4",
+      "status": "N/A",
+      "target": "technical ACID transaction management and rollback helper"
+    }
+  ]
+}

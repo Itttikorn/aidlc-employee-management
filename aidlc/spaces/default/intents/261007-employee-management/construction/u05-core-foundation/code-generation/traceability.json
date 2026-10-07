@@ -1,0 +1,36 @@
+{
+  "stage": "code-generation",
+  "unit": "u05-core-foundation",
+  "upstream_ids": [
+    "FR-1",
+    "FR-2",
+    "ENT-001",
+    "ENT-002",
+    "ENT-003",
+    "ENT-004",
+    "BR1.1",
+    "BR1.2",
+    "BR2.1",
+    "NFR-SEC-1",
+    "NFR-SEC-2",
+    "NFR-REL-1",
+    "NFR-MAINT-1",
+    "NFR-UI-1"
+  ],
+  "coverage": [
+    { "id": "FR-1", "status": "OK", "target": "src/app.ts" },
+    { "id": "FR-2", "status": "OK", "target": "src/app.ts" },
+    { "id": "ENT-001", "status": "OK", "target": "migrations/001_create_schema.sql" },
+    { "id": "ENT-002", "status": "OK", "target": "migrations/001_create_schema.sql" },
+    { "id": "ENT-003", "status": "OK", "target": "migrations/001_create_schema.sql" },
+    { "id": "ENT-004", "status": "OK", "target": "migrations/001_create_schema.sql" },
+    { "id": "BR1.1", "status": "OK", "target": "migrations/001_create_schema.sql" },
+    { "id": "BR1.2", "status": "OK", "target": "migrations/001_create_schema.sql" },
+    { "id": "BR2.1", "status": "OK", "target": "src/utils/transaction.ts" },
+    { "id": "NFR-SEC-1", "status": "OK", "target": "src/middleware/errorHandler.ts" },
+    { "id": "NFR-SEC-2", "status": "OK", "target": "src/middleware/errorHandler.ts" },
+    { "id": "NFR-REL-1", "status": "OK", "target": "src/config/database.ts" },
+    { "id": "NFR-MAINT-1", "status": "OK", "target": "src/db/migrate.ts" },
+    { "id": "NFR-UI-1", "status": "OK", "target": "src/styles/theme.css" }
+  ]
+}
