@@ -1,0 +1,16 @@
+{
+  "unit": "u02-team-rosters",
+  "stage": "infrastructure-design",
+  "phase": "construction",
+  "intent": "261007-employee-management",
+  "generated_artifacts": [
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/infrastructure-design/infrastructure-specification.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/infrastructure-design/monitoring-design.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/infrastructure-design/infrastructure-design-questions.md"
+  ],
+  "upstream_references": [
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/functional-design/functional-spec.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/nfr-requirements/security-requirements.md"
+  ],
+  "status": "READY"
+}
