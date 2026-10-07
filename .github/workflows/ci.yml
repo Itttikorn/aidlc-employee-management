@@ -5,13 +5,10 @@ on:
     branches:
       - main
       - dev
-      - staging
-      - 'feature/**'
   pull_request:
     branches:
       - main
       - dev
-      - staging
 
 jobs:
   lint-and-typecheck:
