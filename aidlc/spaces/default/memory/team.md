@@ -38,13 +38,26 @@ We support local and preview runtime execution using standard Node.js scripts (`
 - ESLint and Prettier for automated formatting and static lint verification.
 - Opaque solid card styling with clear high-contrast borders (**strictly no glassmorphism**).
 - Full compliance with Thailand Personal Data Protection Act (PDPA) for employee records and avatars.
+## Commit Standards
+
+- Atomic Conventional Commits (`feat`, `fix`, `test`, `ci`, `chore`, `docs`).
+- Zero monolithic all-in-one commits.
+
+## CI Execution Policy
+
+- Cost-effective triggers: CI runs on `pull_request` to `dev`/`main` and `push` to `dev`/`main`.
+- No CI runs on intermediate `feature/**` or `staging` pushes.
+
 ## Forbidden
 
-<!-- Team-specific forbidden patterns -->
+- Direct commits to `main` branch.
+- Monolithic commits bundling multiple unrelated concerns.
+- Pushing unverified code without running local tests.
 
 ## Mandated
 
-<!-- Team-specific mandates -->
+- Multi-branch promotion: `feature/*` -> `staging` -> `dev` -> `main`.
+- Conventional commits specification on all commit messages.
 
 ## Corrections
 
