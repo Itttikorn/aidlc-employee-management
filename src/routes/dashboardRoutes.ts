@@ -5,3 +5,4 @@ export const dashboardRouter = Router();
 
 // Dashboard Analytics Route
 dashboardRouter.get('/stats', dashboardController.getStats);
+

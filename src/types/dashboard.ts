@@ -41,3 +41,4 @@ export interface DashboardStatsResponse {
   priorityDistribution: PriorityDistribution;
   teamWorkloads: TeamWorkloadSummary[];
 }
+
