@@ -1,0 +1,31 @@
+{
+  "unit": "u01-employee-directory",
+  "stage": "infrastructure-design",
+  "mappings": [
+    {
+      "requirement_id": "NFR-TECH-01",
+      "design_element": "Node.js Express + TypeScript Runtime",
+      "artifact": "infrastructure-specification.md",
+      "status": "covered"
+    },
+    {
+      "requirement_id": "NFR-PERF-01",
+      "design_element": "Connection Pooling & Latency Targets",
+      "artifact": "infrastructure-specification.md",
+      "status": "covered"
+    },
+    {
+      "requirement_id": "NFR-OBS-01",
+      "design_element": "Health Checks & Structured Logging",
+      "artifact": "monitoring-design.md",
+      "status": "covered"
+    },
+    {
+      "requirement_id": "NFR-REL-01",
+      "design_element": "CI/CD Automated Validation & Tiered Branches",
+      "artifact": "cicd-pipeline.md",
+      "status": "covered"
+    }
+  ]
+}
+

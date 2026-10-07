@@ -1,0 +1,33 @@
+{
+  "stage": "nfr-requirements",
+  "unit": "u01-employee-directory",
+  "upstream_ids": [
+    "NFR-1",
+    "NFR-2",
+    "NFR-3",
+    "NFR-4"
+  ],
+  "coverage": [
+    {
+      "id": "NFR-1",
+      "status": "OK",
+      "target": "NFR1.1, NFR1.2, NFR1.3, NFR1.4, NFR1.5, NFR1.6, NFR1.7"
+    },
+    {
+      "id": "NFR-2",
+      "status": "OK",
+      "target": "NFR2.1, NFR2.2, NFR2.3, NFR2.4"
+    },
+    {
+      "id": "NFR-3",
+      "status": "OK",
+      "target": "NFR3.1, NFR3.2, NFR3.3"
+    },
+    {
+      "id": "NFR-4",
+      "status": "OK",
+      "target": "NFR4.1, NFR4.2, NFR4.3, NFR4.4"
+    }
+  ]
+}
+

@@ -1,0 +1,45 @@
+{
+  "stage": "functional-design",
+  "unit": "u01-employee-directory",
+  "upstream_ids": [
+    "AC1.1.1",
+    "AC1.1.2",
+    "AC1.2.1",
+    "AC1.2.2"
+  ],
+  "coverage": [
+    {
+      "id": "AC1.1.1",
+      "status": "OK",
+      "target": "BR1.1, BR1.2, BR1.3"
+    },
+    {
+      "id": "AC1.1.2",
+      "status": "OK",
+      "target": "BR1.1, BR1.2"
+    },
+    {
+      "id": "AC1.2.1",
+      "status": "OK",
+      "target": "BR1.4"
+    },
+    {
+      "id": "AC1.2.2",
+      "status": "OK",
+      "target": "BR1.5"
+    }
+  ],
+  "reverse": [
+    {
+      "id": "BR1.6",
+      "status": "N/A",
+      "target": "technical cascade deletion constraint"
+    },
+    {
+      "id": "BR1.7",
+      "status": "N/A",
+      "target": "technical pagination and metadata calculation"
+    }
+  ]
+}
+

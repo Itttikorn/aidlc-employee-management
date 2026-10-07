@@ -1,0 +1,41 @@
+{
+  "stage": "code-generation",
+  "unit": "u01-employee-directory",
+  "upstream_ids": [
+    "AC1.1.1",
+    "AC1.1.2",
+    "AC1.2.1",
+    "AC1.2.2",
+    "BR1.1",
+    "BR1.2",
+    "BR1.3",
+    "BR1.4",
+    "BR1.5",
+    "BR1.6",
+    "BR1.7",
+    "FR-1.1",
+    "FR-1.2",
+    "FR-1.3",
+    "NFR-PERF-01",
+    "NFR-REL-01"
+  ],
+  "coverage": [
+    { "id": "AC1.1.1", "status": "OK", "target": "src/controllers/employeeController.ts" },
+    { "id": "AC1.1.2", "status": "OK", "target": "src/validators/employeeValidator.ts" },
+    { "id": "AC1.2.1", "status": "OK", "target": "src/repositories/employeeRepository.ts" },
+    { "id": "AC1.2.2", "status": "OK", "target": "src/repositories/employeeRepository.ts" },
+    { "id": "BR1.1", "status": "OK", "target": "src/validators/employeeValidator.ts" },
+    { "id": "BR1.2", "status": "OK", "target": "src/validators/employeeValidator.ts" },
+    { "id": "BR1.3", "status": "OK", "target": "src/validators/employeeValidator.ts" },
+    { "id": "BR1.4", "status": "OK", "target": "src/repositories/employeeRepository.ts" },
+    { "id": "BR1.5", "status": "OK", "target": "src/repositories/employeeRepository.ts" },
+    { "id": "BR1.6", "status": "OK", "target": "src/repositories/employeeRepository.ts" },
+    { "id": "BR1.7", "status": "OK", "target": "src/repositories/employeeRepository.ts" },
+    { "id": "FR-1.1", "status": "OK", "target": "src/services/employeeService.ts" },
+    { "id": "FR-1.2", "status": "OK", "target": "src/services/employeeService.ts" },
+    { "id": "FR-1.3", "status": "OK", "target": "src/services/employeeService.ts" },
+    { "id": "NFR-PERF-01", "status": "OK", "target": "src/repositories/employeeRepository.ts" },
+    { "id": "NFR-REL-01", "status": "OK", "target": "tests/api/employeeRoutes.test.ts" }
+  ]
+}
+

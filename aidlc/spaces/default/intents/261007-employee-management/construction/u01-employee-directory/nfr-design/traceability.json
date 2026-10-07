@@ -1,0 +1,117 @@
+{
+  "stage": "nfr-design",
+  "unit": "u01-employee-directory",
+  "upstream_ids": [
+    "NFR1.1",
+    "NFR1.2",
+    "NFR1.3",
+    "NFR1.4",
+    "NFR1.5",
+    "NFR1.6",
+    "NFR1.7",
+    "NFR2.1",
+    "NFR2.2",
+    "NFR2.3",
+    "NFR2.4",
+    "NFR3.1",
+    "NFR3.2",
+    "NFR3.3",
+    "NFR4.1",
+    "NFR4.2",
+    "NFR4.3",
+    "NFR4.4"
+  ],
+  "coverage": [
+    {
+      "id": "NFR1.1",
+      "status": "OK",
+      "target": "performance-design.md#1-architectural-strategy--query-optimization"
+    },
+    {
+      "id": "NFR1.2",
+      "status": "OK",
+      "target": "performance-design.md#2-performance-budgets--sla-allocations"
+    },
+    {
+      "id": "NFR1.3",
+      "status": "OK",
+      "target": "performance-design.md#1-architectural-strategy--query-optimization"
+    },
+    {
+      "id": "NFR1.4",
+      "status": "OK",
+      "target": "security-design.md#11-security-headers--protection-controls"
+    },
+    {
+      "id": "NFR1.5",
+      "status": "OK",
+      "target": "scalability-design.md#1-data-scaling--query-partitioning"
+    },
+    {
+      "id": "NFR1.6",
+      "status": "OK",
+      "target": "scalability-design.md#1-data-scaling--query-partitioning"
+    },
+    {
+      "id": "NFR1.7",
+      "status": "OK",
+      "target": "scalability-design.md#1-data-scaling--query-partitioning"
+    },
+    {
+      "id": "NFR2.1",
+      "status": "OK",
+      "target": "reliability-design.md#1-transaction-safety--cascade-resilience"
+    },
+    {
+      "id": "NFR2.2",
+      "status": "OK",
+      "target": "reliability-design.md#1-transaction-safety--cascade-resilience"
+    },
+    {
+      "id": "NFR2.3",
+      "status": "OK",
+      "target": "reliability-design.md#2-health-monitoring--graceful-degradation"
+    },
+    {
+      "id": "NFR2.4",
+      "status": "OK",
+      "target": "reliability-design.md#2-health-monitoring--graceful-degradation"
+    },
+    {
+      "id": "NFR3.1",
+      "status": "OK",
+      "target": "observability-design.md#1-structured-logging--context-propagation"
+    },
+    {
+      "id": "NFR3.2",
+      "status": "OK",
+      "target": "observability-design.md#1-structured-logging--context-propagation"
+    },
+    {
+      "id": "NFR3.3",
+      "status": "OK",
+      "target": "observability-design.md#2-error-classification--handling"
+    },
+    {
+      "id": "NFR4.1",
+      "status": "OK",
+      "target": "security-design.md#12-input-sanitization--pdpa-protection"
+    },
+    {
+      "id": "NFR4.2",
+      "status": "OK",
+      "target": "security-design.md#12-input-sanitization--pdpa-protection"
+    },
+    {
+      "id": "NFR4.3",
+      "status": "OK",
+      "target": "security-design.md#11-security-headers--protection-controls"
+    },
+    {
+      "id": "NFR4.4",
+      "status": "OK",
+      "target": "security-design.md#11-security-headers--protection-controls"
+    }
+  ]
+}
+

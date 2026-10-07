@@ -1,0 +1,25 @@
+{
+  "stage": "code-generation",
+  "unit": "u01-employee-directory",
+  "version": 1,
+  "writes": [
+    { "path": "migrations/002_employee_directory_enhancements.sql" },
+    { "path": "src/app.ts" },
+    { "path": "src/types/employee.ts" },
+    { "path": "src/validators/employeeValidator.ts" },
+    { "path": "src/repositories/employeeRepository.ts" },
+    { "path": "src/services/employeeService.ts" },
+    { "path": "src/controllers/employeeController.ts" },
+    { "path": "src/routes/employeeRoutes.ts" },
+    { "path": "src/client/index.html" },
+    { "path": "src/client/style.css" },
+    { "path": "src/client/app.js" },
+    { "path": "tests/validators/employeeValidator.test.ts" },
+    { "path": "tests/repositories/employeeRepository.test.ts" },
+    { "path": "tests/services/employeeService.test.ts" },
+    { "path": "tests/api/employeeRoutes.test.ts" },
+    { "path": "vitest.config.ts" },
+    { "path": "package.json" }
+  ]
+}
+
