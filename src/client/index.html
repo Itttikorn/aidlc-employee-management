@@ -14,15 +14,6 @@
         extend: {
           fontFamily: {
             sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
-            }
           }
         }
       }
@@ -37,21 +28,21 @@
   <!-- Custom Solid High-Contrast Stylesheet -->
   <link rel="stylesheet" href="/client/style.css">
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen flex">
+<body class="font-sans antialiased min-h-screen flex">
 
   <!-- ==================================================================== -->
   <!-- PERSISTENT SIDEBAR (Two-Column Architecture from Inception Mockups)   -->
   <!-- ==================================================================== -->
-  <aside id="sidebar" class="w-64 bg-slate-900 dark:bg-slate-900 border-r border-slate-800 flex flex-col justify-between fixed inset-y-0 left-0 z-40 transition-transform -translate-x-full md:translate-x-0">
+  <aside id="sidebar" class="w-64 flex flex-col justify-between fixed inset-y-0 left-0 z-40 transition-transform -translate-x-full md:translate-x-0">
     <div>
       <!-- Brand & Workspace Header -->
-      <div class="h-16 flex items-center px-6 border-b border-slate-800 space-x-3 bg-slate-950/40">
-        <div class="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-black text-base shadow-md shadow-indigo-600/20">
+      <div class="h-16 flex items-center px-6 border-b space-x-3" style="border-color: var(--border-color);">
+        <div class="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-black text-base shadow-md shadow-indigo-600/30">
           EM
         </div>
         <div>
-          <h1 class="text-sm font-bold text-slate-100 tracking-tight leading-tight">Employee Hub</h1>
-          <p class="text-[11px] font-medium text-slate-400">Enterprise Workspace</p>
+          <h1 class="text-sm font-bold tracking-tight leading-tight" style="color: var(--text-primary);">Employee Hub</h1>
+          <p class="text-[11px] font-medium" style="color: var(--text-secondary);">Enterprise Workspace</p>
         </div>
       </div>
 
@@ -59,7 +50,8 @@
       <nav class="p-4 space-y-1.5">
         <button 
           id="navDashboardBtn" 
-          class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold text-slate-400 hover:text-slate-100 hover:bg-slate-800/80 transition-colors text-left cursor-pointer"
+          class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-colors text-left cursor-pointer"
+          style="color: var(--text-secondary);"
         >
           <span class="text-lg">📊</span>
           <span>Dashboard</span>
@@ -73,14 +65,16 @@
         </button>
         <button 
           id="navTeamsBtn" 
-          class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold text-slate-400 hover:text-slate-100 hover:bg-slate-800/80 transition-colors text-left cursor-pointer"
+          class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-colors text-left cursor-pointer"
+          style="color: var(--text-secondary);"
         >
           <span class="text-lg">🏢</span>
           <span>Teams</span>
         </button>
         <button 
           id="navTasksBtn" 
-          class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold text-slate-400 hover:text-slate-100 hover:bg-slate-800/80 transition-colors text-left cursor-pointer"
+          class="w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-colors text-left cursor-pointer"
+          style="color: var(--text-secondary);"
         >
           <span class="text-lg">📋</span>
           <span>Tasks (Kanban)</span>
@@ -89,17 +83,17 @@
     </div>
 
     <!-- Sidebar Bottom Status Footer -->
-    <div class="p-4 border-t border-slate-800 bg-slate-950/40">
-      <div class="p-3 bg-slate-800/60 rounded-lg border border-slate-700/60 space-y-1.5">
+    <div class="p-4 border-t" style="border-color: var(--border-color);">
+      <div class="p-3 rounded-lg border space-y-1.5" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
         <div class="flex items-center justify-between">
-          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">System</span>
-          <span class="text-[11px] font-bold text-slate-200">PostgreSQL</span>
+          <span class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--text-muted);">System</span>
+          <span class="text-[11px] font-bold" style="color: var(--text-primary);">PostgreSQL</span>
         </div>
         <div class="flex items-center justify-between">
-          <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Status</span>
+          <span class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--text-muted);">Status</span>
           <div class="flex items-center space-x-1.5">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span id="systemStatusText" class="text-[11px] font-bold text-emerald-400">Online</span>
+            <span id="systemStatusText" class="text-[11px] font-bold text-emerald-500">Online</span>
           </div>
         </div>
       </div>
@@ -115,11 +109,11 @@
   <div class="flex-1 flex flex-col md:pl-64 min-h-screen">
     
     <!-- Top App Bar -->
-    <header class="h-16 bg-slate-900 dark:bg-slate-900 border-b border-slate-800 sticky top-0 z-20 flex items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header class="h-16 sticky top-0 z-20 flex items-center justify-between px-4 sm:px-6 lg:px-8 border-b" style="border-color: var(--border-color);">
       
       <!-- Mobile Sidebar Toggle + Global Search Bar -->
       <div class="flex items-center space-x-3 flex-1 max-w-lg">
-        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-800 focus:outline-none">
+        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-slate-200 focus:outline-none">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
@@ -131,7 +125,7 @@
             type="text" 
             id="globalSearchInput" 
             placeholder="Search all records (employees, teams, tasks)..." 
-            class="w-full pl-9 pr-4 py-1.5 text-xs sm:text-sm rounded-lg bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500"
+            class="w-full pl-9 pr-4 py-2 text-xs sm:text-sm rounded-lg"
           >
         </div>
       </div>
@@ -143,37 +137,38 @@
         <button 
           id="themeToggleBtn" 
           title="Toggle Dark/Light Mode"
-          class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 border border-slate-700 text-slate-200 hover:bg-slate-700 transition-colors flex items-center space-x-1.5 cursor-pointer"
+          class="px-3 py-1.5 rounded-lg text-xs font-semibold border flex items-center space-x-1.5 cursor-pointer transition-colors"
+          style="background-color: var(--bg-surface-subtle); border-color: var(--border-color); color: var(--text-primary);"
         >
           <span id="themeIcon">🌙</span>
-          <span id="themeLabel" class="hidden sm:inline text-xs">Dark</span>
+          <span id="themeLabel" class="hidden sm:inline text-xs font-bold">Dark</span>
         </button>
 
         <!-- Admin Profile Pill -->
-        <div class="hidden lg:flex items-center space-x-2.5 px-3 py-1 rounded-lg bg-slate-800/80 border border-slate-700">
-          <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-[10px] font-bold text-white">
+        <div class="hidden lg:flex items-center space-x-2.5 px-3 py-1.5 rounded-lg border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+          <div class="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-[10px] font-bold text-white shadow-sm">
             AD
           </div>
-          <span class="text-xs font-semibold text-slate-200">Admin Profile</span>
+          <span class="text-xs font-semibold" style="color: var(--text-primary);">Admin</span>
         </div>
 
         <!-- Dynamic Primary Context Action Button -->
         <button 
           id="addEmployeeBtn" 
           data-testid="add-employee-btn" 
-          class="inline-flex items-center px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all cursor-pointer"
+          class="inline-flex items-center px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all cursor-pointer"
         >
           <span class="mr-1 text-base leading-none">+</span> Add Employee
         </button>
         <button 
           id="addTeamBtn" 
-          class="hidden inline-flex items-center px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all cursor-pointer"
+          class="hidden inline-flex items-center px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all cursor-pointer"
         >
           <span class="mr-1 text-base leading-none">+</span> Add Team
         </button>
         <button 
           id="addTaskBtn" 
-          class="hidden inline-flex items-center px-3.5 py-1.5 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all cursor-pointer"
+          class="hidden inline-flex items-center px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all cursor-pointer"
         >
           <span class="mr-1 text-base leading-none">+</span> Add Task
         </button>
@@ -198,9 +193,9 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 class="text-xl sm:text-2xl font-bold tracking-tight">Executive Analytics Dashboard</h2>
-            <p class="text-xs sm:text-sm text-slate-400">Real-time organizational KPIs, task throughput, and capacity allocation</p>
+            <p class="text-xs sm:text-sm" style="color: var(--text-secondary);">Real-time organizational KPIs, task throughput, and capacity allocation</p>
           </div>
-          <button id="refreshDashboardBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 border border-slate-700 text-slate-200 hover:bg-slate-700 flex items-center space-x-1.5 self-start sm:self-auto cursor-pointer">
+          <button id="refreshDashboardBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold border flex items-center space-x-1.5 self-start sm:self-auto cursor-pointer" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color); color: var(--text-primary);">
             <span>🔄</span> <span>Refresh Analytics</span>
           </button>
         </div>
@@ -210,11 +205,11 @@
           <!-- KPI 1 -->
           <div class="card-solid p-5 flex items-center justify-between">
             <div>
-              <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Employees</p>
+              <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--text-muted);">Total Employees</p>
               <h3 id="kpiTotalEmployees" class="text-2xl font-black mt-1">0</h3>
-              <p class="text-xs text-emerald-400 font-semibold mt-1">✓ Active Directory</p>
+              <p class="text-xs text-emerald-500 font-semibold mt-1">✓ Active Directory</p>
             </div>
-            <div class="w-12 h-12 bg-indigo-500/10 text-indigo-400 rounded-xl flex items-center justify-center text-xl font-bold border border-indigo-500/20">
+            <div class="w-12 h-12 bg-indigo-500/10 text-indigo-500 rounded-xl flex items-center justify-center text-xl font-bold border border-indigo-500/20">
               👥
             </div>
           </div>
@@ -222,11 +217,11 @@
           <!-- KPI 2 -->
           <div class="card-solid p-5 flex items-center justify-between">
             <div>
-              <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Active Teams</p>
+              <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--text-muted);">Active Teams</p>
               <h3 id="kpiTotalTeams" class="text-2xl font-black mt-1">0</h3>
-              <p class="text-xs text-blue-400 font-semibold mt-1">🏢 Cross-Department</p>
+              <p class="text-xs text-blue-500 font-semibold mt-1">🏢 Cross-Department</p>
             </div>
-            <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center text-xl font-bold border border-blue-500/20">
+            <div class="w-12 h-12 bg-blue-500/10 text-blue-500 rounded-xl flex items-center justify-center text-xl font-bold border border-blue-500/20">
               🏢
             </div>
           </div>
@@ -234,11 +229,11 @@
           <!-- KPI 3 -->
           <div class="card-solid p-5 flex items-center justify-between">
             <div>
-              <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Tasks</p>
+              <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--text-muted);">Total Tasks</p>
               <h3 id="kpiTotalTasks" class="text-2xl font-black mt-1">0</h3>
-              <p id="kpiOverdueAlert" class="text-xs text-amber-400 font-medium mt-1">0 overdue</p>
+              <p id="kpiOverdueAlert" class="text-xs text-amber-500 font-medium mt-1">0 overdue</p>
             </div>
-            <div class="w-12 h-12 bg-amber-500/10 text-amber-400 rounded-xl flex items-center justify-center text-xl font-bold border border-amber-500/20">
+            <div class="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center text-xl font-bold border border-amber-500/20">
               📋
             </div>
           </div>
@@ -246,11 +241,11 @@
           <!-- KPI 4 -->
           <div class="card-solid p-5 flex items-center justify-between">
             <div>
-              <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Completion Rate</p>
+              <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--text-muted);">Completion Rate</p>
               <h3 id="kpiCompletionRate" class="text-2xl font-black mt-1">0.0%</h3>
-              <p id="kpiCompletedSummary" class="text-xs text-emerald-400 font-semibold mt-1">0 completed</p>
+              <p id="kpiCompletedSummary" class="text-xs text-emerald-500 font-semibold mt-1">0 completed</p>
             </div>
-            <div class="w-12 h-12 bg-emerald-500/10 text-emerald-400 rounded-xl flex items-center justify-center text-xl font-bold border border-emerald-500/20">
+            <div class="w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-xl flex items-center justify-center text-xl font-bold border border-emerald-500/20">
               🎯
             </div>
           </div>
@@ -263,40 +258,40 @@
           <div class="lg:col-span-8 card-solid p-6">
             <div class="flex items-center justify-between mb-4">
               <h3 class="text-base font-bold">Task Stage Distribution</h3>
-              <span class="text-xs text-slate-400 font-medium">3-Stage Lifecycle</span>
+              <span class="text-xs font-medium" style="color: var(--text-secondary);">3-Stage Lifecycle</span>
             </div>
 
             <!-- Segmented Progress Bar -->
-            <div class="h-4 w-full bg-slate-800 rounded-full overflow-hidden flex mb-6">
+            <div class="h-4 w-full rounded-full overflow-hidden flex mb-6" style="background-color: var(--bg-surface-subtle); border: 1px solid var(--border-color);">
               <div id="barTodo" style="width: 0%" class="bg-blue-500 transition-all duration-500" title="To Do"></div>
               <div id="barPending" style="width: 0%" class="bg-amber-500 transition-all duration-500" title="In Progress"></div>
               <div id="barCompleted" style="width: 0%" class="bg-emerald-500 transition-all duration-500" title="Completed"></div>
             </div>
 
             <!-- Stage Stats Grid -->
-            <div class="grid grid-cols-3 gap-4 pt-2 border-t border-slate-700/60">
-              <div class="p-3 bg-blue-500/10 rounded-xl border border-blue-500/20">
-                <div class="flex items-center space-x-1.5 text-blue-400 text-xs font-bold mb-1">
+            <div class="grid grid-cols-3 gap-4 pt-4 border-t" style="border-color: var(--border-color);">
+              <div class="p-3.5 rounded-xl border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+                <div class="flex items-center space-x-1.5 text-blue-500 text-xs font-bold mb-1">
                   <span class="w-2 h-2 rounded-full bg-blue-500"></span>
                   <span>To Do</span>
                 </div>
-                <p id="stageTodoText" class="text-lg font-black">0 <span class="text-xs font-normal text-slate-400">(0%)</span></p>
+                <p id="stageTodoText" class="text-lg font-black">0 <span class="text-xs font-normal" style="color: var(--text-muted);">(0%)</span></p>
               </div>
 
-              <div class="p-3 bg-amber-500/10 rounded-xl border border-amber-500/20">
-                <div class="flex items-center space-x-1.5 text-amber-400 text-xs font-bold mb-1">
+              <div class="p-3.5 rounded-xl border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+                <div class="flex items-center space-x-1.5 text-amber-500 text-xs font-bold mb-1">
                   <span class="w-2 h-2 rounded-full bg-amber-500"></span>
                   <span>In Progress</span>
                 </div>
-                <p id="stagePendingText" class="text-lg font-black">0 <span class="text-xs font-normal text-slate-400">(0%)</span></p>
+                <p id="stagePendingText" class="text-lg font-black">0 <span class="text-xs font-normal" style="color: var(--text-muted);">(0%)</span></p>
               </div>
 
-              <div class="p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
-                <div class="flex items-center space-x-1.5 text-emerald-400 text-xs font-bold mb-1">
+              <div class="p-3.5 rounded-xl border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+                <div class="flex items-center space-x-1.5 text-emerald-500 text-xs font-bold mb-1">
                   <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                   <span>Completed</span>
                 </div>
-                <p id="stageCompletedText" class="text-lg font-black">0 <span class="text-xs font-normal text-slate-400">(0%)</span></p>
+                <p id="stageCompletedText" class="text-lg font-black">0 <span class="text-xs font-normal" style="color: var(--text-muted);">(0%)</span></p>
               </div>
             </div>
           </div>
@@ -306,20 +301,20 @@
             <h3 class="text-base font-bold mb-4">Priority Density</h3>
             
             <div class="space-y-3 flex-1 justify-center flex flex-col">
-              <div class="flex items-center justify-between p-2.5 bg-slate-800/60 rounded-lg border border-slate-700/60">
-                <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-red-500/20 text-red-400 border border-red-500/30">🔥 Urgent</span>
+              <div class="flex items-center justify-between p-2.5 rounded-lg border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+                <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-red-500/15 text-red-500 border border-red-500/30">🔥 Urgent</span>
                 <span id="priorityUrgentCount" class="font-extrabold text-sm">0 tasks</span>
               </div>
-              <div class="flex items-center justify-between p-2.5 bg-slate-800/60 rounded-lg border border-slate-700/60">
-                <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">⚠️ High</span>
+              <div class="flex items-center justify-between p-2.5 rounded-lg border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+                <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-500/15 text-amber-500 border border-amber-500/30">⚠️ High</span>
                 <span id="priorityHighCount" class="font-extrabold text-sm">0 tasks</span>
               </div>
-              <div class="flex items-center justify-between p-2.5 bg-slate-800/60 rounded-lg border border-slate-700/60">
-                <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">Medium</span>
+              <div class="flex items-center justify-between p-2.5 rounded-lg border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+                <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-blue-500/15 text-blue-500 border border-blue-500/30">Medium</span>
                 <span id="priorityMediumCount" class="font-extrabold text-sm">0 tasks</span>
               </div>
-              <div class="flex items-center justify-between p-2.5 bg-slate-800/60 rounded-lg border border-slate-700/60">
-                <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-slate-700/40 text-slate-400 border border-slate-600/40">Low</span>
+              <div class="flex items-center justify-between p-2.5 rounded-lg border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+                <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-slate-500/15 text-slate-400 border border-slate-500/30">Low</span>
                 <span id="priorityLowCount" class="font-extrabold text-sm">0 tasks</span>
               </div>
             </div>
@@ -331,23 +326,23 @@
           <div class="flex items-center justify-between mb-4">
             <div>
               <h3 class="text-base font-bold">Team Workload & Completion Matrix</h3>
-              <p class="text-xs text-slate-400">Live operational capacity and throughput by team</p>
+              <p class="text-xs" style="color: var(--text-secondary);">Live operational capacity and throughput by team</p>
             </div>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs sm:text-sm">
               <thead>
-                <tr class="border-b border-slate-700/60 text-slate-400 text-[11px] uppercase tracking-wider font-bold">
-                  <th class="pb-3 px-3">Team Name</th>
-                  <th class="pb-3 px-3">Department</th>
-                  <th class="pb-3 px-3 text-center">Members</th>
-                  <th class="pb-3 px-3 text-center">Tasks Assigned</th>
-                  <th class="pb-3 px-3 text-center">Completed</th>
-                  <th class="pb-3 px-3 text-right">Completion Rate</th>
+                <tr class="border-b" style="border-color: var(--border-color);">
+                  <th class="py-3 px-3">Team Name</th>
+                  <th class="py-3 px-3">Department</th>
+                  <th class="py-3 px-3 text-center">Members</th>
+                  <th class="py-3 px-3 text-center">Tasks Assigned</th>
+                  <th class="py-3 px-3 text-center">Completed</th>
+                  <th class="py-3 px-3 text-right">Completion Rate</th>
                 </tr>
               </thead>
-              <tbody id="dashboardTeamWorkloadTable" class="divide-y divide-slate-800">
-                <tr><td colspan="6" class="py-4 text-center text-slate-400">Loading team workloads...</td></tr>
+              <tbody id="dashboardTeamWorkloadTable">
+                <tr><td colspan="6" class="py-4 text-center" style="color: var(--text-muted);">Loading team workloads...</td></tr>
               </tbody>
             </table>
           </div>
@@ -372,12 +367,12 @@
                 id="employeeSearchInput" 
                 data-testid="search-input" 
                 placeholder="Filter by name, email, position..." 
-                class="w-full pl-9 pr-4 py-2 text-sm rounded-lg bg-slate-800 border border-slate-700 text-slate-100 placeholder-slate-500 focus:ring-2 focus:ring-indigo-500"
+                class="w-full pl-9 pr-4 py-2 text-sm rounded-lg"
               >
             </div>
 
             <!-- Department Filter -->
-            <select id="departmentFilter" data-testid="department-filter" class="px-3 py-2 text-sm rounded-lg bg-slate-800 border border-slate-700 text-slate-100 focus:ring-2 focus:ring-indigo-500">
+            <select id="departmentFilter" data-testid="department-filter" class="px-3 py-2 text-sm rounded-lg">
               <option value="">All Departments</option>
               <option value="Engineering">Engineering</option>
               <option value="Product Design">Product Design</option>
@@ -388,19 +383,19 @@
             </select>
 
             <!-- Team Filter -->
-            <select id="teamFilter" class="px-3 py-2 text-sm rounded-lg bg-slate-800 border border-slate-700 text-slate-100 focus:ring-2 focus:ring-indigo-500">
+            <select id="teamFilter" class="px-3 py-2 text-sm rounded-lg">
               <option value="">All Teams</option>
             </select>
           </div>
 
           <!-- View Toggle Switcher (Card Grid vs Table) -->
           <div class="flex items-center space-x-2 self-end md:self-auto">
-            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">View:</span>
-            <div class="bg-slate-800 p-1 rounded-lg border border-slate-700 flex items-center space-x-1">
+            <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-muted);">View:</span>
+            <div class="p-1 rounded-lg border flex items-center space-x-1" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
               <button id="viewGridBtn" data-testid="view-grid-btn" class="px-2.5 py-1 rounded text-xs font-semibold bg-indigo-600 text-white cursor-pointer" title="Grid View">
                 📱 Cards
               </button>
-              <button id="viewTableBtn" data-testid="view-table-btn" class="px-2.5 py-1 rounded text-xs font-semibold text-slate-400 hover:text-slate-100 cursor-pointer" title="Table View">
+              <button id="viewTableBtn" data-testid="view-table-btn" class="px-2.5 py-1 rounded text-xs font-semibold cursor-pointer" style="color: var(--text-secondary);" title="Table View">
                 📄 Table
               </button>
             </div>
@@ -413,7 +408,7 @@
         <div id="employeeTableContainer" class="hidden card-solid overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full text-left text-sm">
-              <thead class="bg-slate-800/80 border-b border-slate-700/60 text-slate-400 text-xs uppercase tracking-wider font-bold">
+              <thead>
                 <tr>
                   <th class="py-3 px-4">Employee</th>
                   <th class="py-3 px-4">Position</th>
@@ -423,7 +418,7 @@
                   <th class="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody id="employeeTableBody" class="divide-y divide-slate-800"></tbody>
+              <tbody id="employeeTableBody"></tbody>
             </table>
           </div>
         </div>
@@ -437,9 +432,9 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 class="text-xl sm:text-2xl font-bold tracking-tight">Teams Directory & Allocations</h2>
-            <p class="text-xs sm:text-sm text-slate-400">Manage cross-functional teams, leads, and member rosters</p>
+            <p class="text-xs sm:text-sm" style="color: var(--text-secondary);">Manage cross-functional teams, leads, and member rosters</p>
           </div>
-          <button id="addTeamSecondaryBtn" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 self-start sm:self-auto cursor-pointer">
+          <button id="addTeamSecondaryBtn" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 self-start sm:self-auto cursor-pointer shadow-sm">
             + Create Team
           </button>
         </div>
@@ -454,13 +449,13 @@
         <div class="card-solid p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 class="text-lg font-bold tracking-tight">Team Task Board</h2>
-            <p class="text-xs text-slate-400">3-Stage Task Flow: Todo &harr; Pending &harr; Completed</p>
+            <p class="text-xs" style="color: var(--text-secondary);">3-Stage Task Flow: Todo &harr; Pending &harr; Completed</p>
           </div>
           <div class="flex items-center space-x-3">
-            <select id="taskTeamFilter" class="px-3 py-1.5 text-xs sm:text-sm rounded-lg bg-slate-800 border border-slate-700 text-slate-100 focus:ring-2 focus:ring-indigo-500">
+            <select id="taskTeamFilter" class="px-3 py-1.5 text-xs sm:text-sm rounded-lg">
               <option value="">All Teams</option>
             </select>
-            <button id="addTaskSecondaryBtn" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 cursor-pointer">
+            <button id="addTaskSecondaryBtn" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 cursor-pointer shadow-sm">
               + Add Task
             </button>
           </div>
@@ -470,36 +465,36 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
           <!-- Column 1: Todo -->
           <div class="card-solid p-4 flex flex-col min-h-[500px] border-t-4 border-t-blue-500">
-            <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+            <div class="flex items-center justify-between pb-3 mb-3 border-b" style="border-color: var(--border-color);">
               <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-blue-500"></span>
                 <h3 class="font-bold text-sm">To Do</h3>
               </div>
-              <span id="todoCountBadge" class="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">0</span>
+              <span id="todoCountBadge" class="px-2 py-0.5 rounded-full text-xs font-bold bg-blue-500/15 text-blue-500 border border-blue-500/30">0</span>
             </div>
             <div id="colTodo" class="space-y-3 flex-1 min-h-[100px]" data-status="Todo"></div>
           </div>
 
           <!-- Column 2: Pending -->
           <div class="card-solid p-4 flex flex-col min-h-[500px] border-t-4 border-t-amber-500">
-            <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+            <div class="flex items-center justify-between pb-3 mb-3 border-b" style="border-color: var(--border-color);">
               <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-amber-500"></span>
                 <h3 class="font-bold text-sm">Pending</h3>
               </div>
-              <span id="pendingCountBadge" class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">0</span>
+              <span id="pendingCountBadge" class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-500/15 text-amber-500 border border-amber-500/30">0</span>
             </div>
             <div id="colPending" class="space-y-3 flex-1 min-h-[100px]" data-status="Pending"></div>
           </div>
 
           <!-- Column 3: Completed -->
           <div class="card-solid p-4 flex flex-col min-h-[500px] border-t-4 border-t-emerald-500">
-            <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-800">
+            <div class="flex items-center justify-between pb-3 mb-3 border-b" style="border-color: var(--border-color);">
               <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
                 <h3 class="font-bold text-sm">Completed</h3>
               </div>
-              <span id="completedCountBadge" class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">0</span>
+              <span id="completedCountBadge" class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-500 border border-emerald-500/30">0</span>
             </div>
             <div id="colCompleted" class="space-y-3 flex-1 min-h-[100px]" data-status="Completed"></div>
           </div>
@@ -514,9 +509,9 @@
   <!-- ==================================================================== -->
   <div id="employeeModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay overflow-y-auto">
     <div class="modal-dialog w-full max-w-lg rounded-2xl p-6 relative my-8">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-700/60">
+      <div class="flex items-center justify-between pb-4 border-b" style="border-color: var(--border-color);">
         <h3 id="modalTitle" class="text-lg font-bold">Add New Employee</h3>
-        <button id="closeModalBtn" class="text-slate-400 hover:text-slate-100 p-1 rounded-lg">✕</button>
+        <button id="closeModalBtn" class="text-slate-400 hover:text-slate-200 p-1 rounded-lg">✕</button>
       </div>
 
       <form id="employeeForm" class="mt-4 space-y-4">
@@ -524,18 +519,18 @@
 
         <!-- Name -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Full Name *</label>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Full Name *</label>
           <input type="text" id="inputName" data-testid="employee-name-input" required placeholder="e.g. Sarah Connor" class="w-full px-3.5 py-2 text-sm rounded-lg">
         </div>
 
         <!-- Position & Department Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Position / Title *</label>
+            <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Position / Title *</label>
             <input type="text" id="inputPosition" data-testid="employee-position-input" required placeholder="e.g. Senior Architect" class="w-full px-3.5 py-2 text-sm rounded-lg">
           </div>
           <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Department *</label>
+            <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Department *</label>
             <select id="inputDepartment" data-testid="employee-department-select" required class="w-full px-3.5 py-2 text-sm rounded-lg">
               <option value="Engineering">Engineering</option>
               <option value="Product Design">Product Design</option>
@@ -550,18 +545,18 @@
         <!-- Email & Phone Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Email Address *</label>
+            <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Email Address *</label>
             <input type="email" id="inputEmail" data-testid="employee-email-input" required placeholder="name@company.com" class="w-full px-3.5 py-2 text-sm rounded-lg">
           </div>
           <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Phone Number</label>
+            <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Phone Number</label>
             <input type="tel" id="inputPhone" placeholder="+1-555-0199" class="w-full px-3.5 py-2 text-sm rounded-lg">
           </div>
         </div>
 
         <!-- Birthdate & Computed Age Preview -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Date of Birth * (Age calculated dynamically)</label>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Date of Birth * (Age calculated dynamically)</label>
           <div class="flex items-center space-x-3">
             <input type="date" id="inputBirthdate" data-testid="employee-birthdate-input" required class="flex-1 px-3.5 py-2 text-sm rounded-lg">
             <div id="agePreviewBadge" class="hidden age-badge">
@@ -572,32 +567,32 @@
 
         <!-- Avatar Image Upload Preview -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Avatar Image (Optional, max 2MB)</label>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Avatar Image (Optional, max 2MB)</label>
           <div class="flex items-center space-x-4">
-            <div id="avatarPreviewContainer" class="w-12 h-12 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-sm font-bold text-slate-300 overflow-hidden">
-              <span id="avatarPlaceholder">IMG</span>
+            <div id="avatarPreviewContainer" class="w-12 h-12 rounded-full border flex items-center justify-center text-sm font-bold overflow-hidden" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+              <span id="avatarPlaceholder" style="color: var(--text-muted);">IMG</span>
               <img id="avatarImageTag" class="hidden w-full h-full object-cover" alt="Avatar preview">
             </div>
-            <input type="file" id="inputAvatarFile" accept="image/*" class="text-xs text-slate-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer">
+            <input type="file" id="inputAvatarFile" accept="image/*" class="text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer">
           </div>
         </div>
 
         <!-- Multi-Team Assignment Checkboxes -->
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Team Allocations</label>
-          <div id="modalTeamCheckboxes" class="p-3 bg-slate-800/60 rounded-lg border border-slate-700/60 max-h-32 overflow-y-auto space-y-2">
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Team Allocations</label>
+          <div id="modalTeamCheckboxes" class="p-3 rounded-lg border max-h-32 overflow-y-auto space-y-2" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
             <!-- Dynamic checkboxes injected here -->
           </div>
         </div>
 
-        <p class="text-[11px] text-slate-400 italic">🔒 PDPA Notice: Personal profile information is stored securely and processed in accordance with company policy.</p>
+        <p class="text-[11px] italic" style="color: var(--text-muted);">🔒 PDPA Notice: Personal profile information is stored securely and processed in accordance with company policy.</p>
 
         <!-- Form Action Buttons -->
-        <div class="flex items-center justify-end space-x-3 pt-4 border-t border-slate-700/60">
-          <button type="button" id="cancelModalBtn" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer">
+        <div class="flex items-center justify-end space-x-3 pt-4 border-t" style="border-color: var(--border-color);">
+          <button type="button" id="cancelModalBtn" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg border cursor-pointer" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color); color: var(--text-primary);">
             Cancel
           </button>
-          <button type="submit" id="saveEmployeeBtn" data-testid="save-employee-btn" class="px-5 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 cursor-pointer">
+          <button type="submit" id="saveEmployeeBtn" data-testid="save-employee-btn" class="px-5 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 cursor-pointer shadow-sm">
             Save Employee Record
           </button>
         </div>
@@ -610,18 +605,18 @@
   <!-- ==================================================================== -->
   <div id="teamModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay overflow-y-auto">
     <div class="modal-dialog w-full max-w-md rounded-2xl p-6 relative my-8">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-700/60">
+      <div class="flex items-center justify-between pb-4 border-b" style="border-color: var(--border-color);">
         <h3 id="teamModalTitle" class="text-lg font-bold">Create New Team</h3>
-        <button id="closeTeamModalBtn" class="text-slate-400 hover:text-slate-100 p-1 rounded-lg">✕</button>
+        <button id="closeTeamModalBtn" class="text-slate-400 hover:text-slate-200 p-1 rounded-lg">✕</button>
       </div>
       <form id="teamForm" class="mt-4 space-y-4">
         <input type="hidden" id="teamId">
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Team Name *</label>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Team Name *</label>
           <input type="text" id="teamInputName" required placeholder="e.g. Core Engineering" class="w-full px-3.5 py-2 text-sm rounded-lg">
         </div>
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Department *</label>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Department *</label>
           <select id="teamInputDepartment" required class="w-full px-3.5 py-2 text-sm rounded-lg">
             <option value="Engineering">Engineering</option>
             <option value="Product Design">Product Design</option>
@@ -631,18 +626,18 @@
           </select>
         </div>
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Designated Team Lead (Optional)</label>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Designated Team Lead (Optional)</label>
           <select id="teamInputLead" class="w-full px-3.5 py-2 text-sm rounded-lg">
             <option value="">-- Select Team Lead --</option>
           </select>
         </div>
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Description</label>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Description</label>
           <textarea id="teamInputDescription" rows="2" placeholder="Responsibilities and scope..." class="w-full px-3.5 py-2 text-sm rounded-lg"></textarea>
         </div>
-        <div class="flex items-center justify-end space-x-3 pt-4 border-t border-slate-700/60">
-          <button type="button" id="cancelTeamModalBtn" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer">Cancel</button>
-          <button type="submit" id="saveTeamBtn" class="px-5 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 cursor-pointer">Save Team</button>
+        <div class="flex items-center justify-end space-x-3 pt-4 border-t" style="border-color: var(--border-color);">
+          <button type="button" id="cancelTeamModalBtn" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg border cursor-pointer" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color); color: var(--text-primary);">Cancel</button>
+          <button type="submit" id="saveTeamBtn" class="px-5 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 cursor-pointer shadow-sm">Save Team</button>
         </div>
       </form>
     </div>
@@ -653,31 +648,31 @@
   <!-- ==================================================================== -->
   <div id="taskModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay overflow-y-auto">
     <div class="modal-dialog w-full max-w-md rounded-2xl p-6 relative my-8">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-700/60">
+      <div class="flex items-center justify-between pb-4 border-b" style="border-color: var(--border-color);">
         <h3 id="taskModalTitle" class="text-lg font-bold">Author New Task</h3>
-        <button id="closeTaskModalBtn" class="text-slate-400 hover:text-slate-100 p-1 rounded-lg">✕</button>
+        <button id="closeTaskModalBtn" class="text-slate-400 hover:text-slate-200 p-1 rounded-lg">✕</button>
       </div>
       <form id="taskForm" class="mt-4 space-y-4">
         <input type="hidden" id="taskId">
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Task Title *</label>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Task Title *</label>
           <input type="text" id="taskInputTitle" required placeholder="e.g. Implement Redis Cache" class="w-full px-3.5 py-2 text-sm rounded-lg">
         </div>
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Assigned Team *</label>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Assigned Team *</label>
           <select id="taskInputTeam" required class="w-full px-3.5 py-2 text-sm rounded-lg">
             <option value="">-- Select Team --</option>
           </select>
         </div>
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Assignee (Optional)</label>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Assignee (Optional)</label>
           <select id="taskInputAssignee" class="w-full px-3.5 py-2 text-sm rounded-lg">
             <option value="">-- Unassigned --</option>
           </select>
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Status *</label>
+            <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Status *</label>
             <select id="taskInputStatus" required class="w-full px-3.5 py-2 text-sm rounded-lg">
               <option value="Todo">Todo</option>
               <option value="Pending">Pending</option>
@@ -685,7 +680,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Priority *</label>
+            <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Priority *</label>
             <select id="taskInputPriority" required class="w-full px-3.5 py-2 text-sm rounded-lg">
               <option value="Urgent">🔥 Urgent</option>
               <option value="High">⚠️ High</option>
@@ -695,16 +690,16 @@
           </div>
         </div>
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Due Date</label>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Due Date</label>
           <input type="date" id="taskInputDueDate" class="w-full px-3.5 py-2 text-sm rounded-lg">
         </div>
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Description</label>
+          <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Description</label>
           <textarea id="taskInputDescription" rows="2" placeholder="Task requirements..." class="w-full px-3.5 py-2 text-sm rounded-lg"></textarea>
         </div>
-        <div class="flex items-center justify-end space-x-3 pt-4 border-t border-slate-700/60">
-          <button type="button" id="cancelTaskModalBtn" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer">Cancel</button>
-          <button type="submit" id="saveTaskBtn" class="px-5 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 cursor-pointer">Save Task</button>
+        <div class="flex items-center justify-end space-x-3 pt-4 border-t" style="border-color: var(--border-color);">
+          <button type="button" id="cancelTaskModalBtn" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg border cursor-pointer" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color); color: var(--text-primary);">Cancel</button>
+          <button type="submit" id="saveTaskBtn" class="px-5 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 cursor-pointer shadow-sm">Save Task</button>
         </div>
       </form>
     </div>
