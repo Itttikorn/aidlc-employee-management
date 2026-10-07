@@ -63,9 +63,12 @@ We support local and preview runtime execution using standard Node.js scripts (`
 - Multi-branch promotion via Pull Requests: `feature/*` -> `staging` -> `dev` -> `main`.
 - Always open Pull Requests for branch promotions; do not perform automated merges without human review.
 - Conventional commits specification on all commit messages.
+- Always use file-based arguments (`--body-file <file>` or `body=@<file>`) when passing multi-line Markdown or text containing backticks and shell-sensitive characters to CLI commands in PowerShell.
 
 ## Corrections
 
 <!-- Self-learning loop appends here. -->
 - Learned: Always create a Pull Request for branch integration rather than automatically merging feature branches. Wait for human review and approval.
+- Learned: In PowerShell, inline strings containing backticks or Markdown syntax get corrupted or truncated. Always write descriptions/bodies to a temporary file and pass them via file references (`--body-file` or `body=@file.md`).
+
 
