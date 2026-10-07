@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+.github
+.agents
+.aidlc
+aidlc
+coverage
+tests
+.env
+*.log
+
