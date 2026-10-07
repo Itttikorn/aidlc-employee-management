@@ -1,0 +1,26 @@
+{
+  "stage": "ci-pipeline",
+  "phase": "construction",
+  "intent": "261007-employee-management",
+  "generated_artifacts": [
+    ".github/workflows/ci.yml",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/ci-pipeline/ci-config.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/ci-pipeline/quality-gates.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/ci-pipeline/ci-pipeline-questions.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/ci-pipeline/ci-pipeline-summary.md"
+  ],
+  "upstream_references": [
+    "aidlc/spaces/default/intents/261007-employee-management/construction/build-and-test/build-and-test-summary.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/build-and-test/cross-unit-traceability.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u01-employee-directory/code-generation/code-summary.md"
+  ],
+  "enforced_quality_gates": {
+    "typecheck": "tsc --noEmit",
+    "migrations": "npm run migrate",
+    "tests": "vitest run",
+    "coverage_threshold": 80,
+    "build": "tsc"
+  },
+  "status": "READY"
+}
+
