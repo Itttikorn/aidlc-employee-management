@@ -1,10 +1,11 @@
-// Employee, Team & 3-Stage Task Board Client Application Logic
+// Employee, Team, Task & Executive Dashboard Client Application Logic
 
 let state = {
-  currentTab: 'employees', // 'employees' | 'teams' | 'tasks'
+  currentTab: 'employees', // 'dashboard' | 'employees' | 'teams' | 'tasks'
   employees: [],
   teams: [],
   tasks: [],
+  dashboardStats: null,
   viewMode: 'grid',
   searchQuery: '',
   selectedTeamId: '',
@@ -19,16 +20,39 @@ let state = {
 };
 
 // DOM Elements - Navigation & Header
+const navDashboardBtn = document.getElementById('navDashboardBtn');
 const navEmployeesBtn = document.getElementById('navEmployeesBtn');
 const navTeamsBtn = document.getElementById('navTeamsBtn');
 const navTasksBtn = document.getElementById('navTasksBtn');
+
+const dashboardSection = document.getElementById('dashboardSection');
 const employeesSection = document.getElementById('employeesSection');
 const teamsSection = document.getElementById('teamsSection');
 const tasksSection = document.getElementById('tasksSection');
+
 const addEmployeeBtn = document.getElementById('addEmployeeBtn');
 const addTeamBtn = document.getElementById('addTeamBtn');
 const addTaskBtn = document.getElementById('addTaskBtn');
 const statusBanner = document.getElementById('statusBanner');
+
+// Dashboard UI Elements
+const kpiTotalEmployees = document.getElementById('kpiTotalEmployees');
+const kpiTotalTeams = document.getElementById('kpiTotalTeams');
+const kpiTotalTasks = document.getElementById('kpiTotalTasks');
+const kpiCompletionRate = document.getElementById('kpiCompletionRate');
+const kpiOverdueAlert = document.getElementById('kpiOverdueAlert');
+const kpiCompletedSummary = document.getElementById('kpiCompletedSummary');
+const barTodo = document.getElementById('barTodo');
+const barPending = document.getElementById('barPending');
+const barCompleted = document.getElementById('barCompleted');
+const stageTodoText = document.getElementById('stageTodoText');
+const stagePendingText = document.getElementById('stagePendingText');
+const stageCompletedText = document.getElementById('stageCompletedText');
+const priorityUrgentCount = document.getElementById('priorityUrgentCount');
+const priorityHighCount = document.getElementById('priorityHighCount');
+const priorityMediumCount = document.getElementById('priorityMediumCount');
+const priorityLowCount = document.getElementById('priorityLowCount');
+const dashboardTeamsTableBody = document.getElementById('dashboardTeamsTableBody');
 
 // Employee UI Elements
 const searchInput = document.getElementById('searchInput');
@@ -94,10 +118,12 @@ document.addEventListener('DOMContentLoaded', () => {
   loadTeams();
   loadEmployees();
   loadTasks();
+  loadDashboardStats();
 });
 
 function setupEventListeners() {
   // Navigation Tabs
+  if (navDashboardBtn) navDashboardBtn.addEventListener('click', () => switchTab('dashboard'));
   if (navEmployeesBtn) navEmployeesBtn.addEventListener('click', () => switchTab('employees'));
   if (navTeamsBtn) navTeamsBtn.addEventListener('click', () => switchTab('teams'));
   if (navTasksBtn) navTasksBtn.addEventListener('click', () => switchTab('tasks'));
@@ -221,23 +247,26 @@ function switchTab(tab) {
   state.currentTab = tab;
   
   // Section visibility
-  employeesSection.classList.toggle('hidden', tab !== 'employees');
-  teamsSection.classList.toggle('hidden', tab !== 'teams');
-  tasksSection.classList.toggle('hidden', tab !== 'tasks');
+  if (dashboardSection) dashboardSection.classList.toggle('hidden', tab !== 'dashboard');
+  if (employeesSection) employeesSection.classList.toggle('hidden', tab !== 'employees');
+  if (teamsSection) teamsSection.classList.toggle('hidden', tab !== 'teams');
+  if (tasksSection) tasksSection.classList.toggle('hidden', tab !== 'tasks');
 
   // Header action buttons
-  addEmployeeBtn.classList.toggle('hidden', tab !== 'employees');
-  addTeamBtn.classList.toggle('hidden', tab !== 'teams');
-  addTaskBtn.classList.toggle('hidden', tab !== 'tasks');
+  if (addEmployeeBtn) addEmployeeBtn.classList.toggle('hidden', tab !== 'employees');
+  if (addTeamBtn) addTeamBtn.classList.toggle('hidden', tab !== 'teams');
+  if (addTaskBtn) addTaskBtn.classList.toggle('hidden', tab !== 'tasks');
 
   // Tab styles
   const activeClass = 'px-3.5 py-2 rounded-lg text-sm font-semibold bg-indigo-50 text-indigo-700 transition-colors cursor-pointer';
   const inactiveClass = 'px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer';
 
-  navEmployeesBtn.className = tab === 'employees' ? activeClass : inactiveClass;
-  navTeamsBtn.className = tab === 'teams' ? activeClass : inactiveClass;
-  navTasksBtn.className = tab === 'tasks' ? activeClass : inactiveClass;
+  if (navDashboardBtn) navDashboardBtn.className = tab === 'dashboard' ? activeClass : inactiveClass;
+  if (navEmployeesBtn) navEmployeesBtn.className = tab === 'employees' ? activeClass : inactiveClass;
+  if (navTeamsBtn) navTeamsBtn.className = tab === 'teams' ? activeClass : inactiveClass;
+  if (navTasksBtn) navTasksBtn.className = tab === 'tasks' ? activeClass : inactiveClass;
 
+  if (tab === 'dashboard') loadDashboardStats();
   if (tab === 'teams') loadTeams();
   if (tab === 'tasks') loadTasks();
 }
@@ -263,7 +292,83 @@ function setViewMode(mode) {
 }
 
 // -------------------------------------------------------------
-// EMPLOYEES DIRECTORY
+// 0. EXECUTIVE DASHBOARD & ANALYTICS
+// -------------------------------------------------------------
+
+async function loadDashboardStats() {
+  try {
+    const res = await fetch('/api/dashboard/stats');
+    const data = await res.json();
+
+    if (data.success && data.data) {
+      state.dashboardStats = data.data;
+      renderDashboard();
+    }
+  } catch (error) {
+    console.error('Failed to load dashboard stats', error);
+  }
+}
+
+function renderDashboard() {
+  if (!state.dashboardStats) return;
+
+  const { overview, taskDistribution, priorityDistribution, teamWorkloads } = state.dashboardStats;
+
+  // Overview KPIs
+  if (kpiTotalEmployees) kpiTotalEmployees.innerText = overview.totalEmployees;
+  if (kpiTotalTeams) kpiTotalTeams.innerText = overview.totalTeams;
+  if (kpiTotalTasks) kpiTotalTasks.innerText = overview.totalTasks;
+  if (kpiCompletionRate) kpiCompletionRate.innerText = `${overview.completionRate.toFixed(1)}%`;
+  if (kpiCompletedSummary) kpiCompletedSummary.innerText = `${overview.completedTasks} finished`;
+  if (kpiOverdueAlert) {
+    kpiOverdueAlert.innerText = `${overview.overdueTasksCount} overdue`;
+    kpiOverdueAlert.className = overview.overdueTasksCount > 0 ? 'text-xs text-red-600 font-bold mt-1' : 'text-xs text-slate-500 font-medium mt-1';
+  }
+
+  // Segmented Progress Bar
+  if (barTodo) barTodo.style.width = `${taskDistribution.todo.percentage}%`;
+  if (barPending) barPending.style.width = `${taskDistribution.pending.percentage}%`;
+  if (barCompleted) barCompleted.style.width = `${taskDistribution.completed.percentage}%`;
+
+  if (stageTodoText) stageTodoText.innerHTML = `${taskDistribution.todo.count} <span class="text-xs font-normal text-slate-500">(${taskDistribution.todo.percentage.toFixed(1)}%)</span>`;
+  if (stagePendingText) stagePendingText.innerHTML = `${taskDistribution.pending.count} <span class="text-xs font-normal text-slate-500">(${taskDistribution.pending.percentage.toFixed(1)}%)</span>`;
+  if (stageCompletedText) stageCompletedText.innerHTML = `${taskDistribution.completed.count} <span class="text-xs font-normal text-slate-500">(${taskDistribution.completed.percentage.toFixed(1)}%)</span>`;
+
+  // Priority Breakdown
+  if (priorityUrgentCount) priorityUrgentCount.innerText = `${priorityDistribution.urgent} task${priorityDistribution.urgent === 1 ? '' : 's'}`;
+  if (priorityHighCount) priorityHighCount.innerText = `${priorityDistribution.high} task${priorityDistribution.high === 1 ? '' : 's'}`;
+  if (priorityMediumCount) priorityMediumCount.innerText = `${priorityDistribution.medium} task${priorityDistribution.medium === 1 ? '' : 's'}`;
+  if (priorityLowCount) priorityLowCount.innerText = `${priorityDistribution.low} task${priorityDistribution.low === 1 ? '' : 's'}`;
+
+  // Team Workloads Table
+  if (dashboardTeamsTableBody) {
+    if (teamWorkloads.length === 0) {
+      dashboardTeamsTableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-xs text-slate-400 italic">No team activity recorded yet.</td></tr>`;
+    } else {
+      dashboardTeamsTableBody.innerHTML = teamWorkloads.map(tw => `
+        <tr class="hover:bg-slate-50 transition-colors">
+          <td class="px-6 py-4 whitespace-nowrap font-bold text-slate-900">${escapeHtml(tw.teamName)}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">${escapeHtml(tw.department)}</span>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-center text-xs font-semibold text-slate-700">${tw.memberCount} members</td>
+          <td class="px-6 py-4 whitespace-nowrap text-center text-xs font-semibold text-slate-700">${tw.totalTasks}</td>
+          <td class="px-6 py-4 whitespace-nowrap">
+            <div class="flex items-center space-x-3 max-w-xs">
+              <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div class="bg-emerald-500 h-full rounded-full" style="width: ${tw.completionRate}%"></div>
+              </div>
+              <span class="text-xs font-bold text-slate-700 w-12 text-right">${tw.completionRate.toFixed(1)}%</span>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+  }
+}
+
+// -------------------------------------------------------------
+// 1. EMPLOYEES DIRECTORY
 // -------------------------------------------------------------
 
 async function loadEmployees() {
@@ -401,6 +506,7 @@ async function handleEmployeeFormSubmit(e) {
       showBanner(id ? 'Employee updated successfully' : 'Employee created successfully', 'success');
       closeEmployeeModal();
       loadEmployees();
+      loadDashboardStats();
     } else {
       showBanner(result.message || result.error || 'Failed to save employee', 'error');
     }
@@ -422,6 +528,7 @@ window.deleteEmployee = async function(id) {
     if (res.ok && result.success) {
       showBanner('Employee deleted successfully', 'success');
       loadEmployees();
+      loadDashboardStats();
     } else {
       showBanner(result.message || 'Failed to delete employee', 'error');
     }
@@ -431,7 +538,7 @@ window.deleteEmployee = async function(id) {
 };
 
 // -------------------------------------------------------------
-// TEAMS HUB
+// 2. TEAMS HUB
 // -------------------------------------------------------------
 
 async function loadTeams() {
@@ -456,7 +563,6 @@ async function loadTeams() {
 }
 
 function updateTeamFilterDropdowns() {
-  // Directory filter
   if (teamFilter) {
     const currentVal = teamFilter.value;
     teamFilter.innerHTML = '<option value="">All Teams (Filter)</option>' +
@@ -464,7 +570,6 @@ function updateTeamFilterDropdowns() {
     teamFilter.value = currentVal;
   }
 
-  // Task board filter
   if (taskTeamFilter) {
     const currentTaskTeamVal = taskTeamFilter.value;
     taskTeamFilter.innerHTML = '<option value="">All Teams (Task Board)</option>' +
@@ -590,6 +695,7 @@ async function handleTeamFormSubmit(e) {
       showBanner(id ? 'Team updated successfully' : 'Team created successfully', 'success');
       closeTeamModal();
       loadTeams();
+      loadDashboardStats();
     } else {
       showBanner(result.message || result.error || 'Failed to save team', 'error');
     }
@@ -611,6 +717,7 @@ window.deleteTeam = async function(id) {
     if (res.ok && result.success) {
       showBanner('Team deleted successfully', 'success');
       loadTeams();
+      loadDashboardStats();
     } else {
       showBanner(result.message || 'Failed to delete team', 'error');
     }
@@ -700,6 +807,7 @@ async function handleAddMemberSubmit(e) {
       showBanner('Member added to team', 'success');
       await refreshTeamMembersModal(teamId);
       loadTeams();
+      loadDashboardStats();
     } else {
       showBanner(result.message || 'Failed to add member', 'error');
     }
@@ -721,6 +829,7 @@ window.removeMemberFromTeam = async function(teamId, employeeId) {
       showBanner('Member removed from team', 'success');
       await refreshTeamMembersModal(teamId);
       loadTeams();
+      loadDashboardStats();
     } else {
       showBanner(result.message || 'Failed to remove member', 'error');
     }
@@ -730,7 +839,7 @@ window.removeMemberFromTeam = async function(teamId, employeeId) {
 };
 
 // -------------------------------------------------------------
-// 3-STAGE KANBAN TASK BOARD
+// 3. 3-STAGE KANBAN TASK BOARD
 // -------------------------------------------------------------
 
 async function loadTasks() {
@@ -810,7 +919,6 @@ function renderTaskColumn(tasks, status) {
             ` : ''}
           </div>
 
-          <!-- Assignee Info -->
           <div class="flex items-center space-x-2 pt-2 border-t border-slate-100">
             <div class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-[10px] font-bold overflow-hidden flex-shrink-0">
               ${task.assignee && task.assignee.avatarUrl ? `<img src="${task.assignee.avatarUrl}" class="w-full h-full object-cover">` : (task.assignee ? task.assignee.name.charAt(0).toUpperCase() : '—')}
@@ -821,7 +929,6 @@ function renderTaskColumn(tasks, status) {
           </div>
         </div>
 
-        <!-- Action & Progression Toolbar -->
         <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
           <div class="space-x-1 flex">
             ${status === 'Todo' ? `
@@ -869,6 +976,7 @@ window.moveTaskStatus = async function(taskId, newStatus) {
     if (res.ok && result.success) {
       showBanner(`Task moved to ${newStatus}`, 'success');
       loadTasks();
+      loadDashboardStats();
     } else {
       showBanner(result.message || 'Failed to update task status', 'error');
     }
@@ -885,11 +993,9 @@ function openTaskModal(task = null) {
   document.getElementById('formTaskDueDate').value = task && task.dueDate ? task.dueDate : '';
   taskModalTitle.innerText = task ? 'Edit Task' : 'Add New Task';
 
-  // Populate Teams dropdown
   formTaskTeam.innerHTML = '<option value="">Select Team...</option>' +
     state.teams.map(t => `<option value="${t.id}" ${task && task.teamId === t.id ? 'selected' : ''}>${escapeHtml(t.name)} (${escapeHtml(t.department)})</option>`).join('');
 
-  // Populate Assignees dropdown
   formTaskAssignee.innerHTML = '<option value="">Unassigned</option>' +
     state.employees.map(e => `<option value="${e.id}" ${task && task.assigneeId === e.id ? 'selected' : ''}>${escapeHtml(e.name)} (${escapeHtml(e.role || e.position)})</option>`).join('');
 
@@ -928,6 +1034,7 @@ async function handleTaskFormSubmit(e) {
       showBanner(id ? 'Task updated successfully' : 'Task created successfully', 'success');
       closeTaskModal();
       loadTasks();
+      loadDashboardStats();
     } else {
       showBanner(result.message || result.error || 'Failed to save task', 'error');
     }
@@ -949,6 +1056,7 @@ window.deleteTask = async function(id) {
     if (res.ok && result.success) {
       showBanner('Task deleted successfully', 'success');
       loadTasks();
+      loadDashboardStats();
     } else {
       showBanner(result.message || 'Failed to delete task', 'error');
     }

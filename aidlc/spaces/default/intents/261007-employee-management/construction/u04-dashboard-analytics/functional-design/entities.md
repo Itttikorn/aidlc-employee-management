@@ -36,3 +36,4 @@ Unit 04 is a read-only analytics service that computes cross-domain aggregations
 
 ### 5. `DashboardStatsResponse`
 - Encompasses `overview`, `taskDistribution`, `priorityDistribution`, and `teamWorkloads`.
+

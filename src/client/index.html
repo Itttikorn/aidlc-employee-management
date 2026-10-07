@@ -43,6 +43,12 @@
         <!-- Navigation Tabs -->
         <nav class="flex space-x-2">
           <button 
+            id="navDashboardBtn" 
+            class="px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+          >
+            📊 Dashboard
+          </button>
+          <button 
             id="navEmployeesBtn" 
             class="px-3.5 py-2 rounded-lg text-sm font-semibold bg-indigo-50 text-indigo-700 transition-colors cursor-pointer"
           >
@@ -106,6 +112,160 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
     
     <!-- ============================================================== -->
+    <!-- SECTION 0: EXECUTIVE DASHBOARD & ANALYTICS                     -->
+    <!-- ============================================================== -->
+    <div id="dashboardSection" class="hidden space-y-6">
+      <!-- Top KPI Metric Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        
+        <!-- KPI 1: Employees -->
+        <div class="card-solid p-5 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Employees</p>
+            <h3 id="kpiTotalEmployees" class="text-2xl font-extrabold text-slate-900 mt-1">0</h3>
+            <p class="text-xs text-emerald-600 font-semibold mt-1">✓ Active Directory</p>
+          </div>
+          <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl font-bold">
+            👥
+          </div>
+        </div>
+
+        <!-- KPI 2: Teams -->
+        <div class="card-solid p-5 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Active Teams</p>
+            <h3 id="kpiTotalTeams" class="text-2xl font-extrabold text-slate-900 mt-1">0</h3>
+            <p class="text-xs text-indigo-600 font-semibold mt-1">🏢 Cross-Department</p>
+          </div>
+          <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl font-bold">
+            🏢
+          </div>
+        </div>
+
+        <!-- KPI 3: Total Tasks -->
+        <div class="card-solid p-5 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Tasks</p>
+            <h3 id="kpiTotalTasks" class="text-2xl font-extrabold text-slate-900 mt-1">0</h3>
+            <p id="kpiOverdueAlert" class="text-xs text-slate-500 font-medium mt-1">0 overdue</p>
+          </div>
+          <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl font-bold">
+            📋
+          </div>
+        </div>
+
+        <!-- KPI 4: Completion Rate -->
+        <div class="card-solid p-5 flex items-center justify-between">
+          <div>
+            <p class="text-xs font-bold text-slate-500 uppercase tracking-wider">Completion Rate</p>
+            <h3 id="kpiCompletionRate" class="text-2xl font-extrabold text-slate-900 mt-1">0.0%</h3>
+            <p id="kpiCompletedSummary" class="text-xs text-emerald-600 font-semibold mt-1">0 finished</p>
+          </div>
+          <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl font-bold">
+            🎯
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Task Distribution & Priority Breakdown Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Task Stage Distribution Breakdown -->
+        <div class="lg:col-span-8 card-solid p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-base font-bold text-slate-900">Task Stage Distribution</h3>
+            <span class="text-xs text-slate-500 font-medium">3-Stage Lifecycle</span>
+          </div>
+
+          <!-- Multi-Color Segmented Progress Bar -->
+          <div class="h-4 w-full bg-slate-100 rounded-full overflow-hidden flex mb-6">
+            <div id="barTodo" style="width: 0%" class="bg-blue-500 transition-all duration-500" title="To Do"></div>
+            <div id="barPending" style="width: 0%" class="bg-amber-500 transition-all duration-500" title="In Progress"></div>
+            <div id="barCompleted" style="width: 0%" class="bg-emerald-500 transition-all duration-500" title="Completed"></div>
+          </div>
+
+          <!-- Stage Stats Grid -->
+          <div class="grid grid-cols-3 gap-4 pt-2 border-t border-slate-100">
+            <div class="p-3 bg-blue-50/50 rounded-xl border border-blue-100">
+              <div class="flex items-center space-x-1.5 text-blue-700 text-xs font-bold mb-1">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                <span>To Do</span>
+              </div>
+              <p id="stageTodoText" class="text-lg font-extrabold text-slate-900">0 <span class="text-xs font-normal text-slate-500">(0%)</span></p>
+            </div>
+
+            <div class="p-3 bg-amber-50/50 rounded-xl border border-amber-100">
+              <div class="flex items-center space-x-1.5 text-amber-700 text-xs font-bold mb-1">
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                <span>In Progress</span>
+              </div>
+              <p id="stagePendingText" class="text-lg font-extrabold text-slate-900">0 <span class="text-xs font-normal text-slate-500">(0%)</span></p>
+            </div>
+
+            <div class="p-3 bg-emerald-50/50 rounded-xl border border-emerald-100">
+              <div class="flex items-center space-x-1.5 text-emerald-700 text-xs font-bold mb-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>Completed</span>
+              </div>
+              <p id="stageCompletedText" class="text-lg font-extrabold text-slate-900">0 <span class="text-xs font-normal text-slate-500">(0%)</span></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Priority Breakdown Column -->
+        <div class="lg:col-span-4 card-solid p-6 flex flex-col justify-between">
+          <h3 class="text-base font-bold text-slate-900 mb-4">Priority Breakdown</h3>
+          
+          <div class="space-y-3 flex-1 justify-center flex flex-col">
+            <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-100">
+              <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-red-50 text-red-700 border border-red-200">🔥 Urgent</span>
+              <span id="priorityUrgentCount" class="font-extrabold text-slate-900 text-sm">0 tasks</span>
+            </div>
+            <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-100">
+              <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">⚠️ High</span>
+              <span id="priorityHighCount" class="font-extrabold text-slate-900 text-sm">0 tasks</span>
+            </div>
+            <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-100">
+              <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">Medium</span>
+              <span id="priorityMediumCount" class="font-extrabold text-slate-900 text-sm">0 tasks</span>
+            </div>
+            <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-lg border border-slate-100">
+              <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">Low</span>
+              <span id="priorityLowCount" class="font-extrabold text-slate-900 text-sm">0 tasks</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Team Workloads & Performance Table -->
+      <div class="card-solid p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Team Workload & Completion Matrix</h3>
+            <p class="text-xs text-slate-500">Live operational throughput by team</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-slate-200 text-sm">
+            <thead class="bg-slate-50 text-slate-600 font-semibold uppercase tracking-wider text-xs">
+              <tr>
+                <th class="px-6 py-3.5 text-left">Team Name</th>
+                <th class="px-6 py-3.5 text-left">Department</th>
+                <th class="px-6 py-3.5 text-center">Roster Size</th>
+                <th class="px-6 py-3.5 text-center">Total Tasks</th>
+                <th class="px-6 py-3.5 text-left">Completion Progress</th>
+              </tr>
+            </thead>
+            <tbody id="dashboardTeamsTableBody" class="divide-y divide-slate-200 bg-white"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
     <!-- SECTION 1: EMPLOYEES DIRECTORY                                 -->
     <!-- ============================================================== -->
     <div id="employeesSection">
@@ -147,7 +307,7 @@
               title="Grid View" 
               class="px-3 py-2 border border-slate-200 rounded-lg bg-indigo-50 text-indigo-700 font-semibold text-xs flex items-center space-x-1.5 transition-colors cursor-pointer"
             >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+              <svg class="w-4 h-4 fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
               <span>Grid</span>
             </button>
             <button 
@@ -156,7 +316,7 @@
               title="Table View" 
               class="px-3 py-2 border border-slate-200 rounded-lg bg-white text-slate-600 font-semibold text-xs flex items-center space-x-1.5 hover:bg-slate-50 transition-colors cursor-pointer"
             >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+              <svg class="w-4 h-4 fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
               <span>Table</span>
             </button>
           </div>
@@ -351,8 +511,10 @@
   </main>
 
   <!-- ============================================================== -->
-  <!-- MODAL 1: ADD / EDIT EMPLOYEE                                   -->
+  <!-- MODALS                                                         -->
   <!-- ============================================================== -->
+
+  <!-- MODAL 1: ADD / EDIT EMPLOYEE -->
   <div id="employeeModal" data-testid="employee-modal" class="fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center hidden p-4">
     <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full overflow-hidden">
       <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
@@ -446,9 +608,7 @@
     </div>
   </div>
 
-  <!-- ============================================================== -->
-  <!-- MODAL 2: ADD / EDIT TEAM                                       -->
-  <!-- ============================================================== -->
+  <!-- MODAL 2: ADD / EDIT TEAM -->
   <div id="teamModal" class="fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center hidden p-4">
     <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full overflow-hidden">
       <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
@@ -527,9 +687,7 @@
     </div>
   </div>
 
-  <!-- ============================================================== -->
-  <!-- MODAL 3: MANAGE TEAM MEMBERS                                   -->
-  <!-- ============================================================== -->
+  <!-- MODAL 3: MANAGE TEAM MEMBERS -->
   <div id="manageMembersModal" class="fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center hidden p-4">
     <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full overflow-hidden">
       <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
@@ -540,7 +698,6 @@
         <button id="closeMembersModalBtn" class="text-slate-400 hover:text-slate-600 text-2xl font-bold leading-none p-1">&times;</button>
       </div>
       <div class="p-6 space-y-6">
-        <!-- Add Member Row -->
         <form id="addMemberForm" class="flex gap-2">
           <input type="hidden" id="currentManagingTeamId" value="">
           <select 
@@ -566,7 +723,6 @@
           </button>
         </form>
 
-        <!-- Current Members List -->
         <div>
           <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Current Members</h4>
           <div id="teamMembersList" class="divide-y divide-slate-100 max-h-60 overflow-y-auto border border-slate-200 rounded-lg"></div>
@@ -575,9 +731,7 @@
     </div>
   </div>
 
-  <!-- ============================================================== -->
-  <!-- MODAL 4: ADD / EDIT TASK                                       -->
-  <!-- ============================================================== -->
+  <!-- MODAL 4: ADD / EDIT TASK -->
   <div id="taskModal" class="fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center hidden p-4">
     <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full overflow-hidden">
       <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">

@@ -11,3 +11,4 @@
 ### 2. Performance & Security Rules (BR-DASH-05 to 06)
 - **BR-DASH-05 (Read-Only Safety)**: The analytics endpoint must execute strictly read-only parameterized queries.
 - **BR-DASH-06 (Sub-200ms Latency)**: Aggregation queries must use existing B-Tree indexes on `status`, `team_id`, and `due_date` without performing full table scans where indexed lookups apply.
+
