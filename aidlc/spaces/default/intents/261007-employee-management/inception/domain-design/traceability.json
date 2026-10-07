@@ -1,0 +1,67 @@
+{
+  "stage": "domain-design",
+  "upstream_ids": [
+    "US1.1",
+    "US1.2",
+    "US2.1",
+    "US2.2",
+    "US3.1",
+    "US3.2",
+    "US4.1",
+    "US4.2",
+    "US5.1",
+    "US5.2"
+  ],
+  "coverage": [
+    {
+      "id": "US1.1",
+      "status": "OK",
+      "target": "EmployeeManagementComponent"
+    },
+    {
+      "id": "US1.2",
+      "status": "OK",
+      "target": "EmployeeManagementComponent"
+    },
+    {
+      "id": "US2.1",
+      "status": "OK",
+      "target": "TeamManagementComponent"
+    },
+    {
+      "id": "US2.2",
+      "status": "OK",
+      "target": "TeamManagementComponent"
+    },
+    {
+      "id": "US3.1",
+      "status": "OK",
+      "target": "TaskManagementComponent"
+    },
+    {
+      "id": "US3.2",
+      "status": "OK",
+      "target": "TaskManagementComponent"
+    },
+    {
+      "id": "US4.1",
+      "status": "OK",
+      "target": "DashboardAnalyticsComponent"
+    },
+    {
+      "id": "US4.2",
+      "status": "OK",
+      "target": "DashboardAnalyticsComponent"
+    },
+    {
+      "id": "US5.1",
+      "status": "OK",
+      "target": "CoreFoundationComponent"
+    },
+    {
+      "id": "US5.2",
+      "status": "OK",
+      "target": "CoreFoundationComponent"
+    }
+  ]
+}

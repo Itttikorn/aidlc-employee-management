@@ -1,0 +1,42 @@
+# Team Practices
+
+## Sources
+- Organization memory: [memory:org]
+- State tracking: [state]
+- Questions & answers: [questions]
+- Quality agent contribution: [quality]
+- Developer agent contribution: [developer]
+- DevSecOps agent contribution: [devsecops]
+- User revision request: [revision]
+
+---
+
+## Way of Working
+
+We use a **tiered multi-branch promotion workflow**:
+1. **Feature Development**: Features are committed and developed into dedicated `feature/(feature_name)` branches.
+2. **Staging Integration**: Feature branches are integrated into the `staging` branch for initial verification and integration testing.
+3. **Development Consolidation**: Verified staging commits are merged into the `dev` branch for consolidated testing and regression checks.
+4. **Production Release**: Stable and verified changes from `dev` are merged into the `main` branch at the end of the release lifecycle.
+
+## Walking Skeleton
+
+We adopt a **walking skeleton** approach. The first integrated unit (Unit 01 & Unit 05 System Foundation) will be built and verified end-to-end with tests to prove system integration, PostgreSQL connectivity, and UI rendering before subsequent units are implemented.
+
+## Testing Posture
+
+We treat automated testing as a mandatory deliverable for all business logic and API endpoints.
+- **Methodology**: test-after
+- **Ordering**: Implement each feature layer (data access, API endpoint, UI component), then author and execute that layer's test suite to verify functionality and contract satisfaction.
+- Test coverage standard: Unit tests for state management, entity models, validation rules, and integration tests for REST API endpoints.
+
+## Deployment
+
+We support local and preview runtime execution using standard Node.js scripts (`npm run dev` for dev server, `npm test` for test suite, `npm run build` for production packaging).
+
+## Code Style
+
+- Strict TypeScript typings across all models, API controllers, and frontend views.
+- ESLint and Prettier for automated formatting and static lint verification.
+- Opaque solid card styling with clear high-contrast borders (**strictly no glassmorphism**).
+- Full compliance with Thailand Personal Data Protection Act (PDPA) for employee records and avatars.
