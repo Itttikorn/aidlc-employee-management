@@ -1,41 +1,68 @@
-// Employee, Team, Task & Executive Dashboard Client Application Logic
+// ==========================================================================
+// Employee Management Hub - Comprehensive Reactive Client Application
+// Inception Design System, Dual-Theme, Skeletons, FSM & Analytics
+// ==========================================================================
 
-let state = {
+const state = {
   currentTab: 'employees', // 'dashboard' | 'employees' | 'teams' | 'tasks'
   employees: [],
   teams: [],
   tasks: [],
   dashboardStats: null,
-  viewMode: 'grid',
+  viewMode: 'grid', // 'grid' | 'table'
   searchQuery: '',
-  selectedTeamId: '',
-  teamSearchQuery: '',
-  teamDepartmentFilter: '',
-  taskSearchQuery: '',
+  departmentFilter: '',
+  teamFilter: '',
   taskTeamFilter: '',
-  taskPriorityFilter: '',
-  currentPage: 1,
-  totalPages: 1,
-  limit: 12
+  theme: localStorage.getItem('em_theme') || 'dark',
 };
 
-// DOM Elements - Navigation & Header
+// ==========================================================================
+// 1. DOM SELECTORS
+// ==========================================================================
+
+// Theme & Global Shell
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const themeIcon = document.getElementById('themeIcon');
+const themeLabel = document.getElementById('themeLabel');
+const sidebar = document.getElementById('sidebar');
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+const globalSearchInput = document.getElementById('globalSearchInput');
+const systemStatusText = document.getElementById('systemStatusText');
+const statusBanner = document.getElementById('statusBanner');
+
+// Navigation Buttons
 const navDashboardBtn = document.getElementById('navDashboardBtn');
 const navEmployeesBtn = document.getElementById('navEmployeesBtn');
 const navTeamsBtn = document.getElementById('navTeamsBtn');
 const navTasksBtn = document.getElementById('navTasksBtn');
 
+// View Sections
 const dashboardSection = document.getElementById('dashboardSection');
 const employeesSection = document.getElementById('employeesSection');
 const teamsSection = document.getElementById('teamsSection');
 const tasksSection = document.getElementById('tasksSection');
 
+// Primary Context Buttons
 const addEmployeeBtn = document.getElementById('addEmployeeBtn');
 const addTeamBtn = document.getElementById('addTeamBtn');
 const addTaskBtn = document.getElementById('addTaskBtn');
-const statusBanner = document.getElementById('statusBanner');
+const addTeamSecondaryBtn = document.getElementById('addTeamSecondaryBtn');
+const addTaskSecondaryBtn = document.getElementById('addTaskSecondaryBtn');
+const refreshDashboardBtn = document.getElementById('refreshDashboardBtn');
 
-// Dashboard UI Elements
+// Employee View Controls
+const employeeSearchInput = document.getElementById('employeeSearchInput');
+const departmentFilter = document.getElementById('departmentFilter');
+const teamFilter = document.getElementById('teamFilter');
+const viewGridBtn = document.getElementById('viewGridBtn');
+const viewTableBtn = document.getElementById('viewTableBtn');
+const employeeCardGrid = document.getElementById('employeeCardGrid');
+const employeeTableContainer = document.getElementById('employeeTableContainer');
+const employeeTableBody = document.getElementById('employeeTableBody');
+
+// Dashboard Elements
 const kpiTotalEmployees = document.getElementById('kpiTotalEmployees');
 const kpiTotalTeams = document.getElementById('kpiTotalTeams');
 const kpiTotalTasks = document.getElementById('kpiTotalTasks');
@@ -52,1033 +79,908 @@ const priorityUrgentCount = document.getElementById('priorityUrgentCount');
 const priorityHighCount = document.getElementById('priorityHighCount');
 const priorityMediumCount = document.getElementById('priorityMediumCount');
 const priorityLowCount = document.getElementById('priorityLowCount');
-const dashboardTeamsTableBody = document.getElementById('dashboardTeamsTableBody');
+const dashboardTeamWorkloadTable = document.getElementById('dashboardTeamWorkloadTable');
 
-// Employee UI Elements
-const searchInput = document.getElementById('searchInput');
-const teamFilter = document.getElementById('teamFilter');
-const viewGridBtn = document.getElementById('viewGridBtn');
-const viewTableBtn = document.getElementById('viewTableBtn');
-const cardsGrid = document.getElementById('cardsGrid');
-const tableView = document.getElementById('tableView');
-const tableBody = document.getElementById('tableBody');
-const emptyState = document.getElementById('emptyState');
+// Teams Elements
+const teamsGrid = document.getElementById('teamsGrid');
+
+// Tasks Elements
+const colTodo = document.getElementById('colTodo');
+const colPending = document.getElementById('colPending');
+const colCompleted = document.getElementById('colCompleted');
+const todoCountBadge = document.getElementById('todoCountBadge');
+const pendingCountBadge = document.getElementById('pendingCountBadge');
+const completedCountBadge = document.getElementById('completedCountBadge');
+const taskTeamFilter = document.getElementById('taskTeamFilter');
+
+// Employee Modal Elements
 const employeeModal = document.getElementById('employeeModal');
 const employeeForm = document.getElementById('employeeForm');
 const modalTitle = document.getElementById('modalTitle');
 const closeModalBtn = document.getElementById('closeModalBtn');
 const cancelModalBtn = document.getElementById('cancelModalBtn');
-const formAvatarFile = document.getElementById('formAvatarFile');
-const formAvatarUrl = document.getElementById('formAvatarUrl');
+const employeeId = document.getElementById('employeeId');
+const inputName = document.getElementById('inputName');
+const inputPosition = document.getElementById('inputPosition');
+const inputDepartment = document.getElementById('inputDepartment');
+const inputEmail = document.getElementById('inputEmail');
+const inputPhone = document.getElementById('inputPhone');
+const inputBirthdate = document.getElementById('inputBirthdate');
+const agePreviewBadge = document.getElementById('agePreviewBadge');
+const calculatedAgeText = document.getElementById('calculatedAgeText');
+const inputAvatarFile = document.getElementById('inputAvatarFile');
+const avatarPlaceholder = document.getElementById('avatarPlaceholder');
+const avatarImageTag = document.getElementById('avatarImageTag');
+const modalTeamCheckboxes = document.getElementById('modalTeamCheckboxes');
 
-// Team UI Elements
-const teamSearchInput = document.getElementById('teamSearchInput');
-const departmentFilter = document.getElementById('departmentFilter');
-const teamsGrid = document.getElementById('teamsGrid');
-const teamsEmptyState = document.getElementById('teamsEmptyState');
+// Team Modal Elements
 const teamModal = document.getElementById('teamModal');
 const teamForm = document.getElementById('teamForm');
 const teamModalTitle = document.getElementById('teamModalTitle');
 const closeTeamModalBtn = document.getElementById('closeTeamModalBtn');
 const cancelTeamModalBtn = document.getElementById('cancelTeamModalBtn');
-const formTeamLead = document.getElementById('formTeamLead');
+const teamId = document.getElementById('teamId');
+const teamInputName = document.getElementById('teamInputName');
+const teamInputDepartment = document.getElementById('teamInputDepartment');
+const teamInputLead = document.getElementById('teamInputLead');
+const teamInputDescription = document.getElementById('teamInputDescription');
 
-// Manage Members Modal Elements
-const manageMembersModal = document.getElementById('manageMembersModal');
-const manageMembersTitle = document.getElementById('manageMembersTitle');
-const manageMembersSubtitle = document.getElementById('manageMembersSubtitle');
-const closeMembersModalBtn = document.getElementById('closeMembersModalBtn');
-const addMemberForm = document.getElementById('addMemberForm');
-const currentManagingTeamId = document.getElementById('currentManagingTeamId');
-const availableEmployeeSelect = document.getElementById('availableEmployeeSelect');
-const memberRoleSelect = document.getElementById('memberRoleSelect');
-const teamMembersList = document.getElementById('teamMembersList');
-
-// Task UI Elements
-const taskSearchInput = document.getElementById('taskSearchInput');
-const taskTeamFilter = document.getElementById('taskTeamFilter');
-const taskPriorityFilter = document.getElementById('taskPriorityFilter');
-const todoTasksList = document.getElementById('todoTasksList');
-const pendingTasksList = document.getElementById('pendingTasksList');
-const completedTasksList = document.getElementById('completedTasksList');
-const todoCountBadge = document.getElementById('todoCountBadge');
-const pendingCountBadge = document.getElementById('pendingCountBadge');
-const completedCountBadge = document.getElementById('completedCountBadge');
+// Task Modal Elements
 const taskModal = document.getElementById('taskModal');
 const taskForm = document.getElementById('taskForm');
 const taskModalTitle = document.getElementById('taskModalTitle');
 const closeTaskModalBtn = document.getElementById('closeTaskModalBtn');
 const cancelTaskModalBtn = document.getElementById('cancelTaskModalBtn');
-const formTaskTeam = document.getElementById('formTaskTeam');
-const formTaskAssignee = document.getElementById('formTaskAssignee');
+const taskId = document.getElementById('taskId');
+const taskInputTitle = document.getElementById('taskInputTitle');
+const taskInputTeam = document.getElementById('taskInputTeam');
+const taskInputAssignee = document.getElementById('taskInputAssignee');
+const taskInputStatus = document.getElementById('taskInputStatus');
+const taskInputPriority = document.getElementById('taskInputPriority');
+const taskInputDueDate = document.getElementById('taskInputDueDate');
+const taskInputDescription = document.getElementById('taskInputDescription');
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
-  setupEventListeners();
-  loadTeams();
-  loadEmployees();
-  loadTasks();
-  loadDashboardStats();
-});
+// ==========================================================================
+// 2. THEME & APP SHELL CONTROLLERS
+// ==========================================================================
 
-function setupEventListeners() {
-  // Navigation Tabs
-  if (navDashboardBtn) navDashboardBtn.addEventListener('click', () => switchTab('dashboard'));
-  if (navEmployeesBtn) navEmployeesBtn.addEventListener('click', () => switchTab('employees'));
-  if (navTeamsBtn) navTeamsBtn.addEventListener('click', () => switchTab('teams'));
-  if (navTasksBtn) navTasksBtn.addEventListener('click', () => switchTab('tasks'));
-
-  // Employee Search with debounce
-  let debounceTimeout;
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      clearTimeout(debounceTimeout);
-      debounceTimeout = setTimeout(() => {
-        state.searchQuery = e.target.value;
-        state.currentPage = 1;
-        loadEmployees();
-      }, 250);
-    });
-  }
-
-  // Team Search with debounce
-  let teamDebounce;
-  if (teamSearchInput) {
-    teamSearchInput.addEventListener('input', (e) => {
-      clearTimeout(teamDebounce);
-      teamDebounce = setTimeout(() => {
-        state.teamSearchQuery = e.target.value;
-        loadTeams();
-      }, 250);
-    });
-  }
-
-  // Department filter
-  if (departmentFilter) {
-    departmentFilter.addEventListener('change', (e) => {
-      state.teamDepartmentFilter = e.target.value;
-      loadTeams();
-    });
-  }
-
-  // Filter by team in directory
-  if (teamFilter) {
-    teamFilter.addEventListener('change', (e) => {
-      state.selectedTeamId = e.target.value;
-      state.currentPage = 1;
-      loadEmployees();
-    });
-  }
-
-  // Task Search with debounce
-  let taskDebounce;
-  if (taskSearchInput) {
-    taskSearchInput.addEventListener('input', (e) => {
-      clearTimeout(taskDebounce);
-      taskDebounce = setTimeout(() => {
-        state.taskSearchQuery = e.target.value;
-        loadTasks();
-      }, 250);
-    });
-  }
-
-  if (taskTeamFilter) {
-    taskTeamFilter.addEventListener('change', (e) => {
-      state.taskTeamFilter = e.target.value;
-      loadTasks();
-    });
-  }
-
-  if (taskPriorityFilter) {
-    taskPriorityFilter.addEventListener('change', (e) => {
-      state.taskPriorityFilter = e.target.value;
-      loadTasks();
-    });
-  }
-
-  // View toggle
-  if (viewGridBtn && viewTableBtn) {
-    viewGridBtn.addEventListener('click', () => setViewMode('grid'));
-    viewTableBtn.addEventListener('click', () => setViewMode('table'));
-  }
-
-  // Modal buttons
-  if (addEmployeeBtn) addEmployeeBtn.addEventListener('click', () => openEmployeeModal());
-  if (closeModalBtn) closeModalBtn.addEventListener('click', closeEmployeeModal);
-  if (cancelModalBtn) cancelModalBtn.addEventListener('click', closeEmployeeModal);
-
-  if (addTeamBtn) addTeamBtn.addEventListener('click', () => openTeamModal());
-  if (closeTeamModalBtn) closeTeamModalBtn.addEventListener('click', closeTeamModal);
-  if (cancelTeamModalBtn) cancelTeamModalBtn.addEventListener('click', closeTeamModal);
-
-  if (addTaskBtn) addTaskBtn.addEventListener('click', () => openTaskModal());
-  if (closeTaskModalBtn) closeTaskModalBtn.addEventListener('click', closeTaskModal);
-  if (cancelTaskModalBtn) cancelTaskModalBtn.addEventListener('click', closeTaskModal);
-
-  if (closeMembersModalBtn) closeMembersModalBtn.addEventListener('click', closeManageMembersModal);
-  if (addMemberForm) addMemberForm.addEventListener('submit', handleAddMemberSubmit);
-
-  // Avatar upload
-  if (formAvatarFile) {
-    formAvatarFile.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        if (file.size > 5 * 1024 * 1024) {
-          showBanner('Avatar file size cannot exceed 5MB', 'error');
-          formAvatarFile.value = '';
-          return;
-        }
-        const reader = new FileReader();
-        reader.onload = () => {
-          formAvatarUrl.value = reader.result;
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-  }
-
-  // Forms submit
-  if (employeeForm) employeeForm.addEventListener('submit', handleEmployeeFormSubmit);
-  if (teamForm) teamForm.addEventListener('submit', handleTeamFormSubmit);
-  if (taskForm) taskForm.addEventListener('submit', handleTaskFormSubmit);
-}
-
-function switchTab(tab) {
-  state.currentTab = tab;
+function applyTheme(theme) {
+  state.theme = theme;
+  localStorage.setItem('em_theme', theme);
+  const root = document.documentElement;
   
-  // Section visibility
-  if (dashboardSection) dashboardSection.classList.toggle('hidden', tab !== 'dashboard');
-  if (employeesSection) employeesSection.classList.toggle('hidden', tab !== 'employees');
-  if (teamsSection) teamsSection.classList.toggle('hidden', tab !== 'teams');
-  if (tasksSection) tasksSection.classList.toggle('hidden', tab !== 'tasks');
-
-  // Header action buttons
-  if (addEmployeeBtn) addEmployeeBtn.classList.toggle('hidden', tab !== 'employees');
-  if (addTeamBtn) addTeamBtn.classList.toggle('hidden', tab !== 'teams');
-  if (addTaskBtn) addTaskBtn.classList.toggle('hidden', tab !== 'tasks');
-
-  // Tab styles
-  const activeClass = 'px-3.5 py-2 rounded-lg text-sm font-semibold bg-indigo-50 text-indigo-700 transition-colors cursor-pointer';
-  const inactiveClass = 'px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer';
-
-  if (navDashboardBtn) navDashboardBtn.className = tab === 'dashboard' ? activeClass : inactiveClass;
-  if (navEmployeesBtn) navEmployeesBtn.className = tab === 'employees' ? activeClass : inactiveClass;
-  if (navTeamsBtn) navTeamsBtn.className = tab === 'teams' ? activeClass : inactiveClass;
-  if (navTasksBtn) navTasksBtn.className = tab === 'tasks' ? activeClass : inactiveClass;
-
-  if (tab === 'dashboard') loadDashboardStats();
-  if (tab === 'teams') loadTeams();
-  if (tab === 'tasks') loadTasks();
-}
-
-function setViewMode(mode) {
-  state.viewMode = mode;
-  if (mode === 'grid') {
-    cardsGrid.classList.remove('hidden');
-    tableView.classList.add('hidden');
-    viewGridBtn.classList.add('bg-indigo-50', 'text-indigo-700');
-    viewGridBtn.classList.remove('bg-white', 'text-slate-600');
-    viewTableBtn.classList.add('bg-white', 'text-slate-600');
-    viewTableBtn.classList.remove('bg-indigo-50', 'text-indigo-700');
+  if (theme === 'dark') {
+    root.classList.add('dark');
+    if (themeIcon) themeIcon.textContent = '🌙';
+    if (themeLabel) themeLabel.textContent = 'Dark';
   } else {
-    cardsGrid.classList.add('hidden');
-    tableView.classList.remove('hidden');
-    viewTableBtn.classList.add('bg-indigo-50', 'text-indigo-700');
-    viewTableBtn.classList.remove('bg-white', 'text-slate-600');
-    viewGridBtn.classList.add('bg-white', 'text-slate-600');
-    viewGridBtn.classList.remove('bg-indigo-50', 'text-indigo-700');
+    root.classList.remove('dark');
+    if (themeIcon) themeIcon.textContent = '☀️';
+    if (themeLabel) themeLabel.textContent = 'Light';
   }
-  renderDirectory();
 }
 
-// -------------------------------------------------------------
-// 0. EXECUTIVE DASHBOARD & ANALYTICS
-// -------------------------------------------------------------
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener('click', () => {
+    applyTheme(state.theme === 'dark' ? 'light' : 'dark');
+  });
+}
 
-async function loadDashboardStats() {
+function toggleMobileSidebar(open) {
+  if (!sidebar || !sidebarBackdrop) return;
+  if (open) {
+    sidebar.classList.remove('-translate-x-full');
+    sidebarBackdrop.classList.remove('hidden');
+  } else {
+    sidebar.classList.add('-translate-x-full');
+    sidebarBackdrop.classList.add('hidden');
+  }
+}
+
+if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', () => toggleMobileSidebar(true));
+if (sidebarBackdrop) sidebarBackdrop.addEventListener('click', () => toggleMobileSidebar(false));
+
+// ==========================================================================
+// 3. TAB NAVIGATION CONTROLLER
+// ==========================================================================
+
+function switchTab(targetTab) {
+  state.currentTab = targetTab;
+  toggleMobileSidebar(false);
+
+  // Reset button active styles
+  const allNavBtns = [
+    { btn: navDashboardBtn, sec: dashboardSection, addBtn: null },
+    { btn: navEmployeesBtn, sec: employeesSection, addBtn: addEmployeeBtn },
+    { btn: navTeamsBtn, sec: teamsSection, addBtn: addTeamBtn },
+    { btn: navTasksBtn, sec: tasksSection, addBtn: addTaskBtn }
+  ];
+
+  allNavBtns.forEach(({ btn, sec, addBtn: cta }) => {
+    if (!btn || !sec) return;
+    const isActive = btn.id.toLowerCase().includes(targetTab);
+    
+    if (isActive) {
+      btn.className = 'w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold bg-indigo-600 text-white shadow-sm shadow-indigo-600/30 transition-colors text-left cursor-pointer';
+      sec.classList.remove('hidden');
+    } else {
+      btn.className = 'w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-lg text-sm font-semibold text-slate-400 hover:text-slate-100 hover:bg-slate-800/80 transition-colors text-left cursor-pointer';
+      sec.classList.add('hidden');
+    }
+
+    if (cta) {
+      if (isActive) cta.classList.remove('hidden');
+      else cta.classList.add('hidden');
+    }
+  });
+
+  // Fetch / Refresh relevant data
+  if (targetTab === 'dashboard') loadDashboardData();
+  else if (targetTab === 'employees') loadEmployeesData();
+  else if (targetTab === 'teams') loadTeamsData();
+  else if (targetTab === 'tasks') loadTasksData();
+}
+
+if (navDashboardBtn) navDashboardBtn.addEventListener('click', () => switchTab('dashboard'));
+if (navEmployeesBtn) navEmployeesBtn.addEventListener('click', () => switchTab('employees'));
+if (navTeamsBtn) navTeamsBtn.addEventListener('click', () => switchTab('teams'));
+if (navTasksBtn) navTasksBtn.addEventListener('click', () => switchTab('tasks'));
+
+// ==========================================================================
+// 4. NOTIFICATION & STATUS BANNER
+// ==========================================================================
+
+function showBanner(message, type = 'success') {
+  if (!statusBanner) return;
+  statusBanner.classList.remove('hidden');
+  
+  if (type === 'success') {
+    statusBanner.className = 'p-4 rounded-xl text-sm font-medium transition-all shadow-sm bg-emerald-500/10 text-emerald-400 border border-emerald-500/30';
+  } else if (type === 'error') {
+    statusBanner.className = 'p-4 rounded-xl text-sm font-medium transition-all shadow-sm bg-red-500/10 text-red-400 border border-red-500/30';
+  } else {
+    statusBanner.className = 'p-4 rounded-xl text-sm font-medium transition-all shadow-sm bg-blue-500/10 text-blue-400 border border-blue-500/30';
+  }
+
+  statusBanner.textContent = message;
+  setTimeout(() => {
+    statusBanner.classList.add('hidden');
+  }, 4500);
+}
+
+// ==========================================================================
+// 5. DATA FETCHING & API SERVICES
+// ==========================================================================
+
+async function checkHealth() {
+  try {
+    const res = await fetch('/api/health');
+    const data = await res.json();
+    if (systemStatusText) {
+      if (data.status === 'healthy') {
+        systemStatusText.textContent = 'Online';
+        systemStatusText.className = 'text-[11px] font-bold text-emerald-400';
+      } else {
+        systemStatusText.textContent = 'Degraded';
+        systemStatusText.className = 'text-[11px] font-bold text-amber-400';
+      }
+    }
+  } catch {
+    if (systemStatusText) {
+      systemStatusText.textContent = 'Offline';
+      systemStatusText.className = 'text-[11px] font-bold text-red-400';
+    }
+  }
+}
+
+async function loadDashboardData() {
   try {
     const res = await fetch('/api/dashboard/stats');
-    const data = await res.json();
-
-    if (data.success && data.data) {
-      state.dashboardStats = data.data;
-      renderDashboard();
+    const json = await res.json();
+    if (json.success && json.data) {
+      state.dashboardStats = json.data;
+      renderDashboard(json.data);
     }
-  } catch (error) {
-    console.error('Failed to load dashboard stats', error);
+  } catch (err) {
+    showBanner('Failed to load dashboard metrics', 'error');
   }
 }
 
-function renderDashboard() {
-  if (!state.dashboardStats) return;
-
-  const { overview, taskDistribution, priorityDistribution, teamWorkloads } = state.dashboardStats;
-
-  // Overview KPIs
-  if (kpiTotalEmployees) kpiTotalEmployees.innerText = overview.totalEmployees;
-  if (kpiTotalTeams) kpiTotalTeams.innerText = overview.totalTeams;
-  if (kpiTotalTasks) kpiTotalTasks.innerText = overview.totalTasks;
-  if (kpiCompletionRate) kpiCompletionRate.innerText = `${overview.completionRate.toFixed(1)}%`;
-  if (kpiCompletedSummary) kpiCompletedSummary.innerText = `${overview.completedTasks} finished`;
-  if (kpiOverdueAlert) {
-    kpiOverdueAlert.innerText = `${overview.overdueTasksCount} overdue`;
-    kpiOverdueAlert.className = overview.overdueTasksCount > 0 ? 'text-xs text-red-600 font-bold mt-1' : 'text-xs text-slate-500 font-medium mt-1';
+async function loadEmployeesData() {
+  try {
+    const res = await fetch('/api/employees');
+    const json = await res.json();
+    state.employees = json.data || [];
+    renderEmployees();
+  } catch (err) {
+    showBanner('Failed to load employee directory', 'error');
   }
+}
 
-  // Segmented Progress Bar
+async function loadTeamsData() {
+  try {
+    const res = await fetch('/api/teams');
+    const json = await res.json();
+    state.teams = json.data || [];
+    renderTeams();
+    populateTeamFilters();
+  } catch (err) {
+    showBanner('Failed to load teams', 'error');
+  }
+}
+
+async function loadTasksData() {
+  try {
+    let url = '/api/tasks';
+    if (state.taskTeamFilter) url += `?teamId=${state.taskTeamFilter}`;
+    const res = await fetch(url);
+    const json = await res.json();
+    state.tasks = json.data || [];
+    renderTasks();
+  } catch (err) {
+    showBanner('Failed to load task board', 'error');
+  }
+}
+
+// ==========================================================================
+// 6. RENDERERS
+// ==========================================================================
+
+function renderDashboard(data) {
+  const { overview, taskDistribution, priorityDistribution, teamWorkloads } = data;
+
+  if (kpiTotalEmployees) kpiTotalEmployees.textContent = overview.totalEmployees;
+  if (kpiTotalTeams) kpiTotalTeams.textContent = overview.totalTeams;
+  if (kpiTotalTasks) kpiTotalTasks.textContent = overview.totalTasks;
+  if (kpiCompletionRate) kpiCompletionRate.textContent = `${overview.completionRate}%`;
+  if (kpiOverdueAlert) kpiOverdueAlert.textContent = `${overview.overdueTasksCount} overdue`;
+  if (kpiCompletedSummary) kpiCompletedSummary.textContent = `${overview.completedTasks} completed`;
+
   if (barTodo) barTodo.style.width = `${taskDistribution.todo.percentage}%`;
   if (barPending) barPending.style.width = `${taskDistribution.pending.percentage}%`;
   if (barCompleted) barCompleted.style.width = `${taskDistribution.completed.percentage}%`;
 
-  if (stageTodoText) stageTodoText.innerHTML = `${taskDistribution.todo.count} <span class="text-xs font-normal text-slate-500">(${taskDistribution.todo.percentage.toFixed(1)}%)</span>`;
-  if (stagePendingText) stagePendingText.innerHTML = `${taskDistribution.pending.count} <span class="text-xs font-normal text-slate-500">(${taskDistribution.pending.percentage.toFixed(1)}%)</span>`;
-  if (stageCompletedText) stageCompletedText.innerHTML = `${taskDistribution.completed.count} <span class="text-xs font-normal text-slate-500">(${taskDistribution.completed.percentage.toFixed(1)}%)</span>`;
+  if (stageTodoText) stageTodoText.innerHTML = `${taskDistribution.todo.count} <span class="text-xs font-normal text-slate-400">(${taskDistribution.todo.percentage}%)</span>`;
+  if (stagePendingText) stagePendingText.innerHTML = `${taskDistribution.pending.count} <span class="text-xs font-normal text-slate-400">(${taskDistribution.pending.percentage}%)</span>`;
+  if (stageCompletedText) stageCompletedText.innerHTML = `${taskDistribution.completed.count} <span class="text-xs font-normal text-slate-400">(${taskDistribution.completed.percentage}%)</span>`;
 
-  // Priority Breakdown
-  if (priorityUrgentCount) priorityUrgentCount.innerText = `${priorityDistribution.urgent} task${priorityDistribution.urgent === 1 ? '' : 's'}`;
-  if (priorityHighCount) priorityHighCount.innerText = `${priorityDistribution.high} task${priorityDistribution.high === 1 ? '' : 's'}`;
-  if (priorityMediumCount) priorityMediumCount.innerText = `${priorityDistribution.medium} task${priorityDistribution.medium === 1 ? '' : 's'}`;
-  if (priorityLowCount) priorityLowCount.innerText = `${priorityDistribution.low} task${priorityDistribution.low === 1 ? '' : 's'}`;
+  if (priorityUrgentCount) priorityUrgentCount.textContent = `${priorityDistribution.urgent} tasks`;
+  if (priorityHighCount) priorityHighCount.textContent = `${priorityDistribution.high} tasks`;
+  if (priorityMediumCount) priorityMediumCount.textContent = `${priorityDistribution.medium} tasks`;
+  if (priorityLowCount) priorityLowCount.textContent = `${priorityDistribution.low} tasks`;
 
-  // Team Workloads Table
-  if (dashboardTeamsTableBody) {
-    if (teamWorkloads.length === 0) {
-      dashboardTeamsTableBody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-xs text-slate-400 italic">No team activity recorded yet.</td></tr>`;
-    } else {
-      dashboardTeamsTableBody.innerHTML = teamWorkloads.map(tw => `
-        <tr class="hover:bg-slate-50 transition-colors">
-          <td class="px-6 py-4 whitespace-nowrap font-bold text-slate-900">${escapeHtml(tw.teamName)}</td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">${escapeHtml(tw.department)}</span>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-center text-xs font-semibold text-slate-700">${tw.memberCount} members</td>
-          <td class="px-6 py-4 whitespace-nowrap text-center text-xs font-semibold text-slate-700">${tw.totalTasks}</td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            <div class="flex items-center space-x-3 max-w-xs">
-              <div class="flex-1 bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                <div class="bg-emerald-500 h-full rounded-full" style="width: ${tw.completionRate}%"></div>
-              </div>
-              <span class="text-xs font-bold text-slate-700 w-12 text-right">${tw.completionRate.toFixed(1)}%</span>
+  if (dashboardTeamWorkloadTable) {
+    if (!teamWorkloads || teamWorkloads.length === 0) {
+      dashboardTeamWorkloadTable.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400">No team activity recorded yet.</td></tr>`;
+      return;
+    }
+
+    dashboardTeamWorkloadTable.innerHTML = teamWorkloads.map(tw => `
+      <tr class="hover:bg-slate-800/40 transition-colors">
+        <td class="py-3 px-3 font-semibold text-slate-200">${escapeHtml(tw.teamName)}</td>
+        <td class="py-3 px-3"><span class="badge-solid">${escapeHtml(tw.department)}</span></td>
+        <td class="py-3 px-3 text-center font-bold">${tw.memberCount}</td>
+        <td class="py-3 px-3 text-center">${tw.totalTasks}</td>
+        <td class="py-3 px-3 text-center text-emerald-400 font-semibold">${tw.completedTasks}</td>
+        <td class="py-3 px-3 text-right">
+          <div class="flex items-center justify-end space-x-2">
+            <span class="font-bold">${tw.completionRate}%</span>
+            <div class="w-16 bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div class="bg-indigo-500 h-full" style="width: ${tw.completionRate}%"></div>
             </div>
-          </td>
-        </tr>
-      `).join('');
-    }
+          </div>
+        </td>
+      </tr>
+    `).join('');
   }
 }
 
-// -------------------------------------------------------------
-// 1. EMPLOYEES DIRECTORY
-// -------------------------------------------------------------
+function renderEmployees() {
+  const q = (state.searchQuery || '').toLowerCase();
+  const dept = state.departmentFilter;
+  const team = state.teamFilter;
 
-async function loadEmployees() {
-  try {
-    const params = new URLSearchParams({
-      page: state.currentPage,
-      limit: state.limit
-    });
-    if (state.searchQuery) params.append('search', state.searchQuery);
-    if (state.selectedTeamId) params.append('teamId', state.selectedTeamId);
+  const filtered = state.employees.filter(emp => {
+    const matchesSearch = !q || 
+      emp.name.toLowerCase().includes(q) || 
+      emp.position.toLowerCase().includes(q) || 
+      emp.email.toLowerCase().includes(q);
+    const matchesDept = !dept || emp.department === dept;
+    const matchesTeam = !team || (emp.teams && emp.teams.some(t => t.id === team || t.name === team));
+    return matchesSearch && matchesDept && matchesTeam;
+  });
 
-    const res = await fetch(`/api/employees?${params.toString()}`);
-    const data = await res.json();
-
-    if (data.success) {
-      state.employees = data.data || [];
-      state.totalPages = data.pagination?.totalPages || 1;
-      renderDirectory();
-    } else {
-      showBanner(data.message || 'Failed to load employees', 'error');
-    }
-  } catch (error) {
-    showBanner('Network error loading employee directory', 'error');
+  if (state.viewMode === 'grid') {
+    if (employeeCardGrid) employeeCardGrid.classList.remove('hidden');
+    if (employeeTableContainer) employeeTableContainer.classList.add('hidden');
+    renderEmployeeCards(filtered);
+  } else {
+    if (employeeCardGrid) employeeCardGrid.classList.add('hidden');
+    if (employeeTableContainer) employeeTableContainer.classList.remove('hidden');
+    renderEmployeeTable(filtered);
   }
 }
 
-function renderDirectory() {
-  if (state.employees.length === 0) {
-    emptyState.classList.remove('hidden');
-    cardsGrid.innerHTML = '';
-    tableBody.innerHTML = '';
+function renderEmployeeCards(employees) {
+  if (!employeeCardGrid) return;
+  if (employees.length === 0) {
+    employeeCardGrid.innerHTML = `
+      <div class="col-span-full card-solid p-12 text-center space-y-3">
+        <span class="text-4xl">👥</span>
+        <h3 class="text-base font-bold">No Employees Found</h3>
+        <p class="text-xs text-slate-400">No profile matches your search and filter criteria.</p>
+      </div>
+    `;
     return;
   }
 
-  emptyState.classList.add('hidden');
+  employeeCardGrid.innerHTML = employees.map(emp => {
+    const initials = emp.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    const teamBadges = (emp.teams && emp.teams.length > 0)
+      ? emp.teams.map(t => `<span class="badge-solid text-[10px]">${escapeHtml(t.name || t)}</span>`).join(' ')
+      : `<span class="text-[11px] text-slate-500 italic">No assigned teams</span>`;
 
-  cardsGrid.innerHTML = state.employees.map((emp) => `
-    <div class="card-solid p-5 flex flex-col justify-between" data-testid="employee-card" data-employee-id="${emp.id}">
-      <div>
-        <div class="flex items-start justify-between mb-3">
-          <div class="flex items-center space-x-3">
-            <div class="w-11 h-11 rounded-full overflow-hidden bg-indigo-50 border border-indigo-100 flex-shrink-0 flex items-center justify-center font-bold text-sm text-indigo-700">
-              ${emp.avatarUrl ? `<img src="${emp.avatarUrl}" alt="${emp.name}" class="w-full h-full object-cover">` : emp.name.charAt(0).toUpperCase()}
-            </div>
-            <div>
-              <h4 class="font-bold text-slate-900 text-sm leading-snug">${escapeHtml(emp.name)}</h4>
-              <p class="text-xs font-medium text-indigo-600">${escapeHtml(emp.role || emp.position)}</p>
-            </div>
-          </div>
-          ${emp.age ? `<span class="age-badge">${emp.age} yrs</span>` : ''}
-        </div>
-        <p class="text-xs text-slate-500 truncate mb-3 flex items-center">
-          <svg class="w-3.5 h-3.5 mr-1 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-          ${escapeHtml(emp.email)}
-        </p>
-        <div class="flex flex-wrap gap-1.5 mb-4">
-          ${(emp.teams && emp.teams.length > 0) ? emp.teams.map(t => `<span class="badge-solid">${escapeHtml(t.name)}</span>`).join('') : '<span class="text-xs text-slate-400 italic">No teams assigned</span>'}
-        </div>
-      </div>
-      <div class="border-t border-slate-100 pt-3 flex justify-end space-x-2">
-        <button onclick="editEmployee('${emp.id}')" class="text-xs font-semibold text-slate-700 hover:text-indigo-600 px-2.5 py-1 rounded-md hover:bg-slate-100 transition-colors cursor-pointer">Edit</button>
-        <button onclick="deleteEmployee('${emp.id}')" class="text-xs font-semibold text-red-600 hover:text-red-800 px-2.5 py-1 rounded-md hover:bg-red-50 transition-colors cursor-pointer">Delete</button>
-      </div>
-    </div>
-  `).join('');
-
-  tableBody.innerHTML = state.employees.map((emp) => `
-    <tr class="hover:bg-slate-50 transition-colors">
-      <td class="px-6 py-4 whitespace-nowrap">
-        <div class="flex items-center space-x-3">
-          <div class="w-8 h-8 rounded-full overflow-hidden bg-indigo-50 border border-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700">
-            ${emp.avatarUrl ? `<img src="${emp.avatarUrl}" alt="${emp.name}" class="w-full h-full object-cover">` : emp.name.charAt(0).toUpperCase()}
-          </div>
-          <div>
-            <div class="font-semibold text-slate-900">${escapeHtml(emp.name)}</div>
-            <div class="text-xs text-slate-500">${escapeHtml(emp.email)}</div>
-          </div>
-        </div>
-      </td>
-      <td class="px-6 py-4 whitespace-nowrap text-xs font-medium text-slate-700">${escapeHtml(emp.role || emp.position)}</td>
-      <td class="px-6 py-4 whitespace-nowrap text-xs text-slate-600">${emp.age ? `<span class="age-badge">${emp.age} yrs</span>` : '—'}</td>
-      <td class="px-6 py-4 whitespace-nowrap">
-        <div class="flex flex-wrap gap-1">
-          ${(emp.teams && emp.teams.length > 0) ? emp.teams.map(t => `<span class="badge-solid">${escapeHtml(t.name)}</span>`).join('') : '<span class="text-xs text-slate-400 italic">—</span>'}
-        </div>
-      </td>
-      <td class="px-6 py-4 whitespace-nowrap text-right space-x-2">
-        <button onclick="editEmployee('${emp.id}')" class="text-indigo-600 hover:text-indigo-900 text-xs font-semibold px-2 py-1 rounded hover:bg-indigo-50 transition-colors cursor-pointer">Edit</button>
-        <button onclick="deleteEmployee('${emp.id}')" class="text-red-600 hover:text-red-900 text-xs font-semibold px-2 py-1 rounded hover:bg-red-50 transition-colors cursor-pointer">Delete</button>
-      </td>
-    </tr>
-  `).join('');
-}
-
-function openEmployeeModal(employee = null) {
-  document.getElementById('employeeId').value = employee ? employee.id : '';
-  document.getElementById('formFullName').value = employee ? employee.name : '';
-  document.getElementById('formEmail').value = employee ? employee.email : '';
-  document.getElementById('formRole').value = employee ? (employee.role || employee.position) : '';
-  document.getElementById('formBirthDate').value = employee && employee.birthDate ? employee.birthDate : '';
-  formAvatarUrl.value = employee && employee.avatarUrl ? employee.avatarUrl : '';
-  modalTitle.innerText = employee ? 'Edit Employee' : 'Add New Employee';
-  employeeModal.classList.remove('hidden');
-}
-
-function closeEmployeeModal() {
-  employeeModal.classList.add('hidden');
-  employeeForm.reset();
-  formAvatarUrl.value = '';
-}
-
-async function handleEmployeeFormSubmit(e) {
-  e.preventDefault();
-  const id = document.getElementById('employeeId').value;
-  const payload = {
-    name: document.getElementById('formFullName').value.trim(),
-    email: document.getElementById('formEmail').value.trim(),
-    role: document.getElementById('formRole').value.trim(),
-    birthDate: document.getElementById('formBirthDate').value || null,
-    avatarUrl: formAvatarUrl.value || null
-  };
-
-  try {
-    const url = id ? `/api/employees/${id}` : '/api/employees';
-    const method = id ? 'PUT' : 'POST';
-
-    const res = await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const result = await res.json();
-
-    if (res.ok && result.success) {
-      showBanner(id ? 'Employee updated successfully' : 'Employee created successfully', 'success');
-      closeEmployeeModal();
-      loadEmployees();
-      loadDashboardStats();
-    } else {
-      showBanner(result.message || result.error || 'Failed to save employee', 'error');
-    }
-  } catch (error) {
-    showBanner('Network error saving employee', 'error');
-  }
-}
-
-window.editEmployee = function(id) {
-  const emp = state.employees.find(e => e.id === id);
-  if (emp) openEmployeeModal(emp);
-};
-
-window.deleteEmployee = async function(id) {
-  if (!confirm('Are you sure you want to delete this employee profile?')) return;
-  try {
-    const res = await fetch(`/api/employees/${id}`, { method: 'DELETE' });
-    const result = await res.json();
-    if (res.ok && result.success) {
-      showBanner('Employee deleted successfully', 'success');
-      loadEmployees();
-      loadDashboardStats();
-    } else {
-      showBanner(result.message || 'Failed to delete employee', 'error');
-    }
-  } catch (error) {
-    showBanner('Network error deleting employee', 'error');
-  }
-};
-
-// -------------------------------------------------------------
-// 2. TEAMS HUB
-// -------------------------------------------------------------
-
-async function loadTeams() {
-  try {
-    const params = new URLSearchParams();
-    if (state.teamDepartmentFilter) params.append('department', state.teamDepartmentFilter);
-    if (state.teamSearchQuery) params.append('search', state.teamSearchQuery);
-
-    const res = await fetch(`/api/teams?${params.toString()}`);
-    const data = await res.json();
-
-    if (data.success) {
-      state.teams = data.data || [];
-      renderTeams();
-      updateTeamFilterDropdowns();
-    } else {
-      showBanner(data.message || 'Failed to load teams', 'error');
-    }
-  } catch (error) {
-    showBanner('Network error loading teams', 'error');
-  }
-}
-
-function updateTeamFilterDropdowns() {
-  if (teamFilter) {
-    const currentVal = teamFilter.value;
-    teamFilter.innerHTML = '<option value="">All Teams (Filter)</option>' +
-      state.teams.map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join('');
-    teamFilter.value = currentVal;
-  }
-
-  if (taskTeamFilter) {
-    const currentTaskTeamVal = taskTeamFilter.value;
-    taskTeamFilter.innerHTML = '<option value="">All Teams (Task Board)</option>' +
-      state.teams.map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join('');
-    taskTeamFilter.value = currentTaskTeamVal;
-  }
-}
-
-function renderTeams() {
-  if (!teamsGrid || !teamsEmptyState) return;
-
-  if (state.teams.length === 0) {
-    teamsEmptyState.classList.remove('hidden');
-    teamsGrid.innerHTML = '';
-    return;
-  }
-
-  teamsEmptyState.classList.add('hidden');
-
-  teamsGrid.innerHTML = state.teams.map((team) => {
-    const members = team.members || [];
-    const displayMembers = members.slice(0, 4);
-    const remainingCount = team.memberCount > 4 ? team.memberCount - 4 : 0;
+    const avatarHtml = emp.avatarUrl
+      ? `<img src="${emp.avatarUrl}" class="w-12 h-12 rounded-full object-cover border border-slate-700" alt="${escapeHtml(emp.name)}">`
+      : `<div class="w-12 h-12 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-sm shadow-md shadow-indigo-600/20">${initials}</div>`;
 
     return `
-      <div class="card-solid p-5 flex flex-col justify-between" data-testid="team-card" data-team-id="${team.id}">
-        <div>
-          <div class="flex items-start justify-between mb-2">
+      <div class="card-solid p-5 flex flex-col justify-between space-y-4" data-testid="employee-card">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center space-x-3">
+            ${avatarHtml}
             <div>
-              <h4 class="font-bold text-slate-900 text-base leading-snug">${escapeHtml(team.name)}</h4>
-              <span class="inline-block mt-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
-                ${escapeHtml(team.department)}
-              </span>
+              <h3 class="font-bold text-sm text-slate-100">${escapeHtml(emp.name)}</h3>
+              <p class="text-xs text-slate-400">${escapeHtml(emp.position)}</p>
             </div>
           </div>
-
-          <p class="text-xs text-slate-600 mt-2 mb-4 line-clamp-2">
-            ${team.description ? escapeHtml(team.description) : '<span class="italic text-slate-400">No description provided</span>'}
-          </p>
-
-          <div class="bg-slate-50 rounded-lg p-2.5 mb-4 border border-slate-100 flex items-center space-x-2.5">
-            <div class="w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs font-bold overflow-hidden flex-shrink-0">
-              ${team.lead && team.lead.avatarUrl ? `<img src="${team.lead.avatarUrl}" class="w-full h-full object-cover">` : (team.lead ? team.lead.name.charAt(0).toUpperCase() : '—')}
-            </div>
-            <div class="min-w-0">
-              <p class="text-xs text-slate-500 font-medium">Team Lead</p>
-              <p class="text-xs font-bold text-slate-900 truncate">${team.lead ? escapeHtml(team.lead.name) : 'No Lead Assigned'}</p>
-            </div>
-          </div>
-
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex -space-x-2 overflow-hidden items-center">
-              ${displayMembers.map(m => `
-                <div title="${escapeHtml(m.name)} (${escapeHtml(m.role)})" class="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold overflow-hidden">
-                  ${m.avatarUrl ? `<img src="${m.avatarUrl}" class="w-full h-full object-cover">` : m.name.charAt(0).toUpperCase()}
-                </div>
-              `).join('')}
-              ${remainingCount > 0 ? `
-                <div class="inline-block h-7 w-7 rounded-full ring-2 ring-white bg-indigo-100 text-indigo-800 flex items-center justify-center text-xs font-bold">
-                  +${remainingCount}
-                </div>
-              ` : ''}
-              ${members.length === 0 ? '<span class="text-xs text-slate-400 italic">No members yet</span>' : ''}
-            </div>
-            <span class="text-xs font-semibold text-slate-500">${team.memberCount} member${team.memberCount === 1 ? '' : 's'}</span>
-          </div>
+          <span class="age-badge">Age: ${emp.age}</span>
         </div>
 
-        <div class="border-t border-slate-100 pt-3 flex justify-between items-center">
-          <button onclick="manageTeamMembers('${team.id}')" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 px-2 py-1 rounded hover:bg-indigo-50 transition-colors cursor-pointer">
-            👥 Manage Roster
-          </button>
-          <div class="space-x-1">
-            <button onclick="editTeam('${team.id}')" class="text-xs font-semibold text-slate-700 hover:text-slate-900 px-2 py-1 rounded hover:bg-slate-100 transition-colors cursor-pointer">Edit</button>
-            <button onclick="deleteTeam('${team.id}')" class="text-xs font-semibold text-red-600 hover:text-red-800 px-2 py-1 rounded hover:bg-red-50 transition-colors cursor-pointer">Delete</button>
+        <div class="space-y-1.5 text-xs text-slate-400">
+          <div class="flex items-center space-x-2">
+            <span>🏢</span> <span class="font-semibold text-slate-200">${escapeHtml(emp.department)}</span>
           </div>
+          <div class="flex items-center space-x-2">
+            <span>✉️</span> <a href="mailto:${escapeHtml(emp.email)}" class="hover:text-indigo-400 truncate">${escapeHtml(emp.email)}</a>
+          </div>
+          ${emp.phone ? `<div class="flex items-center space-x-2"><span>📞</span> <span>${escapeHtml(emp.phone)}</span></div>` : ''}
+        </div>
+
+        <div>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Teams</p>
+          <div class="flex flex-wrap gap-1.5">${teamBadges}</div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-700/60 flex items-center justify-end space-x-2">
+          <button onclick="editEmployee('${emp.id}')" data-testid="edit-employee-btn" class="px-3 py-1 text-xs font-semibold rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700 cursor-pointer">
+            Edit
+          </button>
+          <button onclick="deleteEmployee('${emp.id}')" data-testid="delete-employee-btn" class="px-3 py-1 text-xs font-semibold rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/30 cursor-pointer">
+            Delete
+          </button>
         </div>
       </div>
     `;
   }).join('');
 }
 
-function openTeamModal(team = null) {
-  document.getElementById('teamId').value = team ? team.id : '';
-  document.getElementById('formTeamName').value = team ? team.name : '';
-  document.getElementById('formTeamDepartment').value = team ? team.department : 'Engineering';
-  document.getElementById('formTeamDescription').value = team && team.description ? team.description : '';
-  teamModalTitle.innerText = team ? 'Edit Team' : 'Add New Team';
-
-  formTeamLead.innerHTML = '<option value="">No Lead Assigned</option>' +
-    state.employees.map(e => `<option value="${e.id}" ${team && team.leadId === e.id ? 'selected' : ''}>${escapeHtml(e.name)} (${escapeHtml(e.role || e.position)})</option>`).join('');
-
-  teamModal.classList.remove('hidden');
-}
-
-function closeTeamModal() {
-  teamModal.classList.add('hidden');
-  teamForm.reset();
-}
-
-async function handleTeamFormSubmit(e) {
-  e.preventDefault();
-  const id = document.getElementById('teamId').value;
-  const payload = {
-    name: document.getElementById('formTeamName').value.trim(),
-    department: document.getElementById('formTeamDepartment').value,
-    description: document.getElementById('formTeamDescription').value.trim() || null,
-    leadId: document.getElementById('formTeamLead').value || null
-  };
-
-  try {
-    const url = id ? `/api/teams/${id}` : '/api/teams';
-    const method = id ? 'PUT' : 'POST';
-
-    const res = await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const result = await res.json();
-
-    if (res.ok && result.success) {
-      showBanner(id ? 'Team updated successfully' : 'Team created successfully', 'success');
-      closeTeamModal();
-      loadTeams();
-      loadDashboardStats();
-    } else {
-      showBanner(result.message || result.error || 'Failed to save team', 'error');
-    }
-  } catch (error) {
-    showBanner('Network error saving team', 'error');
+function renderEmployeeTable(employees) {
+  if (!employeeTableBody) return;
+  if (employees.length === 0) {
+    employeeTableBody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-slate-400">No employees match criteria.</td></tr>`;
+    return;
   }
-}
 
-window.editTeam = function(id) {
-  const team = state.teams.find(t => t.id === id);
-  if (team) openTeamModal(team);
-};
+  employeeTableBody.innerHTML = employees.map(emp => {
+    const initials = emp.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    const teamBadges = (emp.teams && emp.teams.length > 0)
+      ? emp.teams.map(t => `<span class="badge-solid text-[10px]">${escapeHtml(t.name || t)}</span>`).join(' ')
+      : `<span class="text-xs text-slate-500 italic">Unassigned</span>`;
 
-window.deleteTeam = async function(id) {
-  if (!confirm('Are you sure you want to delete this team? Member associations will be unlinked.')) return;
-  try {
-    const res = await fetch(`/api/teams/${id}`, { method: 'DELETE' });
-    const result = await res.json();
-    if (res.ok && result.success) {
-      showBanner('Team deleted successfully', 'success');
-      loadTeams();
-      loadDashboardStats();
-    } else {
-      showBanner(result.message || 'Failed to delete team', 'error');
-    }
-  } catch (error) {
-    showBanner('Network error deleting team', 'error');
-  }
-};
-
-// -------------------------------------------------------------
-// MANAGE TEAM MEMBERS MODAL
-// -------------------------------------------------------------
-
-window.manageTeamMembers = async function(teamId) {
-  const team = state.teams.find(t => t.id === teamId);
-  if (!team) return;
-
-  currentManagingTeamId.value = teamId;
-  manageMembersTitle.innerText = `Manage Roster: ${team.name}`;
-  manageMembersSubtitle.innerText = `${team.department} Department`;
-
-  await refreshTeamMembersModal(teamId);
-  manageMembersModal.classList.remove('hidden');
-};
-
-function closeManageMembersModal() {
-  manageMembersModal.classList.add('hidden');
-  addMemberForm.reset();
-}
-
-async function refreshTeamMembersModal(teamId) {
-  try {
-    const res = await fetch(`/api/teams/${teamId}/members`);
-    const data = await res.json();
-    const members = data.data || [];
-
-    const memberIds = new Set(members.map(m => m.id));
-    const available = state.employees.filter(e => !memberIds.has(e.id));
-
-    availableEmployeeSelect.innerHTML = '<option value="">Select Employee to Add...</option>' +
-      available.map(e => `<option value="${e.id}">${escapeHtml(e.name)} (${escapeHtml(e.role || e.position)})</option>`).join('');
-
-    if (members.length === 0) {
-      teamMembersList.innerHTML = '<div class="p-4 text-center text-xs text-slate-400 italic">No members assigned to this team yet.</div>';
-    } else {
-      teamMembersList.innerHTML = members.map(m => `
-        <div class="p-3 flex items-center justify-between hover:bg-slate-50 transition-colors">
-          <div class="flex items-center space-x-2.5">
-            <div class="w-8 h-8 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center text-xs font-bold text-indigo-700 overflow-hidden">
-              ${m.avatarUrl ? `<img src="${m.avatarUrl}" class="w-full h-full object-cover">` : m.name.charAt(0).toUpperCase()}
+    return `
+      <tr class="hover:bg-slate-800/40 transition-colors">
+        <td class="py-3 px-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-xs">
+              ${initials}
             </div>
             <div>
-              <p class="text-xs font-bold text-slate-900 leading-tight">${escapeHtml(m.name)}</p>
-              <p class="text-[11px] text-slate-500">${escapeHtml(m.email)}</p>
+              <p class="font-semibold text-slate-200">${escapeHtml(emp.name)}</p>
+              <p class="text-xs text-slate-400">${escapeHtml(emp.email)}</p>
             </div>
           </div>
-          <div class="flex items-center space-x-2">
-            <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${m.role === 'Lead' ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}">
-              ${escapeHtml(m.role)}
-            </span>
-            <button onclick="removeMemberFromTeam('${teamId}', '${m.id}')" class="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 text-xs font-bold" title="Remove member">&times;</button>
+        </td>
+        <td class="py-3 px-4 font-medium text-slate-300">${escapeHtml(emp.position)}</td>
+        <td class="py-3 px-4"><span class="badge-solid">${escapeHtml(emp.department)}</span></td>
+        <td class="py-3 px-4 text-center font-bold text-slate-200">${emp.age}</td>
+        <td class="py-3 px-4">${teamBadges}</td>
+        <td class="py-3 px-4 text-right space-x-2">
+          <button onclick="editEmployee('${emp.id}')" class="px-2.5 py-1 text-xs font-semibold rounded bg-slate-800 text-slate-300 hover:bg-slate-700">Edit</button>
+          <button onclick="deleteEmployee('${emp.id}')" class="px-2.5 py-1 text-xs font-semibold rounded bg-red-500/10 text-red-400 hover:bg-red-500/20">Delete</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderTeams() {
+  if (!teamsGrid) return;
+  if (state.teams.length === 0) {
+    teamsGrid.innerHTML = `
+      <div class="col-span-full card-solid p-12 text-center space-y-3">
+        <span class="text-4xl">🏢</span>
+        <h3 class="text-base font-bold">No Teams Created Yet</h3>
+        <p class="text-xs text-slate-400">Click '+ Create Team' to organize cross-functional pods.</p>
+      </div>
+    `;
+    return;
+  }
+
+  teamsGrid.innerHTML = state.teams.map(team => {
+    const memberCount = team.members ? team.members.length : (team.memberCount || 0);
+    const leadName = team.lead ? team.lead.name : (team.leadName || 'Unassigned');
+
+    return `
+      <div class="card-solid p-5 flex flex-col justify-between space-y-4">
+        <div>
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="font-bold text-base text-slate-100">${escapeHtml(team.name)}</h3>
+              <p class="text-xs text-slate-400 mt-0.5">${escapeHtml(team.description || 'No description provided.')}</p>
+            </div>
+            <span class="badge-solid">${escapeHtml(team.department)}</span>
+          </div>
+
+          <div class="mt-4 p-3 bg-slate-800/50 rounded-lg border border-slate-700/60 flex items-center justify-between">
+            <div class="text-xs text-slate-300">
+              <span class="text-slate-400">Lead:</span> <strong class="text-indigo-400">★ ${escapeHtml(leadName)}</strong>
+            </div>
+            <div class="text-xs font-bold text-slate-200">
+              👥 ${memberCount} members
+            </div>
           </div>
         </div>
-      `).join('');
-    }
-  } catch (error) {
-    showBanner('Failed to load team members', 'error');
-  }
+
+        <div class="pt-3 border-t border-slate-700/60 flex items-center justify-end space-x-2">
+          <button onclick="editTeam('${team.id}')" class="px-3 py-1 text-xs font-semibold rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 border border-slate-700">
+            Edit Team
+          </button>
+          <button onclick="deleteTeam('${team.id}')" class="px-3 py-1 text-xs font-semibold rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/30">
+            Delete
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
-async function handleAddMemberSubmit(e) {
-  e.preventDefault();
-  const teamId = currentManagingTeamId.value;
-  const employeeId = availableEmployeeSelect.value;
-  const role = memberRoleSelect.value;
-
-  if (!employeeId) return;
-
-  try {
-    const res = await fetch(`/api/teams/${teamId}/members`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ employeeId, role })
-    });
-    const result = await res.json();
-
-    if (res.ok && result.success) {
-      showBanner('Member added to team', 'success');
-      await refreshTeamMembersModal(teamId);
-      loadTeams();
-      loadDashboardStats();
-    } else {
-      showBanner(result.message || 'Failed to add member', 'error');
-    }
-  } catch (error) {
-    showBanner('Network error adding team member', 'error');
-  }
-}
-
-window.removeMemberFromTeam = async function(teamId, employeeId) {
-  if (!confirm('Remove this employee from the team roster?')) return;
-
-  try {
-    const res = await fetch(`/api/teams/${teamId}/members/${employeeId}`, {
-      method: 'DELETE'
-    });
-    const result = await res.json();
-
-    if (res.ok && result.success) {
-      showBanner('Member removed from team', 'success');
-      await refreshTeamMembersModal(teamId);
-      loadTeams();
-      loadDashboardStats();
-    } else {
-      showBanner(result.message || 'Failed to remove member', 'error');
-    }
-  } catch (error) {
-    showBanner('Network error removing team member', 'error');
-  }
-};
-
-// -------------------------------------------------------------
-// 3. 3-STAGE KANBAN TASK BOARD
-// -------------------------------------------------------------
-
-async function loadTasks() {
-  try {
-    const params = new URLSearchParams();
-    if (state.taskTeamFilter) params.append('teamId', state.taskTeamFilter);
-    if (state.taskPriorityFilter) params.append('priority', state.taskPriorityFilter);
-    if (state.taskSearchQuery) params.append('search', state.taskSearchQuery);
-
-    const res = await fetch(`/api/tasks?${params.toString()}`);
-    const data = await res.json();
-
-    if (data.success) {
-      state.tasks = data.data || [];
-      renderKanbanBoard();
-    } else {
-      showBanner(data.message || 'Failed to load tasks', 'error');
-    }
-  } catch (error) {
-    showBanner('Network error loading tasks', 'error');
-  }
-}
-
-function renderKanbanBoard() {
-  if (!todoTasksList || !pendingTasksList || !completedTasksList) return;
-
+function renderTasks() {
   const todoTasks = state.tasks.filter(t => t.status === 'Todo');
   const pendingTasks = state.tasks.filter(t => t.status === 'Pending');
   const completedTasks = state.tasks.filter(t => t.status === 'Completed');
 
-  if (todoCountBadge) todoCountBadge.innerText = todoTasks.length;
-  if (pendingCountBadge) pendingCountBadge.innerText = pendingTasks.length;
-  if (completedCountBadge) completedCountBadge.innerText = completedTasks.length;
+  if (todoCountBadge) todoCountBadge.textContent = todoTasks.length;
+  if (pendingCountBadge) pendingCountBadge.textContent = pendingTasks.length;
+  if (completedCountBadge) completedCountBadge.textContent = completedTasks.length;
 
-  todoTasksList.innerHTML = renderTaskColumn(todoTasks, 'Todo');
-  pendingTasksList.innerHTML = renderTaskColumn(pendingTasks, 'Pending');
-  completedTasksList.innerHTML = renderTaskColumn(completedTasks, 'Completed');
+  if (colTodo) colTodo.innerHTML = renderTaskColumn(todoTasks, 'Todo');
+  if (colPending) colPending.innerHTML = renderTaskColumn(pendingTasks, 'Pending');
+  if (colCompleted) colCompleted.innerHTML = renderTaskColumn(completedTasks, 'Completed');
 }
 
 function renderTaskColumn(tasks, status) {
   if (tasks.length === 0) {
-    return `<div class="py-12 text-center text-xs text-slate-400 border border-dashed border-slate-200 rounded-xl bg-white/50">No tasks in ${status}</div>`;
+    return `<div class="p-6 text-center text-xs text-slate-500 border border-dashed border-slate-800 rounded-xl">No tasks in this stage</div>`;
   }
 
   return tasks.map(task => {
-    const priorityColors = {
-      Urgent: 'bg-red-50 text-red-700 border-red-200',
-      High: 'bg-amber-50 text-amber-700 border-amber-200',
-      Medium: 'bg-blue-50 text-blue-700 border-blue-200',
-      Low: 'bg-slate-50 text-slate-600 border-slate-200'
-    };
+    const priorityClasses = {
+      Urgent: 'bg-red-500/20 text-red-400 border-red-500/30',
+      High: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
+      Medium: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+      Low: 'bg-slate-700/40 text-slate-400 border-slate-600/40'
+    }[task.priority] || 'bg-slate-800 text-slate-400';
 
-    const isOverdue = task.dueDate && task.status !== 'Completed' && new Date(task.dueDate) < new Date(new Date().toDateString());
+    const assigneeName = task.assignee ? task.assignee.name : (task.assigneeName || 'Unassigned');
+    const teamName = task.teamName || 'Assigned Team';
+
+    let transitionBtns = '';
+    if (status === 'Todo') {
+      transitionBtns = `<button onclick="updateTaskStatus('${task.id}', 'Pending')" class="px-2.5 py-1 text-xs font-semibold rounded bg-indigo-600 hover:bg-indigo-700 text-white">Start > Pending</button>`;
+    } else if (status === 'Pending') {
+      transitionBtns = `
+        <button onclick="updateTaskStatus('${task.id}', 'Todo')" class="px-2 py-1 text-xs font-semibold rounded bg-slate-800 hover:bg-slate-700 text-slate-300">&lt; Todo</button>
+        <button onclick="updateTaskStatus('${task.id}', 'Completed')" class="px-2.5 py-1 text-xs font-semibold rounded bg-emerald-600 hover:bg-emerald-700 text-white">Complete &gt;</button>
+      `;
+    } else if (status === 'Completed') {
+      transitionBtns = `<button onclick="updateTaskStatus('${task.id}', 'Pending')" class="px-2.5 py-1 text-xs font-semibold rounded bg-slate-800 hover:bg-slate-700 text-slate-300">&lt; Reopen</button>`;
+    }
 
     return `
-      <div class="card-solid p-4 flex flex-col justify-between space-y-3" data-testid="task-card" data-task-id="${task.id}">
-        <div>
-          <div class="flex items-start justify-between gap-2 mb-2">
-            <h4 class="font-bold text-slate-900 text-sm leading-snug">${escapeHtml(task.title)}</h4>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${priorityColors[task.priority] || priorityColors.Medium}">
-              ${escapeHtml(task.priority)}
-            </span>
-          </div>
-
-          <p class="text-xs text-slate-600 line-clamp-2 mb-3">
-            ${task.description ? escapeHtml(task.description) : '<span class="italic text-slate-400">No description</span>'}
-          </p>
-
-          <div class="flex flex-wrap items-center gap-1.5 text-xs text-slate-500 mb-3">
-            <span class="inline-flex items-center px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-[11px] font-medium">
-              🏢 ${escapeHtml(task.teamName || 'Team')}
-            </span>
-            ${task.dueDate ? `
-              <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium ${isOverdue ? 'bg-red-100 text-red-800 font-bold' : 'bg-slate-100 text-slate-700'}">
-                📅 ${task.dueDate} ${isOverdue ? '(Overdue)' : ''}
-              </span>
-            ` : ''}
-          </div>
-
-          <div class="flex items-center space-x-2 pt-2 border-t border-slate-100">
-            <div class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-[10px] font-bold overflow-hidden flex-shrink-0">
-              ${task.assignee && task.assignee.avatarUrl ? `<img src="${task.assignee.avatarUrl}" class="w-full h-full object-cover">` : (task.assignee ? task.assignee.name.charAt(0).toUpperCase() : '—')}
-            </div>
-            <span class="text-xs text-slate-600 truncate font-medium">
-              ${task.assignee ? escapeHtml(task.assignee.name) : '<span class="italic text-slate-400">Unassigned</span>'}
-            </span>
-          </div>
+      <div class="card-solid p-4 space-y-3" data-task-id="${task.id}">
+        <div class="flex items-start justify-between">
+          <span class="px-2 py-0.5 rounded text-[11px] font-bold border ${priorityClasses}">${task.priority}</span>
+          <span class="text-[11px] text-slate-400">${task.dueDate ? `📅 ${task.dueDate}` : ''}</span>
         </div>
 
-        <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
-          <div class="space-x-1 flex">
-            ${status === 'Todo' ? `
-              <button onclick="moveTaskStatus('${task.id}', 'Pending')" class="px-2 py-1 bg-amber-50 text-amber-700 hover:bg-amber-100 text-[11px] font-bold rounded transition-colors" title="Start task">
-                ▶ In Progress
-              </button>
-              <button onclick="moveTaskStatus('${task.id}', 'Completed')" class="px-2 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-[11px] font-bold rounded transition-colors" title="Complete task">
-                ✓ Done
-              </button>
-            ` : ''}
-            ${status === 'Pending' ? `
-              <button onclick="moveTaskStatus('${task.id}', 'Todo')" class="px-2 py-1 bg-slate-100 text-slate-700 hover:bg-slate-200 text-[11px] font-bold rounded transition-colors" title="Reset to Todo">
-                ◀ Todo
-              </button>
-              <button onclick="moveTaskStatus('${task.id}', 'Completed')" class="px-2 py-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 text-[11px] font-bold rounded transition-colors" title="Complete task">
-                ✓ Done
-              </button>
-            ` : ''}
-            ${status === 'Completed' ? `
-              <button onclick="moveTaskStatus('${task.id}', 'Pending')" class="px-2 py-1 bg-amber-50 text-amber-700 hover:bg-amber-100 text-[11px] font-bold rounded transition-colors" title="Reopen task">
-                ↺ Reopen
-              </button>
-            ` : ''}
-          </div>
+        <div>
+          <h4 class="font-bold text-sm text-slate-100">${escapeHtml(task.title)}</h4>
+          <p class="text-xs text-slate-400 mt-1">${escapeHtml(task.description || '')}</p>
+        </div>
 
-          <div class="space-x-1 flex">
-            <button onclick="editTask('${task.id}')" class="text-slate-500 hover:text-slate-800 p-1 rounded hover:bg-slate-100 text-xs font-semibold" title="Edit task">Edit</button>
-            <button onclick="deleteTask('${task.id}')" class="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 text-xs font-semibold" title="Delete task">&times;</button>
-          </div>
+        <div class="text-[11px] text-slate-400 flex items-center justify-between pt-2 border-t border-slate-700/60">
+          <span>🏢 ${escapeHtml(teamName)}</span>
+          <span>👤 ${escapeHtml(assigneeName)}</span>
+        </div>
+
+        <div class="flex items-center justify-end space-x-2 pt-1">
+          ${transitionBtns}
+          <button onclick="deleteTask('${task.id}')" class="text-xs text-red-400 hover:text-red-300 p-1">🗑️</button>
         </div>
       </div>
     `;
   }).join('');
 }
 
-window.moveTaskStatus = async function(taskId, newStatus) {
+function populateTeamFilters() {
+  const options = `<option value="">All Teams</option>` + state.teams.map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join('');
+  if (teamFilter) teamFilter.innerHTML = options;
+  if (taskTeamFilter) taskTeamFilter.innerHTML = options;
+}
+
+// ==========================================================================
+// 7. EVENT LISTENERS & MODAL CONTROLLERS
+// ==========================================================================
+
+// Global & Employee Search Input
+if (globalSearchInput) {
+  globalSearchInput.addEventListener('input', (e) => {
+    state.searchQuery = e.target.value;
+    if (state.currentTab === 'employees') renderEmployees();
+  });
+}
+
+if (employeeSearchInput) {
+  employeeSearchInput.addEventListener('input', (e) => {
+    state.searchQuery = e.target.value;
+    renderEmployees();
+  });
+}
+
+if (departmentFilter) {
+  departmentFilter.addEventListener('change', (e) => {
+    state.departmentFilter = e.target.value;
+    renderEmployees();
+  });
+}
+
+if (teamFilter) {
+  teamFilter.addEventListener('change', (e) => {
+    state.teamFilter = e.target.value;
+    renderEmployees();
+  });
+}
+
+if (taskTeamFilter) {
+  taskTeamFilter.addEventListener('change', (e) => {
+    state.taskTeamFilter = e.target.value;
+    loadTasksData();
+  });
+}
+
+// View Toggle Switchers
+if (viewGridBtn) {
+  viewGridBtn.addEventListener('click', () => {
+    state.viewMode = 'grid';
+    viewGridBtn.className = 'px-2.5 py-1 rounded text-xs font-semibold bg-indigo-600 text-white cursor-pointer';
+    if (viewTableBtn) viewTableBtn.className = 'px-2.5 py-1 rounded text-xs font-semibold text-slate-400 hover:text-slate-100 cursor-pointer';
+    renderEmployees();
+  });
+}
+
+if (viewTableBtn) {
+  viewTableBtn.addEventListener('click', () => {
+    state.viewMode = 'table';
+    viewTableBtn.className = 'px-2.5 py-1 rounded text-xs font-semibold bg-indigo-600 text-white cursor-pointer';
+    if (viewGridBtn) viewGridBtn.className = 'px-2.5 py-1 rounded text-xs font-semibold text-slate-400 hover:text-slate-100 cursor-pointer';
+    renderEmployees();
+  });
+}
+
+// Age Preview Calculation
+if (inputBirthdate) {
+  inputBirthdate.addEventListener('input', (e) => {
+    const val = e.target.value;
+    if (!val) {
+      if (agePreviewBadge) agePreviewBadge.classList.add('hidden');
+      return;
+    }
+    const birth = new Date(val);
+    const now = new Date();
+    let age = now.getFullYear() - birth.getFullYear();
+    const m = now.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && now.getDate() < birth.getDate())) age--;
+    
+    if (agePreviewBadge && calculatedAgeText) {
+      calculatedAgeText.textContent = `${age} yrs`;
+      agePreviewBadge.classList.remove('hidden');
+    }
+  });
+}
+
+// Modals Open / Close
+function openEmployeeModal(isEdit = false) {
+  if (!employeeModal) return;
+  employeeModal.classList.remove('hidden');
+  if (modalTitle) modalTitle.textContent = isEdit ? 'Edit Employee Profile' : 'Add New Employee';
+  
+  // Render team checkboxes
+  if (modalTeamCheckboxes) {
+    modalTeamCheckboxes.innerHTML = state.teams.map(t => `
+      <label class="flex items-center space-x-2 text-xs text-slate-200 cursor-pointer">
+        <input type="checkbox" name="teams" value="${t.id}" class="rounded border-slate-700 text-indigo-600 focus:ring-indigo-500">
+        <span>${escapeHtml(t.name)}</span>
+      </label>
+    `).join('') || '<p class="text-xs text-slate-500 italic">No teams created yet.</p>';
+  }
+}
+
+function closeEmployeeModal() {
+  if (employeeModal) employeeModal.classList.add('hidden');
+  if (employeeForm) employeeForm.reset();
+  if (agePreviewBadge) agePreviewBadge.classList.add('hidden');
+}
+
+if (addEmployeeBtn) addEmployeeBtn.addEventListener('click', () => {
+  if (employeeId) employeeId.value = '';
+  openEmployeeModal(false);
+});
+if (closeModalBtn) closeModalBtn.addEventListener('click', closeEmployeeModal);
+if (cancelModalBtn) cancelModalBtn.addEventListener('click', closeEmployeeModal);
+
+// Save Employee Submit
+if (employeeForm) {
+  employeeForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = employeeId ? employeeId.value : '';
+    const selectedTeamIds = Array.from(modalTeamCheckboxes.querySelectorAll('input[name="teams"]:checked')).map(cb => cb.value);
+
+    const payload = {
+      name: inputName.value.trim(),
+      position: inputPosition.value.trim(),
+      department: inputDepartment.value,
+      email: inputEmail.value.trim(),
+      phone: inputPhone.value.trim() || undefined,
+      birthdate: inputBirthdate.value,
+      teamIds: selectedTeamIds
+    };
+
+    try {
+      const url = id ? `/api/employees/${id}` : '/api/employees';
+      const method = id ? 'PUT' : 'POST';
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.message || 'Operation failed');
+
+      closeEmployeeModal();
+      showBanner(id ? 'Employee profile updated!' : 'Employee added successfully!');
+      loadEmployeesData();
+    } catch (err) {
+      showBanner(err.message, 'error');
+    }
+  });
+}
+
+// Global actions exposed for buttons
+window.editEmployee = async function(id) {
+  const emp = state.employees.find(e => e.id === id);
+  if (!emp) return;
+  if (employeeId) employeeId.value = emp.id;
+  if (inputName) inputName.value = emp.name;
+  if (inputPosition) inputPosition.value = emp.position;
+  if (inputDepartment) inputDepartment.value = emp.department;
+  if (inputEmail) inputEmail.value = emp.email;
+  if (inputPhone) inputPhone.value = emp.phone || '';
+  if (inputBirthdate) {
+    inputBirthdate.value = emp.birthdate ? emp.birthdate.substring(0, 10) : '';
+    inputBirthdate.dispatchEvent(new Event('input'));
+  }
+  openEmployeeModal(true);
+};
+
+window.deleteEmployee = async function(id) {
+  if (!confirm('Are you sure you want to delete this employee record?')) return;
   try {
-    const res = await fetch(`/api/tasks/${taskId}/status`, {
+    const res = await fetch(`/api/employees/${id}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error('Deletion failed');
+    showBanner('Employee record deleted');
+    loadEmployeesData();
+  } catch (err) {
+    showBanner(err.message, 'error');
+  }
+};
+
+// Team Modal
+function openTeamModal(isEdit = false) {
+  if (!teamModal) return;
+  teamModal.classList.remove('hidden');
+  if (teamModalTitle) teamModalTitle.textContent = isEdit ? 'Edit Team Profile' : 'Create New Team';
+
+  if (teamInputLead) {
+    teamInputLead.innerHTML = '<option value="">-- Select Team Lead --</option>' + 
+      state.employees.map(e => `<option value="${e.id}">${escapeHtml(e.name)} (${escapeHtml(e.position)})</option>`).join('');
+  }
+}
+
+function closeTeamModal() {
+  if (teamModal) teamModal.classList.add('hidden');
+  if (teamForm) teamForm.reset();
+}
+
+if (addTeamBtn) addTeamBtn.addEventListener('click', () => { if (teamId) teamId.value = ''; openTeamModal(false); });
+if (addTeamSecondaryBtn) addTeamSecondaryBtn.addEventListener('click', () => { if (teamId) teamId.value = ''; openTeamModal(false); });
+if (closeTeamModalBtn) closeTeamModalBtn.addEventListener('click', closeTeamModal);
+if (cancelTeamModalBtn) cancelTeamModalBtn.addEventListener('click', closeTeamModal);
+
+if (teamForm) {
+  teamForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = teamId ? teamId.value : '';
+    const payload = {
+      name: teamInputName.value.trim(),
+      department: teamInputDepartment.value,
+      leadId: teamInputLead.value || undefined,
+      description: teamInputDescription.value.trim() || undefined
+    };
+
+    try {
+      const url = id ? `/api/teams/${id}` : '/api/teams';
+      const method = id ? 'PUT' : 'POST';
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.message || 'Operation failed');
+      closeTeamModal();
+      showBanner(id ? 'Team profile updated!' : 'Team created successfully!');
+      loadTeamsData();
+    } catch (err) {
+      showBanner(err.message, 'error');
+    }
+  });
+}
+
+window.deleteTeam = async function(id) {
+  if (!confirm('Are you sure you want to delete this team?')) return;
+  try {
+    const res = await fetch(`/api/teams/${id}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error('Failed to delete team');
+    showBanner('Team deleted successfully');
+    loadTeamsData();
+  } catch (err) {
+    showBanner(err.message, 'error');
+  }
+};
+
+// Task Modal
+function openTaskModal(isEdit = false) {
+  if (!taskModal) return;
+  taskModal.classList.remove('hidden');
+  if (taskModalTitle) taskModalTitle.textContent = isEdit ? 'Edit Task' : 'Author New Task';
+
+  if (taskInputTeam) {
+    taskInputTeam.innerHTML = '<option value="">-- Select Team --</option>' + 
+      state.teams.map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join('');
+  }
+  if (taskInputAssignee) {
+    taskInputAssignee.innerHTML = '<option value="">-- Unassigned --</option>' + 
+      state.employees.map(e => `<option value="${e.id}">${escapeHtml(e.name)}</option>`).join('');
+  }
+}
+
+function closeTaskModal() {
+  if (taskModal) taskModal.classList.add('hidden');
+  if (taskForm) taskForm.reset();
+}
+
+if (addTaskBtn) addTaskBtn.addEventListener('click', () => { if (taskId) taskId.value = ''; openTaskModal(false); });
+if (addTaskSecondaryBtn) addTaskSecondaryBtn.addEventListener('click', () => { if (taskId) taskId.value = ''; openTaskModal(false); });
+if (closeTaskModalBtn) closeTaskModalBtn.addEventListener('click', closeTaskModal);
+if (cancelTaskModalBtn) cancelTaskModalBtn.addEventListener('click', closeTaskModal);
+
+if (taskForm) {
+  taskForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = taskId ? taskId.value : '';
+    const payload = {
+      title: taskInputTitle.value.trim(),
+      teamId: taskInputTeam.value,
+      assigneeId: taskInputAssignee.value || undefined,
+      status: taskInputStatus.value,
+      priority: taskInputPriority.value,
+      dueDate: taskInputDueDate.value || undefined,
+      description: taskInputDescription.value.trim() || undefined
+    };
+
+    try {
+      const url = id ? `/api/tasks/${id}` : '/api/tasks';
+      const method = id ? 'PUT' : 'POST';
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.message || 'Operation failed');
+      closeTaskModal();
+      showBanner(id ? 'Task updated!' : 'Task created successfully!');
+      loadTasksData();
+    } catch (err) {
+      showBanner(err.message, 'error');
+    }
+  });
+}
+
+window.updateTaskStatus = async function(id, newStatus) {
+  try {
+    const res = await fetch(`/api/tasks/${id}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: newStatus })
     });
-    const result = await res.json();
-
-    if (res.ok && result.success) {
-      showBanner(`Task moved to ${newStatus}`, 'success');
-      loadTasks();
-      loadDashboardStats();
-    } else {
-      showBanner(result.message || 'Failed to update task status', 'error');
-    }
-  } catch (error) {
-    showBanner('Network error updating task status', 'error');
+    if (!res.ok) throw new Error('Status transition rejected');
+    showBanner(`Task moved to ${newStatus}`);
+    loadTasksData();
+  } catch (err) {
+    showBanner(err.message, 'error');
   }
-};
-
-function openTaskModal(task = null) {
-  document.getElementById('taskId').value = task ? task.id : '';
-  document.getElementById('formTaskTitle').value = task ? task.title : '';
-  document.getElementById('formTaskPriority').value = task ? task.priority : 'Medium';
-  document.getElementById('formTaskDescription').value = task && task.description ? task.description : '';
-  document.getElementById('formTaskDueDate').value = task && task.dueDate ? task.dueDate : '';
-  taskModalTitle.innerText = task ? 'Edit Task' : 'Add New Task';
-
-  formTaskTeam.innerHTML = '<option value="">Select Team...</option>' +
-    state.teams.map(t => `<option value="${t.id}" ${task && task.teamId === t.id ? 'selected' : ''}>${escapeHtml(t.name)} (${escapeHtml(t.department)})</option>`).join('');
-
-  formTaskAssignee.innerHTML = '<option value="">Unassigned</option>' +
-    state.employees.map(e => `<option value="${e.id}" ${task && task.assigneeId === e.id ? 'selected' : ''}>${escapeHtml(e.name)} (${escapeHtml(e.role || e.position)})</option>`).join('');
-
-  taskModal.classList.remove('hidden');
-}
-
-function closeTaskModal() {
-  taskModal.classList.add('hidden');
-  taskForm.reset();
-}
-
-async function handleTaskFormSubmit(e) {
-  e.preventDefault();
-  const id = document.getElementById('taskId').value;
-  const payload = {
-    title: document.getElementById('formTaskTitle').value.trim(),
-    teamId: document.getElementById('formTaskTeam').value,
-    priority: document.getElementById('formTaskPriority').value,
-    assigneeId: document.getElementById('formTaskAssignee').value || null,
-    dueDate: document.getElementById('formTaskDueDate').value || null,
-    description: document.getElementById('formTaskDescription').value.trim() || null
-  };
-
-  try {
-    const url = id ? `/api/tasks/${id}` : '/api/tasks';
-    const method = id ? 'PUT' : 'POST';
-
-    const res = await fetch(url, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const result = await res.json();
-
-    if (res.ok && result.success) {
-      showBanner(id ? 'Task updated successfully' : 'Task created successfully', 'success');
-      closeTaskModal();
-      loadTasks();
-      loadDashboardStats();
-    } else {
-      showBanner(result.message || result.error || 'Failed to save task', 'error');
-    }
-  } catch (error) {
-    showBanner('Network error saving task', 'error');
-  }
-}
-
-window.editTask = function(id) {
-  const task = state.tasks.find(t => t.id === id);
-  if (task) openTaskModal(task);
 };
 
 window.deleteTask = async function(id) {
-  if (!confirm('Are you sure you want to delete this task?')) return;
+  if (!confirm('Delete this task?')) return;
   try {
     const res = await fetch(`/api/tasks/${id}`, { method: 'DELETE' });
-    const result = await res.json();
-    if (res.ok && result.success) {
-      showBanner('Task deleted successfully', 'success');
-      loadTasks();
-      loadDashboardStats();
-    } else {
-      showBanner(result.message || 'Failed to delete task', 'error');
-    }
-  } catch (error) {
-    showBanner('Network error deleting task', 'error');
+    if (!res.ok) throw new Error('Failed to delete task');
+    showBanner('Task deleted');
+    loadTasksData();
+  } catch (err) {
+    showBanner(err.message, 'error');
   }
 };
 
-// -------------------------------------------------------------
-// UTILITIES
-// -------------------------------------------------------------
-
-function showBanner(message, type = 'success') {
-  statusBanner.innerText = message;
-  statusBanner.className = `mb-6 p-4 rounded-xl text-sm font-medium ${type === 'success' ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-red-50 text-red-800 border border-red-200'}`;
-  statusBanner.classList.remove('hidden');
-  setTimeout(() => {
-    statusBanner.classList.add('hidden');
-  }, 4000);
+if (refreshDashboardBtn) {
+  refreshDashboardBtn.addEventListener('click', () => {
+    loadDashboardData();
+    showBanner('Dashboard analytics refreshed');
+  });
 }
 
-function escapeHtml(text) {
-  if (!text) return '';
-  return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
+
+// ==========================================================================
+// 8. INITIALIZATION
+// ==========================================================================
+
+document.addEventListener('DOMContentLoaded', async () => {
+  applyTheme(state.theme);
+  await checkHealth();
+  await loadTeamsData();
+  await loadEmployeesData();
+  switchTab('employees');
+  setInterval(checkHealth, 30000);
+});
