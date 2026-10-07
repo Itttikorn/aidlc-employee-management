@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { ZodError } from 'zod';
 import { AppError } from '../utils/errors.js';
 import { logger } from '../utils/logger.js';
 
@@ -22,6 +23,28 @@ export function errorHandler(
   _next: NextFunction
 ): void {
   const isDevelopment = process.env.NODE_ENV === 'development';
+
+  if (err instanceof ZodError) {
+    const errorDetails = err.errors.map(e => ({
+      field: e.path.join('.'),
+      message: e.message
+    }));
+
+    logger.warn('Validation error handled', {
+      statusCode: 400,
+      path: req.path,
+      method: req.method,
+      details: errorDetails
+    });
+
+    res.status(400).json({
+      status: 'fail',
+      statusCode: 400,
+      message: 'Validation failed',
+      details: errorDetails
+    });
+    return;
+  }
 
   if (err instanceof AppError) {
     const statusCode = err.statusCode;

@@ -4,6 +4,9 @@ import { checkDatabaseHealth } from './config/database.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import path from 'node:path';
 import { employeeRouter } from './routes/employeeRoutes.js';
+import { teamRouter } from './routes/teamRoutes.js';
+import { taskRouter } from './routes/taskRoutes.js';
+import { dashboardRouter } from './routes/dashboardRoutes.js';
 
 export function createApp(): Express {
   const app = express();
@@ -44,8 +47,11 @@ export function createApp(): Express {
     });
   });
 
-  // Employee Directory routes
+  // Employee Directory, Team, Task, and Dashboard Analytics routes
   app.use('/api/employees', employeeRouter);
+  app.use('/api/teams', teamRouter);
+  app.use('/api/tasks', taskRouter);
+  app.use('/api/dashboard', dashboardRouter);
 
   // Base API route
   app.get('/api', (_req: Request, res: Response) => {

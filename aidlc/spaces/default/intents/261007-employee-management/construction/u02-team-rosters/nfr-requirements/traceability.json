@@ -1,0 +1,17 @@
+{
+  "unit": "u02-team-rosters",
+  "stage": "nfr-requirements",
+  "phase": "construction",
+  "intent": "261007-employee-management",
+  "generated_artifacts": [
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/nfr-requirements/security-requirements.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/nfr-requirements/performance-requirements.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/nfr-requirements/observability-requirements.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/nfr-requirements/nfr-requirements-questions.md"
+  ],
+  "upstream_references": [
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/functional-design/functional-spec.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/functional-design/rules.md"
+  ],
+  "status": "READY"
+}

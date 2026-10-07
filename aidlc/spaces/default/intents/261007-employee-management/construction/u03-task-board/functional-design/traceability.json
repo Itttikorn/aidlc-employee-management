@@ -1,0 +1,30 @@
+{
+  "unit": "u03-task-board",
+  "stage": "functional-design",
+  "upstreamRequirements": [
+    "REQ-TSK-01",
+    "REQ-TSK-02",
+    "REQ-TSK-03"
+  ],
+  "upstreamStories": [
+    "US-04",
+    "US-05"
+  ],
+  "artifacts": [
+    "functional-spec.md",
+    "entities.md",
+    "rules.md"
+  ],
+  "rules": [
+    "BR-TSK-01",
+    "BR-TSK-02",
+    "BR-TSK-03",
+    "BR-TSK-04",
+    "BR-TSK-05",
+    "BR-TSK-06",
+    "BR-TSK-07",
+    "BR-TSK-08",
+    "BR-TSK-09"
+  ]
+}
+

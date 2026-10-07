@@ -1,0 +1,22 @@
+{
+  "unit": "u02-team-rosters",
+  "stage": "functional-design",
+  "phase": "construction",
+  "intent": "261007-employee-management",
+  "generated_artifacts": [
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/functional-design/functional-spec.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/functional-design/entities.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/functional-design/rules.md",
+    "aidlc/spaces/default/intents/261007-employee-management/construction/u02-team-rosters/functional-design/functional-design-questions.md"
+  ],
+  "upstream_references": [
+    "aidlc/spaces/default/intents/261007-employee-management/inception/delivery-planning/bolt-plan.md",
+    "aidlc/spaces/default/intents/261007-employee-management/inception/units-generation/unit-of-work.md",
+    "aidlc/spaces/default/intents/261007-employee-management/inception/user-stories/stories.md"
+  ],
+  "covered_user_stories": [
+    "US2.1",
+    "US2.2"
+  ],
+  "status": "READY"
+}
