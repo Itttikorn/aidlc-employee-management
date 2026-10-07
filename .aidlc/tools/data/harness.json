@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "distribution": "antigravity",
+  "productName": "Google Antigravity",
+  "configNextStep": "open this project in Antigravity IDE or run `agy`, then `/aidlc --doctor`",
+  "name": "antigravity",
+  "harnessDir": ".aidlc",
+  "rulesSubdir": "rules",
+  "providers": {
+    "schemaVersion": 1,
+    "provider": "current"
+  }
+}
