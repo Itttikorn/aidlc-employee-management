@@ -4,11 +4,14 @@ on:
   push:
     branches:
       - main
-      - master
+      - dev
+      - staging
+      - 'feature/**'
   pull_request:
     branches:
       - main
-      - master
+      - dev
+      - staging
 
 jobs:
   lint-and-typecheck:
