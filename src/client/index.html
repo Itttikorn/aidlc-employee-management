@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Employee Management System — Enterprise Hub</title>
   
   <!-- Tailwind CSS CDN -->
@@ -33,16 +33,16 @@
   <!-- ==================================================================== -->
   <!-- PERSISTENT SIDEBAR (Two-Column Architecture from Inception Mockups)   -->
   <!-- ==================================================================== -->
-  <aside id="sidebar" class="w-64 flex flex-col justify-between fixed inset-y-0 left-0 z-40 transition-transform -translate-x-full md:translate-x-0">
+  <aside id="sidebar" class="w-64 flex flex-col justify-between fixed inset-y-0 left-0 z-40 transition-transform -translate-x-full md:translate-x-0 shadow-lg md:shadow-none">
     <div>
       <!-- Brand & Workspace Header -->
       <div class="h-16 flex items-center px-6 border-b space-x-3" style="border-color: var(--border-color);">
-        <div class="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-black text-base shadow-md shadow-indigo-600/30">
+        <div class="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-black text-base shadow-md shadow-indigo-600/30 shrink-0">
           EM
         </div>
-        <div>
-          <h1 class="text-sm font-bold tracking-tight leading-tight" style="color: var(--text-primary);">Employee Hub</h1>
-          <p class="text-[11px] font-medium" style="color: var(--text-secondary);">Enterprise Workspace</p>
+        <div class="min-w-0 flex-1">
+          <h1 class="text-sm font-bold tracking-tight leading-tight truncate" style="color: var(--text-primary);">Employee Hub</h1>
+          <p class="text-[11px] font-medium truncate" style="color: var(--text-secondary);">Enterprise Workspace</p>
         </div>
       </div>
 
@@ -106,42 +106,42 @@
   <!-- ==================================================================== -->
   <!-- MAIN VIEWPORT & TOP APP BAR                                          -->
   <!-- ==================================================================== -->
-  <div class="flex-1 flex flex-col md:pl-64 min-h-screen">
+  <div class="flex-1 flex flex-col md:pl-64 min-h-screen min-w-0 w-full overflow-x-hidden">
     
     <!-- Top App Bar -->
-    <header class="h-16 sticky top-0 z-20 flex items-center justify-between px-4 sm:px-6 lg:px-8 border-b" style="border-color: var(--border-color);">
+    <header class="h-16 sticky top-0 z-20 flex items-center justify-between px-3 sm:px-6 lg:px-8 border-b min-w-0" style="border-color: var(--border-color);">
       
       <!-- Mobile Sidebar Toggle + Global Search Bar -->
-      <div class="flex items-center space-x-3 flex-1 max-w-lg">
-        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-slate-200 focus:outline-none">
+      <div class="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0 max-w-lg mr-2">
+        <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-slate-200 focus:outline-none shrink-0">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
         </button>
 
-        <div class="relative w-full">
+        <div class="relative w-full min-w-0">
           <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 text-sm">🔍</span>
           <input 
             type="text" 
             id="globalSearchInput" 
-            placeholder="Search all records (employees, teams, tasks)..." 
-            class="w-full pl-9 pr-4 py-2 text-xs sm:text-sm rounded-lg"
+            placeholder="Search all records..." 
+            class="w-full pl-9 pr-3 py-1.5 sm:py-2 text-xs sm:text-sm rounded-lg"
           >
         </div>
       </div>
 
       <!-- Right App Bar Actions: Theme Toggle, User Profile & Primary CTAs -->
-      <div class="flex items-center space-x-3 pl-4">
+      <div class="flex items-center space-x-2 sm:space-x-3 shrink-0">
         
         <!-- Dark / Light Theme Toggle -->
         <button 
           id="themeToggleBtn" 
           title="Toggle Dark/Light Mode"
-          class="px-3 py-1.5 rounded-lg text-xs font-semibold border flex items-center space-x-1.5 cursor-pointer transition-colors"
+          class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold border flex items-center space-x-1.5 cursor-pointer transition-colors"
           style="background-color: var(--bg-surface-subtle); border-color: var(--border-color); color: var(--text-primary);"
         >
           <span id="themeIcon">🌙</span>
-          <span id="themeLabel" class="hidden sm:inline text-xs font-bold">Dark</span>
+          <span id="themeLabel" class="hidden md:inline text-xs font-bold">Dark</span>
         </button>
 
         <!-- Admin Profile Pill -->
@@ -156,47 +156,47 @@
         <button 
           id="addEmployeeBtn" 
           data-testid="add-employee-btn" 
-          class="inline-flex items-center px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all cursor-pointer"
+          class="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all cursor-pointer whitespace-nowrap"
         >
-          <span class="mr-1 text-base leading-none">+</span> Add Employee
+          <span class="mr-1 text-base leading-none">+</span> <span class="hidden sm:inline">Add </span>Employee
         </button>
         <button 
           id="addTeamBtn" 
-          class="hidden inline-flex items-center px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all cursor-pointer"
+          class="hidden inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all cursor-pointer whitespace-nowrap"
         >
-          <span class="mr-1 text-base leading-none">+</span> Add Team
+          <span class="mr-1 text-base leading-none">+</span> <span class="hidden sm:inline">Add </span>Team
         </button>
         <button 
           id="addTaskBtn" 
-          class="hidden inline-flex items-center px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all cursor-pointer"
+          class="hidden inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 shadow-sm transition-all cursor-pointer whitespace-nowrap"
         >
-          <span class="mr-1 text-base leading-none">+</span> Add Task
+          <span class="mr-1 text-base leading-none">+</span> <span class="hidden sm:inline">Add </span>Task
         </button>
       </div>
 
     </header>
 
     <!-- Global Notification Banner -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-4">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full pt-4 min-w-0">
       <div id="statusBanner" class="hidden p-4 rounded-xl text-sm font-medium transition-all shadow-sm"></div>
     </div>
 
     <!-- Main Content Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 flex-1 w-full min-w-0">
 
       <!-- ============================================================== -->
       <!-- SECTION 0: EXECUTIVE DASHBOARD & ANALYTICS                     -->
       <!-- ============================================================== -->
-      <div id="dashboardSection" class="hidden space-y-6">
+      <div id="dashboardSection" class="hidden space-y-6 min-w-0">
         
         <!-- Header & Quick Actions -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
+          <div class="min-w-0">
             <h2 class="text-xl sm:text-2xl font-bold tracking-tight">Executive Analytics Dashboard</h2>
             <p class="text-xs sm:text-sm" style="color: var(--text-secondary);">Real-time organizational KPIs, task throughput, and capacity allocation</p>
           </div>
-          <button id="refreshDashboardBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold border flex items-center space-x-1.5 self-start sm:self-auto cursor-pointer" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color); color: var(--text-primary);">
-            <span>🔄</span> <span>Refresh Analytics</span>
+          <button id="refreshDashboardBtn" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold border flex items-center space-x-1.5 self-start sm:self-auto cursor-pointer shrink-0" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color); color: var(--text-primary);">
+            <span>🔄</span> <span>Refresh</span>
           </button>
         </div>
 
@@ -204,58 +204,58 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <!-- KPI 1 -->
           <div class="card-solid p-5 flex items-center justify-between">
-            <div>
-              <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--text-muted);">Total Employees</p>
+            <div class="min-w-0 mr-3">
+              <p class="text-[11px] font-bold uppercase tracking-wider truncate" style="color: var(--text-muted);">Total Employees</p>
               <h3 id="kpiTotalEmployees" class="text-2xl font-black mt-1">0</h3>
               <p class="text-xs text-emerald-500 font-semibold mt-1">✓ Active Directory</p>
             </div>
-            <div class="w-12 h-12 bg-indigo-500/10 text-indigo-500 rounded-xl flex items-center justify-center text-xl font-bold border border-indigo-500/20">
+            <div class="w-12 h-12 bg-indigo-500/10 text-indigo-500 rounded-xl flex items-center justify-center text-xl font-bold border border-indigo-500/20 shrink-0">
               👥
             </div>
           </div>
 
           <!-- KPI 2 -->
           <div class="card-solid p-5 flex items-center justify-between">
-            <div>
-              <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--text-muted);">Active Teams</p>
+            <div class="min-w-0 mr-3">
+              <p class="text-[11px] font-bold uppercase tracking-wider truncate" style="color: var(--text-muted);">Active Teams</p>
               <h3 id="kpiTotalTeams" class="text-2xl font-black mt-1">0</h3>
               <p class="text-xs text-blue-500 font-semibold mt-1">🏢 Cross-Department</p>
             </div>
-            <div class="w-12 h-12 bg-blue-500/10 text-blue-500 rounded-xl flex items-center justify-center text-xl font-bold border border-blue-500/20">
+            <div class="w-12 h-12 bg-blue-500/10 text-blue-400 rounded-xl flex items-center justify-center text-xl font-bold border border-blue-500/20 shrink-0">
               🏢
             </div>
           </div>
 
           <!-- KPI 3 -->
           <div class="card-solid p-5 flex items-center justify-between">
-            <div>
-              <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--text-muted);">Total Tasks</p>
+            <div class="min-w-0 mr-3">
+              <p class="text-[11px] font-bold uppercase tracking-wider truncate" style="color: var(--text-muted);">Total Tasks</p>
               <h3 id="kpiTotalTasks" class="text-2xl font-black mt-1">0</h3>
               <p id="kpiOverdueAlert" class="text-xs text-amber-500 font-medium mt-1">0 overdue</p>
             </div>
-            <div class="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center text-xl font-bold border border-amber-500/20">
+            <div class="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center text-xl font-bold border border-amber-500/20 shrink-0">
               📋
             </div>
           </div>
 
           <!-- KPI 4 -->
           <div class="card-solid p-5 flex items-center justify-between">
-            <div>
-              <p class="text-[11px] font-bold uppercase tracking-wider" style="color: var(--text-muted);">Completion Rate</p>
+            <div class="min-w-0 mr-3">
+              <p class="text-[11px] font-bold uppercase tracking-wider truncate" style="color: var(--text-muted);">Completion Rate</p>
               <h3 id="kpiCompletionRate" class="text-2xl font-black mt-1">0.0%</h3>
               <p id="kpiCompletedSummary" class="text-xs text-emerald-500 font-semibold mt-1">0 completed</p>
             </div>
-            <div class="w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-xl flex items-center justify-center text-xl font-bold border border-emerald-500/20">
+            <div class="w-12 h-12 bg-emerald-500/10 text-emerald-500 rounded-xl flex items-center justify-center text-xl font-bold border border-emerald-500/20 shrink-0">
               🎯
             </div>
           </div>
         </div>
 
         <!-- Task Distribution & Priority Breakdown Row -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 min-w-0">
           
           <!-- Task Stage Distribution Breakdown -->
-          <div class="lg:col-span-8 card-solid p-6">
+          <div class="lg:col-span-8 card-solid p-5 sm:p-6 min-w-0">
             <div class="flex items-center justify-between mb-4">
               <h3 class="text-base font-bold">Task Stage Distribution</h3>
               <span class="text-xs font-medium" style="color: var(--text-secondary);">3-Stage Lifecycle</span>
@@ -269,8 +269,8 @@
             </div>
 
             <!-- Stage Stats Grid -->
-            <div class="grid grid-cols-3 gap-4 pt-4 border-t" style="border-color: var(--border-color);">
-              <div class="p-3.5 rounded-xl border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t" style="border-color: var(--border-color);">
+              <div class="p-3 rounded-xl border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
                 <div class="flex items-center space-x-1.5 text-blue-500 text-xs font-bold mb-1">
                   <span class="w-2 h-2 rounded-full bg-blue-500"></span>
                   <span>To Do</span>
@@ -278,7 +278,7 @@
                 <p id="stageTodoText" class="text-lg font-black">0 <span class="text-xs font-normal" style="color: var(--text-muted);">(0%)</span></p>
               </div>
 
-              <div class="p-3.5 rounded-xl border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+              <div class="p-3 rounded-xl border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
                 <div class="flex items-center space-x-1.5 text-amber-500 text-xs font-bold mb-1">
                   <span class="w-2 h-2 rounded-full bg-amber-500"></span>
                   <span>In Progress</span>
@@ -286,7 +286,7 @@
                 <p id="stagePendingText" class="text-lg font-black">0 <span class="text-xs font-normal" style="color: var(--text-muted);">(0%)</span></p>
               </div>
 
-              <div class="p-3.5 rounded-xl border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+              <div class="p-3 rounded-xl border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
                 <div class="flex items-center space-x-1.5 text-emerald-500 text-xs font-bold mb-1">
                   <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                   <span>Completed</span>
@@ -297,10 +297,10 @@
           </div>
 
           <!-- Priority Breakdown -->
-          <div class="lg:col-span-4 card-solid p-6 flex flex-col justify-between">
+          <div class="lg:col-span-4 card-solid p-5 sm:p-6 flex flex-col justify-between min-w-0">
             <h3 class="text-base font-bold mb-4">Priority Density</h3>
             
-            <div class="space-y-3 flex-1 justify-center flex flex-col">
+            <div class="space-y-2.5 flex-1 justify-center flex flex-col">
               <div class="flex items-center justify-between p-2.5 rounded-lg border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
                 <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-red-500/15 text-red-500 border border-red-500/30">🔥 Urgent</span>
                 <span id="priorityUrgentCount" class="font-extrabold text-sm">0 tasks</span>
@@ -314,7 +314,7 @@
                 <span id="priorityMediumCount" class="font-extrabold text-sm">0 tasks</span>
               </div>
               <div class="flex items-center justify-between p-2.5 rounded-lg border" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
-                <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-slate-500/15 text-slate-400 border border-slate-500/30">Low</span>
+                <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-slate-500/15 text-slate-500 border border-slate-500/30">Low</span>
                 <span id="priorityLowCount" class="font-extrabold text-sm">0 tasks</span>
               </div>
             </div>
@@ -322,14 +322,14 @@
         </div>
 
         <!-- Team Workloads Table -->
-        <div class="card-solid p-6">
+        <div class="card-solid p-4 sm:p-6 min-w-0">
           <div class="flex items-center justify-between mb-4">
             <div>
               <h3 class="text-base font-bold">Team Workload & Completion Matrix</h3>
               <p class="text-xs" style="color: var(--text-secondary);">Live operational capacity and throughput by team</p>
             </div>
           </div>
-          <div class="overflow-x-auto">
+          <div class="table-container">
             <table class="w-full text-left text-xs sm:text-sm">
               <thead>
                 <tr class="border-b" style="border-color: var(--border-color);">
@@ -353,14 +353,14 @@
       <!-- ============================================================== -->
       <!-- SECTION 1: EMPLOYEE DIRECTORY                                  -->
       <!-- ============================================================== -->
-      <div id="employeesSection" class="space-y-6">
+      <div id="employeesSection" class="space-y-6 min-w-0">
         
         <!-- Controls Bar: Filter, Search & View Switcher -->
-        <div class="card-solid p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="card-solid p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 min-w-0">
           
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 min-w-0">
             <!-- Search Filter -->
-            <div class="relative flex-1">
+            <div class="relative flex-1 min-w-0">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400 text-sm">🔍</span>
               <input 
                 type="text" 
@@ -372,7 +372,7 @@
             </div>
 
             <!-- Department Filter -->
-            <select id="departmentFilter" data-testid="department-filter" class="px-3 py-2 text-sm rounded-lg">
+            <select id="departmentFilter" data-testid="department-filter" class="px-3 py-2 text-sm rounded-lg shrink-0">
               <option value="">All Departments</option>
               <option value="Engineering">Engineering</option>
               <option value="Product Design">Product Design</option>
@@ -383,13 +383,13 @@
             </select>
 
             <!-- Team Filter -->
-            <select id="teamFilter" class="px-3 py-2 text-sm rounded-lg">
+            <select id="teamFilter" class="px-3 py-2 text-sm rounded-lg shrink-0">
               <option value="">All Teams</option>
             </select>
           </div>
 
           <!-- View Toggle Switcher (Card Grid vs Table) -->
-          <div class="flex items-center space-x-2 self-end md:self-auto">
+          <div class="flex items-center space-x-2 self-end md:self-auto shrink-0">
             <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-muted);">View:</span>
             <div class="p-1 rounded-lg border flex items-center space-x-1" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
               <button id="viewGridBtn" data-testid="view-grid-btn" class="px-2.5 py-1 rounded text-xs font-semibold bg-indigo-600 text-white cursor-pointer" title="Grid View">
@@ -404,9 +404,9 @@
         </div>
 
         <!-- Employee Directory Container (Cards & Table) -->
-        <div id="employeeCardGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
-        <div id="employeeTableContainer" class="hidden card-solid overflow-hidden">
-          <div class="overflow-x-auto">
+        <div id="employeeCardGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 min-w-0"></div>
+        <div id="employeeTableContainer" class="hidden card-solid overflow-hidden min-w-0">
+          <div class="table-container">
             <table class="w-full text-left text-sm">
               <thead>
                 <tr>
@@ -428,43 +428,43 @@
       <!-- ============================================================== -->
       <!-- SECTION 2: TEAMS ROSTERS & HUBS                                -->
       <!-- ============================================================== -->
-      <div id="teamsSection" class="hidden space-y-6">
+      <div id="teamsSection" class="hidden space-y-6 min-w-0">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
+          <div class="min-w-0">
             <h2 class="text-xl sm:text-2xl font-bold tracking-tight">Teams Directory & Allocations</h2>
             <p class="text-xs sm:text-sm" style="color: var(--text-secondary);">Manage cross-functional teams, leads, and member rosters</p>
           </div>
-          <button id="addTeamSecondaryBtn" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 self-start sm:self-auto cursor-pointer shadow-sm">
+          <button id="addTeamSecondaryBtn" class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 self-start sm:self-auto cursor-pointer shadow-sm shrink-0">
             + Create Team
           </button>
         </div>
 
-        <div id="teamsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+        <div id="teamsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5 min-w-0"></div>
       </div>
 
       <!-- ============================================================== -->
       <!-- SECTION 3: 3-STAGE KANBAN TASK BOARD                           -->
       <!-- ============================================================== -->
-      <div id="tasksSection" class="hidden space-y-6">
-        <div class="card-solid p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
+      <div id="tasksSection" class="hidden space-y-6 min-w-0">
+        <div class="card-solid p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 min-w-0">
+          <div class="min-w-0">
             <h2 class="text-lg font-bold tracking-tight">Team Task Board</h2>
             <p class="text-xs" style="color: var(--text-secondary);">3-Stage Task Flow: Todo &harr; Pending &harr; Completed</p>
           </div>
-          <div class="flex items-center space-x-3">
+          <div class="flex items-center space-x-3 shrink-0">
             <select id="taskTeamFilter" class="px-3 py-1.5 text-xs sm:text-sm rounded-lg">
               <option value="">All Teams</option>
             </select>
-            <button id="addTaskSecondaryBtn" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 cursor-pointer shadow-sm">
+            <button id="addTaskSecondaryBtn" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 cursor-pointer shadow-sm whitespace-nowrap">
               + Add Task
             </button>
           </div>
         </div>
 
-        <!-- 3-Column Kanban Board -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- 3-Column Kanban Board with Horizontal Scrolling Safeguard -->
+        <div class="kanban-grid min-w-0">
           <!-- Column 1: Todo -->
-          <div class="card-solid p-4 flex flex-col min-h-[500px] border-t-4 border-t-blue-500">
+          <div class="card-solid p-4 flex flex-col min-h-[450px] border-t-4 border-t-blue-500 min-w-0">
             <div class="flex items-center justify-between pb-3 mb-3 border-b" style="border-color: var(--border-color);">
               <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-blue-500"></span>
@@ -476,7 +476,7 @@
           </div>
 
           <!-- Column 2: Pending -->
-          <div class="card-solid p-4 flex flex-col min-h-[500px] border-t-4 border-t-amber-500">
+          <div class="card-solid p-4 flex flex-col min-h-[450px] border-t-4 border-t-amber-500 min-w-0">
             <div class="flex items-center justify-between pb-3 mb-3 border-b" style="border-color: var(--border-color);">
               <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-amber-500"></span>
@@ -488,7 +488,7 @@
           </div>
 
           <!-- Column 3: Completed -->
-          <div class="card-solid p-4 flex flex-col min-h-[500px] border-t-4 border-t-emerald-500">
+          <div class="card-solid p-4 flex flex-col min-h-[450px] border-t-4 border-t-emerald-500 min-w-0">
             <div class="flex items-center justify-between pb-3 mb-3 border-b" style="border-color: var(--border-color);">
               <div class="flex items-center space-x-2">
                 <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
@@ -507,8 +507,8 @@
   <!-- ==================================================================== -->
   <!-- MODAL: ADD / EDIT EMPLOYEE                                           -->
   <!-- ==================================================================== -->
-  <div id="employeeModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay overflow-y-auto">
-    <div class="modal-dialog w-full max-w-lg rounded-2xl p-6 relative my-8">
+  <div id="employeeModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 modal-overlay overflow-y-auto">
+    <div class="modal-dialog w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl p-5 sm:p-6 relative my-auto">
       <div class="flex items-center justify-between pb-4 border-b" style="border-color: var(--border-color);">
         <h3 id="modalTitle" class="text-lg font-bold">Add New Employee</h3>
         <button id="closeModalBtn" class="text-slate-400 hover:text-slate-200 p-1 rounded-lg">✕</button>
@@ -558,8 +558,8 @@
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Date of Birth * (Age calculated dynamically)</label>
           <div class="flex items-center space-x-3">
-            <input type="date" id="inputBirthdate" data-testid="employee-birthdate-input" required class="flex-1 px-3.5 py-2 text-sm rounded-lg">
-            <div id="agePreviewBadge" class="hidden age-badge">
+            <input type="date" id="inputBirthdate" data-testid="employee-birthdate-input" required class="flex-1 px-3.5 py-2 text-sm rounded-lg min-w-0">
+            <div id="agePreviewBadge" class="hidden age-badge shrink-0">
               Age: <span id="calculatedAgeText" class="font-bold ml-1">--</span>
             </div>
           </div>
@@ -569,11 +569,11 @@
         <div>
           <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Avatar Image (Optional, max 2MB)</label>
           <div class="flex items-center space-x-4">
-            <div id="avatarPreviewContainer" class="w-12 h-12 rounded-full border flex items-center justify-center text-sm font-bold overflow-hidden" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
+            <div id="avatarPreviewContainer" class="w-12 h-12 rounded-full border flex items-center justify-center text-sm font-bold overflow-hidden shrink-0" style="background-color: var(--bg-surface-subtle); border-color: var(--border-color);">
               <span id="avatarPlaceholder" style="color: var(--text-muted);">IMG</span>
               <img id="avatarImageTag" class="hidden w-full h-full object-cover" alt="Avatar preview">
             </div>
-            <input type="file" id="inputAvatarFile" accept="image/*" class="text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer">
+            <input type="file" id="inputAvatarFile" accept="image/*" class="text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 cursor-pointer min-w-0">
           </div>
         </div>
 
@@ -603,8 +603,8 @@
   <!-- ==================================================================== -->
   <!-- MODAL: ADD / EDIT TEAM                                               -->
   <!-- ==================================================================== -->
-  <div id="teamModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay overflow-y-auto">
-    <div class="modal-dialog w-full max-w-md rounded-2xl p-6 relative my-8">
+  <div id="teamModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 modal-overlay overflow-y-auto">
+    <div class="modal-dialog w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl p-5 sm:p-6 relative my-auto">
       <div class="flex items-center justify-between pb-4 border-b" style="border-color: var(--border-color);">
         <h3 id="teamModalTitle" class="text-lg font-bold">Create New Team</h3>
         <button id="closeTeamModalBtn" class="text-slate-400 hover:text-slate-200 p-1 rounded-lg">✕</button>
@@ -646,8 +646,8 @@
   <!-- ==================================================================== -->
   <!-- MODAL: ADD / EDIT TASK                                               -->
   <!-- ==================================================================== -->
-  <div id="taskModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay overflow-y-auto">
-    <div class="modal-dialog w-full max-w-md rounded-2xl p-6 relative my-8">
+  <div id="taskModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 modal-overlay overflow-y-auto">
+    <div class="modal-dialog w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl p-5 sm:p-6 relative my-auto">
       <div class="flex items-center justify-between pb-4 border-b" style="border-color: var(--border-color);">
         <h3 id="taskModalTitle" class="text-lg font-bold">Author New Task</h3>
         <button id="closeTaskModalBtn" class="text-slate-400 hover:text-slate-200 p-1 rounded-lg">✕</button>
@@ -670,7 +670,7 @@
             <option value="">-- Unassigned --</option>
           </select>
         </div>
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-bold uppercase tracking-wider mb-1" style="color: var(--text-secondary);">Status *</label>
             <select id="taskInputStatus" required class="w-full px-3.5 py-2 text-sm rounded-lg">
