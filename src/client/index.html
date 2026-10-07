@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Employee Management — Directory</title>
+  <title>Employee & Team Management Hub</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -12,15 +12,6 @@
         extend: {
           fontFamily: {
             sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              50: '#eef2ff',
-              100: '#e0e7ff',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca',
-            }
           }
         }
       }
@@ -37,139 +28,228 @@
   <!-- Top Navigation Header -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-sm">
-          EM
+      <!-- Logo & Main Navigation Tabs -->
+      <div class="flex items-center space-x-8">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-sm">
+            EM
+          </div>
+          <div>
+            <h1 class="text-base font-bold text-slate-900 leading-tight">Employee Management</h1>
+            <p class="text-xs font-medium text-slate-500">Enterprise Workspace</p>
+          </div>
         </div>
-        <div>
-          <h1 class="text-lg font-bold text-slate-900 leading-tight">Employee Management</h1>
-          <p class="text-xs font-medium text-slate-500">Directory & Team Management</p>
-        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="flex space-x-2">
+          <button 
+            id="navEmployeesBtn" 
+            class="px-3.5 py-2 rounded-lg text-sm font-semibold bg-indigo-50 text-indigo-700 transition-colors cursor-pointer"
+          >
+            👥 Employees
+          </button>
+          <button 
+            id="navTeamsBtn" 
+            class="px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors cursor-pointer"
+          >
+            🏢 Teams
+          </button>
+        </nav>
       </div>
+
+      <!-- Header Primary Action Buttons -->
       <div class="flex items-center space-x-3">
         <button 
           id="addEmployeeBtn" 
           data-testid="add-employee-btn" 
-          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all cursor-pointer"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition-all cursor-pointer"
         >
           <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
           </svg>
           Add Employee
         </button>
+        <button 
+          id="addTeamBtn" 
+          class="hidden inline-flex items-center px-4 py-2 border border-transparent text-sm font-semibold rounded-lg shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition-all cursor-pointer"
+        >
+          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+          </svg>
+          Add Team
+        </button>
       </div>
     </div>
   </header>
 
+  <!-- Global Status / Notification Alert Banner -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-4">
+    <div id="statusBanner" class="hidden p-4 rounded-xl text-sm font-medium transition-all shadow-sm"></div>
+  </div>
+
   <!-- Main Content Area -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
-    <!-- Controls & Filters Bar -->
-    <div class="bg-white rounded-xl border border-slate-200 p-4 mb-6 shadow-sm">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-        <!-- Search Bar -->
-        <div class="md:col-span-6 relative">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+    
+    <!-- ============================================================== -->
+    <!-- SECTION 1: EMPLOYEES DIRECTORY                                 -->
+    <!-- ============================================================== -->
+    <div id="employeesSection">
+      <!-- Controls & Filters Bar -->
+      <div class="bg-white rounded-xl border border-slate-200 p-4 mb-6 shadow-sm">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+          <!-- Search Bar -->
+          <div class="md:col-span-6 relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              id="searchInput" 
+              data-testid="search-input" 
+              placeholder="Search employees by name, role, email..." 
+              class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white"
+            />
           </div>
-          <input 
-            type="text" 
-            id="searchInput" 
-            data-testid="search-input" 
-            placeholder="Search employees by name, role, email..." 
-            class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white"
-          />
+
+          <!-- Team Filter Dropdown -->
+          <div class="md:col-span-4">
+            <select 
+              id="teamFilter" 
+              data-testid="team-filter" 
+              class="w-full py-2 pl-3 pr-8 border border-slate-300 rounded-lg text-sm text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+            >
+              <option value="">All Teams (Filter)</option>
+            </select>
+          </div>
+
+          <!-- View Mode Toggle -->
+          <div class="md:col-span-2 flex justify-end space-x-2">
+            <button 
+              id="viewGridBtn" 
+              data-testid="view-toggle-grid" 
+              title="Grid View" 
+              class="px-3 py-2 border border-slate-200 rounded-lg bg-indigo-50 text-indigo-700 font-semibold text-xs flex items-center space-x-1.5 transition-colors cursor-pointer"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+              <span>Grid</span>
+            </button>
+            <button 
+              id="viewTableBtn" 
+              data-testid="view-toggle-table" 
+              title="Table View" 
+              class="px-3 py-2 border border-slate-200 rounded-lg bg-white text-slate-600 font-semibold text-xs flex items-center space-x-1.5 hover:bg-slate-50 transition-colors cursor-pointer"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+              <span>Table</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Directory Content Container -->
+      <div id="directoryContainer" class="min-h-[350px]">
+        <!-- Cards View (Default) -->
+        <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <!-- Table View (Hidden by default) -->
+        <div id="tableView" class="hidden bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-slate-200 text-sm">
+              <thead class="bg-slate-50 text-slate-600 font-semibold uppercase tracking-wider text-xs">
+                <tr>
+                  <th class="px-6 py-3.5 text-left">Employee</th>
+                  <th class="px-6 py-3.5 text-left">Role / Position</th>
+                  <th class="px-6 py-3.5 text-left">Age</th>
+                  <th class="px-6 py-3.5 text-left">Teams</th>
+                  <th class="px-6 py-3.5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody" class="divide-y divide-slate-200 bg-white"></tbody>
+            </table>
+          </div>
         </div>
 
-        <!-- Team Filter Dropdown -->
-        <div class="md:col-span-4">
-          <select 
-            id="teamFilter" 
-            data-testid="team-filter" 
-            class="w-full py-2 pl-3 pr-8 border border-slate-300 rounded-lg text-sm text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
-          >
-            <option value="">All Teams (Filter)</option>
-          </select>
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-20 bg-white rounded-xl border-2 border-dashed border-slate-200">
+          <svg class="w-12 h-12 mx-auto text-slate-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+          <h3 class="text-base font-semibold text-slate-800 mb-1">No employees found</h3>
+          <p class="text-sm text-slate-500 max-w-sm mx-auto">Try adjusting your search query or team filter, or add a new employee profile.</p>
         </div>
+      </div>
 
-        <!-- View Mode Toggle -->
-        <div class="md:col-span-2 flex justify-end space-x-2">
-          <button 
-            id="viewGridBtn" 
-            data-testid="view-toggle-grid" 
-            title="Grid View" 
-            class="px-3 py-2 border border-slate-200 rounded-lg bg-indigo-50 text-indigo-700 font-semibold text-xs flex items-center space-x-1.5 transition-colors cursor-pointer"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-            </svg>
-            <span>Grid</span>
-          </button>
-          <button 
-            id="viewTableBtn" 
-            data-testid="view-toggle-table" 
-            title="Table View" 
-            class="px-3 py-2 border border-slate-200 rounded-lg bg-white text-slate-600 font-semibold text-xs flex items-center space-x-1.5 hover:bg-slate-50 transition-colors cursor-pointer"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
-            </svg>
-            <span>Table</span>
-          </button>
+      <!-- Pagination Controls -->
+      <div id="paginationControls" class="mt-8 flex items-center justify-between border-t border-slate-200 pt-4 hidden">
+        <span id="pageInfo" class="text-sm font-medium text-slate-600">Showing page 1 of 1</span>
+        <div class="flex space-x-2">
+          <button id="prevPageBtn" class="px-3 py-1.5 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-40 transition-colors">Previous</button>
+          <button id="nextPageBtn" class="px-3 py-1.5 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-40 transition-colors">Next</button>
         </div>
       </div>
     </div>
 
-    <!-- Status / Notification Alert Banner -->
-    <div id="statusBanner" class="hidden mb-6 p-4 rounded-xl text-sm font-medium transition-all shadow-sm"></div>
+    <!-- ============================================================== -->
+    <!-- SECTION 2: TEAMS HUB                                           -->
+    <!-- ============================================================== -->
+    <div id="teamsSection" class="hidden">
+      <!-- Teams Controls Bar -->
+      <div class="bg-white rounded-xl border border-slate-200 p-4 mb-6 shadow-sm">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+          <!-- Team Search -->
+          <div class="md:col-span-8 relative">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            <input 
+              type="text" 
+              id="teamSearchInput" 
+              placeholder="Search teams by name or description..." 
+              class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white"
+            />
+          </div>
 
-    <!-- Directory Content Container -->
-    <div id="directoryContainer" class="min-h-[350px]">
-      <!-- Cards View (Default) -->
-      <div id="cardsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-      <!-- Table View (Hidden by default) -->
-      <div id="tableView" class="hidden bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="min-w-full divide-y divide-slate-200 text-sm">
-            <thead class="bg-slate-50 text-slate-600 font-semibold uppercase tracking-wider text-xs">
-              <tr>
-                <th class="px-6 py-3.5 text-left">Employee</th>
-                <th class="px-6 py-3.5 text-left">Role / Position</th>
-                <th class="px-6 py-3.5 text-left">Age</th>
-                <th class="px-6 py-3.5 text-left">Teams</th>
-                <th class="px-6 py-3.5 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="tableBody" class="divide-y divide-slate-200 bg-white"></tbody>
-          </table>
+          <!-- Department Filter -->
+          <div class="md:col-span-4">
+            <select 
+              id="departmentFilter" 
+              class="w-full py-2 pl-3 pr-8 border border-slate-300 rounded-lg text-sm text-slate-800 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+            >
+              <option value="">All Departments</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Product">Product</option>
+              <option value="Design">Design</option>
+              <option value="QA">QA</option>
+              <option value="DevOps">DevOps</option>
+              <option value="Operations">Operations</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <!-- Empty State -->
-      <div id="emptyState" class="hidden text-center py-20 bg-white rounded-xl border-2 border-dashed border-slate-200">
+      <!-- Teams Grid Container -->
+      <div id="teamsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+      <!-- Teams Empty State -->
+      <div id="teamsEmptyState" class="hidden text-center py-20 bg-white rounded-xl border-2 border-dashed border-slate-200">
         <svg class="w-12 h-12 mx-auto text-slate-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
         </svg>
-        <h3 class="text-base font-semibold text-slate-800 mb-1">No employees found</h3>
-        <p class="text-sm text-slate-500 max-w-sm mx-auto">Try adjusting your search query or team filter, or add a new employee profile.</p>
-      </div>
-    </div>
-
-    <!-- Pagination Controls -->
-    <div id="paginationControls" class="mt-8 flex items-center justify-between border-t border-slate-200 pt-4 hidden">
-      <span id="pageInfo" class="text-sm font-medium text-slate-600">Showing page 1 of 1</span>
-      <div class="flex space-x-2">
-        <button id="prevPageBtn" class="px-3 py-1.5 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-40 transition-colors">Previous</button>
-        <button id="nextPageBtn" class="px-3 py-1.5 border border-slate-300 rounded-lg text-sm font-medium hover:bg-slate-50 disabled:opacity-40 transition-colors">Next</button>
+        <h3 class="text-base font-semibold text-slate-800 mb-1">No teams found</h3>
+        <p class="text-sm text-slate-500 max-w-sm mx-auto">Create a team to organize employees and delegate workloads.</p>
       </div>
     </div>
   </main>
 
-  <!-- Add / Edit Employee Modal Dialog -->
-  <div id="employeeModal" data-testid="employee-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-none flex items-center justify-center hidden p-4">
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full overflow-hidden transform transition-all">
+  <!-- ============================================================== -->
+  <!-- MODAL 1: ADD / EDIT EMPLOYEE                                   -->
+  <!-- ============================================================== -->
+  <div id="employeeModal" data-testid="employee-modal" class="fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full overflow-hidden">
       <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
         <h3 id="modalTitle" class="text-base font-bold text-slate-900">Add New Employee</h3>
         <button id="closeModalBtn" class="text-slate-400 hover:text-slate-600 text-2xl font-bold leading-none p-1">&times;</button>
@@ -252,12 +332,141 @@
             type="submit" 
             id="saveEmployeeBtn" 
             data-testid="save-employee-btn" 
-            class="px-5 py-2 border border-transparent rounded-lg text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition-colors"
+            class="px-5 py-2 border border-transparent rounded-lg text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition-colors cursor-pointer"
           >
             Save Employee
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL 2: ADD / EDIT TEAM                                       -->
+  <!-- ============================================================== -->
+  <div id="teamModal" class="fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+        <h3 id="teamModalTitle" class="text-base font-bold text-slate-900">Add New Team</h3>
+        <button id="closeTeamModalBtn" class="text-slate-400 hover:text-slate-600 text-2xl font-bold leading-none p-1">&times;</button>
+      </div>
+      <form id="teamForm" class="p-6 space-y-4">
+        <input type="hidden" id="teamId" value="">
+        
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Team Name *</label>
+          <input 
+            type="text" 
+            id="formTeamName" 
+            placeholder="e.g. Core Architecture" 
+            required 
+            minlength="2" 
+            maxlength="100" 
+            class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Department *</label>
+            <select 
+              id="formTeamDepartment" 
+              required
+              class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white"
+            >
+              <option value="Engineering">Engineering</option>
+              <option value="Product">Product</option>
+              <option value="Design">Design</option>
+              <option value="QA">QA</option>
+              <option value="DevOps">DevOps</option>
+              <option value="Operations">Operations</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Team Lead (Optional)</label>
+            <select 
+              id="formTeamLead" 
+              class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white"
+            >
+              <option value="">No Lead Assigned</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Description (Optional)</label>
+          <textarea 
+            id="formTeamDescription" 
+            rows="3" 
+            placeholder="Responsibilities and team scope..." 
+            class="w-full px-3.5 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+          ></textarea>
+        </div>
+
+        <div class="pt-4 border-t border-slate-200 flex justify-end space-x-3">
+          <button 
+            type="button" 
+            id="cancelTeamModalBtn" 
+            class="px-4 py-2 border border-slate-300 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            class="px-5 py-2 border border-transparent rounded-lg text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm transition-colors cursor-pointer"
+          >
+            Save Team
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- MODAL 3: MANAGE TEAM MEMBERS                                   -->
+  <!-- ============================================================== -->
+  <div id="manageMembersModal" class="fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl max-w-lg w-full overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+        <div>
+          <h3 id="manageMembersTitle" class="text-base font-bold text-slate-900">Manage Team Members</h3>
+          <p id="manageMembersSubtitle" class="text-xs text-slate-500">Team Roster</p>
+        </div>
+        <button id="closeMembersModalBtn" class="text-slate-400 hover:text-slate-600 text-2xl font-bold leading-none p-1">&times;</button>
+      </div>
+      <div class="p-6 space-y-6">
+        <!-- Add Member Row -->
+        <form id="addMemberForm" class="flex gap-2">
+          <input type="hidden" id="currentManagingTeamId" value="">
+          <select 
+            id="availableEmployeeSelect" 
+            required 
+            class="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500 outline-none bg-white"
+          >
+            <option value="">Select Employee to Add...</option>
+          </select>
+          <select 
+            id="memberRoleSelect" 
+            class="w-32 px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-indigo-500 outline-none bg-white"
+          >
+            <option value="Core Member">Core Member</option>
+            <option value="Lead">Lead</option>
+            <option value="Contributor">Contributor</option>
+          </select>
+          <button 
+            type="submit" 
+            class="px-4 py-2 bg-indigo-600 text-white rounded-lg text-xs font-semibold hover:bg-indigo-700 transition-colors"
+          >
+            + Add
+          </button>
+        </form>
+
+        <!-- Current Members List -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Current Members</h4>
+          <div id="teamMembersList" class="divide-y divide-slate-100 max-h-60 overflow-y-auto border border-slate-200 rounded-lg"></div>
+        </div>
+      </div>
     </div>
   </div>
 
