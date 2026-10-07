@@ -7,11 +7,13 @@
 
 ## Way of Working
 
-We use a **tiered multi-branch promotion workflow**:
+We use a **tiered multi-branch promotion workflow via Pull Requests**:
 1. **Feature Development**: Features are committed and developed into dedicated `feature/(feature_name)` branches.
-2. **Staging Integration**: Feature branches are integrated into the `staging` branch for initial verification and integration testing.
-3. **Development Consolidation**: Verified staging commits are merged into the `dev` branch for consolidated testing and regression checks.
-4. **Production Release**: Stable and verified changes from `dev` are merged into the `main` branch at the end of the release lifecycle.
+2. **Pull Requests for Review**: Feature branches are pushed to remote and promoted by creating a Pull Request (PR) targeting `staging` (or `dev`).
+3. **No Automated Merges**: Never automatically merge feature branches into higher branches (`staging`, `dev`, `main`). Always open a PR and wait for human review/approval.
+4. **Staging Integration**: After PR review and merge into `staging`, integration tests and container verification are performed.
+5. **Development Consolidation**: Staging changes are promoted to `dev` via PR for consolidated regression testing.
+6. **Production Release**: Verified changes from `dev` are promoted to `main` via PR for final release.
 
 ## Walking Skeleton
 
@@ -38,6 +40,7 @@ We support local and preview runtime execution using standard Node.js scripts (`
 - ESLint and Prettier for automated formatting and static lint verification.
 - Opaque solid card styling with clear high-contrast borders (**strictly no glassmorphism**).
 - Full compliance with Thailand Personal Data Protection Act (PDPA) for employee records and avatars.
+
 ## Commit Standards
 
 - Atomic Conventional Commits (`feat`, `fix`, `test`, `ci`, `chore`, `docs`).
@@ -51,14 +54,18 @@ We support local and preview runtime execution using standard Node.js scripts (`
 ## Forbidden
 
 - Direct commits to `main` branch.
+- Automated merges of feature branches into higher branches without Pull Request review.
 - Monolithic commits bundling multiple unrelated concerns.
 - Pushing unverified code without running local tests.
 
 ## Mandated
 
-- Multi-branch promotion: `feature/*` -> `staging` -> `dev` -> `main`.
+- Multi-branch promotion via Pull Requests: `feature/*` -> `staging` -> `dev` -> `main`.
+- Always open Pull Requests for branch promotions; do not perform automated merges without human review.
 - Conventional commits specification on all commit messages.
 
 ## Corrections
 
 <!-- Self-learning loop appends here. -->
+- Learned: Always create a Pull Request for branch integration rather than automatically merging feature branches. Wait for human review and approval.
+
