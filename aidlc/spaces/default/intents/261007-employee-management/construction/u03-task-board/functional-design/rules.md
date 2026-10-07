@@ -21,3 +21,4 @@
 ### 3. Deletion & Cleanup (BR-TSK-DEL)
 - **BR-TSK-08 (Cascade on Team Deletion)**: When a team is deleted, all its associated tasks are deleted automatically via PostgreSQL foreign key cascade.
 - **BR-TSK-09 (Nullify on Employee Deletion)**: When an assigned employee is deleted, the task's `assignee_id` is set to `NULL` without deleting the task.
+

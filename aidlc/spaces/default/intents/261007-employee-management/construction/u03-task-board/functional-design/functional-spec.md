@@ -107,3 +107,4 @@ stateDiagram-v2
    - Due date indicator (with overdue warning styling).
    - Quick stage transition buttons (`→ In Progress`, `✓ Done`, `↺ Reopen`).
 5. **Add / Edit Task Modal**: Clean form with team selection, title, description, priority, assignee, and due date picker.
+

@@ -39,3 +39,4 @@ erDiagram
 
 ### 2. `TaskWithDetails` Aggregate / DTO
 - Combines task fields with `teamName`, `assigneeName`, and `assigneeAvatarUrl` resolved via SQL joins.
+
